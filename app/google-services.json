@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "753714044995",
+    "project_id": "scannerallerpro",
+    "storage_bucket": "scannerallerpro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753714044995:android:7ce1b5b21f72e014ecf4f6",
+        "android_client_info": {
+          "package_name": "com.example.scannerallerpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfGJ56s8xm_e9l8YFteW5wGYEu-TirMUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
