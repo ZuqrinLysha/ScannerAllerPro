@@ -24,7 +24,7 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // Make sure this matches your layout file
 
         // Initializing the views
         txtFullNameSignUp = findViewById(R.id.txtFullNameSignUp);
@@ -51,8 +51,27 @@ public class SignUp extends AppCompatActivity {
                 String password = txtPasswordSignUp.getText().toString();
                 String confirmPassword = txtConfirmPssSignUp.getText().toString();
 
+
+                // Check if passwords match
+                if (!password.equals(confirmPassword)) {
+                    Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Creating a helper class object to store the data
-                HelperClass helperClass = new HelperClass(fullname, email, username, password, confirmPassword);
+                HelperClass helperClass = new HelperClass(
+                        fullname,
+                        email,
+                        username,
+                        password,
+                        confirmPassword,
+                        "", // Initial value for height
+                        "", // Initial value for weight
+                        "", // Initial value for BMI
+                        "", // Initial value for blood type
+                        ""  // Initial value for allergic history
+                );
+
                 reference.child(username).setValue(helperClass);
 
                 // Displaying a success message
