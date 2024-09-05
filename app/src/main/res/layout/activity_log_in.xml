@@ -23,8 +23,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="441dp"
-            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:padding="30dp"
             app:cardCornerRadius="40dp"
@@ -32,7 +31,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="433dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -48,9 +47,11 @@
 
                 <EditText
                     android:id="@+id/txtEmailL"
-                    android:layout_width="313dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginStart="40dp"
                     android:layout_marginTop="40dp"
+                    android:layout_marginEnd="40dp"
                     android:background="@drawable/custom"
                     android:drawableLeft="@drawable/baseline_email_24"
                     android:drawablePadding="8dp"
@@ -60,25 +61,48 @@
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background" />
 
-                <EditText
-                    android:id="@+id/txtPassword"
-                    android:layout_width="309dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_lock_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/txtPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:background="@drawable/custom"
+                        android:drawableLeft="@drawable/baseline_lock_24"
+                        android:drawablePadding="8dp"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/cardview_dark_background" />
+
+                    <!-- Eye Icon for Toggle on the Right -->
+                    <ImageView
+                        android:id="@+id/imgTogglePasswordLogin"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/txtPassword"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="200dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="44dp"
+                        android:layout_marginBottom="40dp"
+                        android:contentDescription="Toggle Password Visibility"
+                        android:padding="8dp"
+                        android:src="@drawable/eyepassword" />
+
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/btnLogin"
-                    android:layout_width="306dp"
+                    android:layout_width="265dp"
                     android:layout_height="60dp"
-                    android:layout_marginTop="30dp"
                     android:backgroundTint="@color/purple"
                     android:text="Log In"
                     android:textSize="18sp"
@@ -89,19 +113,17 @@
                     android:id="@+id/txtSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="Don't have an account? Sign Up"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- "Forgot password -->
+                <!-- "Forgot password" text -->
                 <TextView
                     android:id="@+id/txtForgotPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="Forgot Password"
                     android:textColor="@color/blue"

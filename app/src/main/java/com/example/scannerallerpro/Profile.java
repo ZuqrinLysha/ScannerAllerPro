@@ -30,6 +30,7 @@ public class Profile extends AppCompatActivity {
     // TextViews for displaying user data
     TextView txtHeight, txtWeight, txtBmi, txtBlood;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,19 +126,19 @@ public class Profile extends AppCompatActivity {
                     DataSnapshot dataSnapshot = task.getResult();
                     if (dataSnapshot.hasChild("height")) {
                         String height = dataSnapshot.child("height").getValue(String.class);
-                        txtHeight.setText("Height: " + height);
+                        txtHeight.setText("" + height);
                     }
                     if (dataSnapshot.hasChild("weight")) {
                         String weight = dataSnapshot.child("weight").getValue(String.class);
-                        txtWeight.setText("Weight: " + weight);
+                        txtWeight.setText("" + weight);
                     }
                     if (dataSnapshot.hasChild("bmi")) {
                         String bmi = dataSnapshot.child("bmi").getValue(String.class);
-                        txtBmi.setText("BMI: " + bmi);
+                        txtBmi.setText("" + bmi);
                     }
                     if (dataSnapshot.hasChild("bloodType")) {
                         String bloodType = dataSnapshot.child("bloodType").getValue(String.class);
-                        txtBlood.setText("Blood Type: " + bloodType);
+                        txtBlood.setText("" + bloodType);
                     }
                 }
             });

@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.auth)
     testImplementation(libs.junit)
+    implementation(libs.play.services.auth)
     androidTestImplementation(libs.ext.junit)
+    implementation(libs.play.services.auth)
+    implementation(libs.google.firebase.auth)
     androidTestImplementation(libs.espresso.core)
 }

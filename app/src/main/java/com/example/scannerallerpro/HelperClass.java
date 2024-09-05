@@ -1,43 +1,31 @@
 package com.example.scannerallerpro;
 
 public class HelperClass {
-    private String fullname;
-    private String email;
-    private String username;
-    private String password;
-    private String confirmPassword;
-    private String height;
-    private String weight;
-    private String bmi;
-    private String bloodType;
-    private String allergicHistory;
+    String fullName, email, username, password, height, weight, bmi, bloodType, allergicHistory, phoneNumber;
 
-    // Constructor with all fields
-    public HelperClass(String fullname, String email, String username, String password, String confirmPassword,
-                       String height, String weight, String bmi, String bloodType, String allergicHistory) {
-        this.fullname = fullname;
+    // Constructor
+    public HelperClass(String fullName, String email, String username, String password,
+                       String height, String weight, String bmi,
+                       String bloodType, String allergicHistory, String phoneNumber) {
+        this.fullName = fullName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.confirmPassword = confirmPassword;
         this.height = height;
         this.weight = weight;
         this.bmi = bmi;
         this.bloodType = bloodType;
         this.allergicHistory = allergicHistory;
+        this.phoneNumber = phoneNumber;
     }
 
-    // Default constructor
-    public HelperClass() {
+    // Getters and Setters (Optional, depending on your needs)
+    public String getFullName() {
+        return fullName;
     }
 
-    // Getters and setters for all fields
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -62,14 +50,6 @@ public class HelperClass {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public String getHeight() {
@@ -111,4 +91,14 @@ public class HelperClass {
     public void setAllergicHistory(String allergicHistory) {
         this.allergicHistory = allergicHistory;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
 }
