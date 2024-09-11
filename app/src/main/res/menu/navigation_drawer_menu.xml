@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/baseline_home_24" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile"
+            android:icon="@drawable/baseline_person_24" />
+
+        <item
+            android:id="@+id/nav_scanner"
+            android:title="Scanner"
+            android:icon="@drawable/baseline_qr_code_scanner_24" />
+
+        <item
+            android:id="@+id/nav_knowledge"
+            android:title="knowledge"
+            android:icon="@drawable/baseline_menu_book_24" />
+
+        <item
+            android:id="@+id/LogOut"
+            android:title="LogOut"
+            android:icon="@drawable/baseline_exit" />
+
+
+    </group>
+
+
+
+</menu>

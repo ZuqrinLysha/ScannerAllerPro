@@ -34,6 +34,9 @@ public class LogIn extends AppCompatActivity {
     ImageView imgTogglePasswordLogin;
     boolean isPasswordVisible = false;
 
+    // Flag to track if the password has been updated
+    private boolean passwordUpdated = false;
+
     FirebaseAuth auth;
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -152,16 +155,24 @@ public class LogIn extends AppCompatActivity {
                         // Successful login, reset login attempts
                         loginAttempts = 0;
 
-                        // Update password in Firebase Authentication
-                        updatePassword(userPassword);
+                        // Check if the password is already up-to-date
+                        if (!passwordUpdated) {
+                            // Update password in Firebase Authentication
+                            updatePassword(userPassword);
 
-                        // Update password in Firebase Realtime Database
-                        updateUserPasswordInDatabase(userEmail, userPassword);
+                            // Update password in Firebase Realtime Database
+                            updateUserPasswordInDatabase(userEmail, userPassword);
 
-                        // Navigate to HomePage after login
-                        Intent intent = new Intent(LogIn.this, HomePage.class);
-                        startActivity(intent);
-                        finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
+                            // Set the flag to true to indicate password has been updated
+                            passwordUpdated = true;
+
+                        }
+                            // Navigate to HomePage after login
+                            Intent intent = new Intent(LogIn.this, HomePage.class);
+                            startActivity(intent);
+                            finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
+
+
                     }
                 } else {
                     loginAttempts++;
@@ -188,17 +199,12 @@ public class LogIn extends AppCompatActivity {
             user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LogIn.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LogIn.this, "Failed to update password", Toast.LENGTH_SHORT).show();
-                    }
+
                 }
             });
         }
     }
 
-    // Update the password in Firebase Realtime Database based on email
     private void updateUserPasswordInDatabase(String email, String newPassword) {
         reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -211,9 +217,8 @@ public class LogIn extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            // Show the Toast message only if the password was updated
                                             Toast.makeText(LogIn.this, "Password updated in database", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(LogIn.this, "Failed to update password in database", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -227,4 +232,4 @@ public class LogIn extends AppCompatActivity {
             }
         });
     }
-}
+    }

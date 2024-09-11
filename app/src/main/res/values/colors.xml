@@ -4,7 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#FF6200EE</color>
     <color name="blue">#9381ff</color>
-    <color name="softblue">#cddee5</color>
+    <color name="softblue">#93b5ff</color>
     <color name="gray">#AAAAAA</color>
+    <color name="blue1">#000080</color>
+
 
 </resources>
