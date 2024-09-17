@@ -93,12 +93,7 @@ public class SignUp extends AppCompatActivity {
                                             fullname,
                                             email,
                                             username,
-                                            password, // Only store password, not confirm password
-                                            "", // Initial value for height
-                                            "", // Initial value for weight
-                                            "", // Initial value for BMI
-                                            "", // Initial value for blood type
-                                            "", // Initial value for allergic history
+                                            password,
                                             phoneNumber // Include phone number
                                     );
 

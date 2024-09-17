@@ -1,64 +1,207 @@
 package com.example.scannerallerpro;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FirebaseDatabase database;
+    private DatabaseReference userRef;
+    private FirebaseAuth auth;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    // TextViews for displaying user data
+    TextView display_weight, display_height, display_bmi, display_blood_type;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // Initialize Firebase
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userEmail = currentUser.getEmail();
+            if (userEmail != null) {
+                // Reference to the users node
+                DatabaseReference usersRef = database.getReference("Users");
+                usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                String fullName = userSnapshot.child("fullName").getValue(String.class);
+                                if (fullName != null) {
+                                    // Now you have the username and can reference the user by username
+                                    userRef = database.getReference("Users").child(fullName);
+                                    // Load existing data from Firebase
+                                    loadDataFromFirebase();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getContext(), "Failed to fetch username", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        // Initialize the TextViews
+        display_height = rootView.findViewById(R.id.display_height);
+        display_weight = rootView.findViewById(R.id.display_weight);
+        display_bmi = rootView.findViewById(R.id.display_bmi);
+        display_blood_type = rootView.findViewById(R.id.display_blood_type);
+
+        // Initialize CardViews and set click listeners
+        CardView cvHeight = rootView.findViewById(R.id.cvHeight);
+        CardView cvWeight = rootView.findViewById(R.id.cvWeight);
+        CardView cvBmi = rootView.findViewById(R.id.cvBmi);
+        CardView cvBloodType = rootView.findViewById(R.id.cvBloodType);
+
+        cvHeight.setOnClickListener(v -> showInputDialog("Enter Your Height", "height"));
+        cvWeight.setOnClickListener(v -> showInputDialog("Enter Your Weight", "weight"));
+        cvBloodType.setOnClickListener(v -> showInputDialog("Enter Your Blood Type", "bloodType"));
+
+        return rootView;
+    }
+
+    private void showInputDialog(String title, String field) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+
+        // Set up the input
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);  // For text input
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String value = input.getText().toString().trim();
+            if (!value.isEmpty()) {
+                saveToFirebase(field, value);
+            } else {
+                Toast.makeText(getContext(), title + " cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void saveToFirebase(String field, String value) {
+        if (userRef != null) {
+            // Save medical data under 'MedicalData' for the user
+            if (field.equals("height") || field.equals("weight") || field.equals("bmi") || field.equals("bloodType")) {
+                userRef.child("MedicalData").child(field).setValue(value).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), field + " saved successfully!", Toast.LENGTH_SHORT).show();
+                        updateTextView(field, value);
+                        if (field.equals("height") || field.equals("weight")) {
+                            recalculateBmi();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Failed to save " + field, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                // Save general user data
+                userRef.child(field).setValue(value).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), field + " saved successfully!", Toast.LENGTH_SHORT).show();
+                        updateTextView(field, value);
+                    } else {
+                        Toast.makeText(getContext(), "Failed to save " + field, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+    private void updateTextView(String field, String value) {
+        switch (field) {
+            case "height":
+                display_height.setText(value);
+                break;
+            case "weight":
+                display_weight.setText(value);
+                break;
+            case "bmi":
+                display_bmi.setText(value);
+                break;
+            case "bloodType":
+                display_blood_type.setText(value);
+                break;
+        }
+    }
+
+    private void loadDataFromFirebase() {
+        if (userRef != null) {
+            userRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult().exists()) {
+                    DataSnapshot dataSnapshot = task.getResult();
+
+                    // Load medical data from 'MedicalData' node
+                    if (dataSnapshot.hasChild("MedicalData")) {
+                        DataSnapshot medicalDataSnapshot = dataSnapshot.child("MedicalData");
+                        if (medicalDataSnapshot.hasChild("height")) {
+                            String height = medicalDataSnapshot.child("height").getValue(String.class);
+                            display_height.setText(height);
+                        }
+                        if (medicalDataSnapshot.hasChild("weight")) {
+                            String weight = medicalDataSnapshot.child("weight").getValue(String.class);
+                            display_weight.setText(weight);
+                        }
+                        if (medicalDataSnapshot.hasChild("bmi")) {
+                            String bmi = medicalDataSnapshot.child("bmi").getValue(String.class);
+                            display_bmi.setText(bmi);
+                        }
+                        if (medicalDataSnapshot.hasChild("bloodType")) {
+                            String bloodType = medicalDataSnapshot.child("bloodType").getValue(String.class);
+                            display_blood_type.setText(bloodType);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void recalculateBmi() {
+        String heightStr = display_height.getText().toString();
+        String weightStr = display_weight.getText().toString();
+
+        if (!heightStr.isEmpty() && !weightStr.isEmpty()) {
+            // Convert height to meters and weight to kg
+            double height = Double.parseDouble(heightStr) / 100;  // Assuming height is in cm
+            double weight = Double.parseDouble(weightStr);  // Assuming weight is in kg
+            double bmi = weight / (height * height);
+
+            // Update BMI TextView
+            display_bmi.setText(String.format("%.1f", bmi));
+
+            // Save BMI to Firebase
+            saveToFirebase("bmi", String.format("%.1f", bmi));
+        }
     }
 }

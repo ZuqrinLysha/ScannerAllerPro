@@ -61,6 +61,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     return true;
                 } else if (itemId == R.id.profile) {
                     openFragment(new ProfileFragment());
+                    return true;
                 }
 
                 return false;
