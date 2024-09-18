@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,10 +35,25 @@ public class ProfileFragment extends Fragment {
 
     // TextViews for displaying user data
     TextView display_weight, display_height, display_bmi, display_blood_type;
+    TextView btn_Allergic_History;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // Access activity toolbar and drawer layout
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            Toolbar toolbar = activity.findViewById(R.id.toolbar);
+            activity.setSupportActionBar(toolbar);
+
+            DrawerLayout drawerLayout = activity.findViewById(R.id.drawerLayout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    activity, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
 
         // Initialize Firebase
         database = FirebaseDatabase.getInstance();
@@ -73,6 +94,24 @@ public class ProfileFragment extends Fragment {
         display_weight = rootView.findViewById(R.id.display_weight);
         display_bmi = rootView.findViewById(R.id.display_bmi);
         display_blood_type = rootView.findViewById(R.id.display_blood_type);
+
+        // Find the CardView by its ID
+        CardView cvAllergicHistory = rootView.findViewById(R.id.cvAllergicHistory);
+
+        // Set the OnClickListener for btn_Allergic_History
+        cvAllergicHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to the AllergicHistoryFragment
+                Fragment allergicHistoryFragment = new AllergicHistoryFragment();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+                // Replace the fragment and add to the back stack (so user can navigate back)
+                transaction.replace(R.id.fragment_container, allergicHistoryFragment);
+                transaction.addToBackStack(null); // This ensures back navigation works
+                transaction.commit();
+            }
+        });
 
         // Initialize CardViews and set click listeners
         CardView cvHeight = rootView.findViewById(R.id.cvHeight);
@@ -121,16 +160,6 @@ public class ProfileFragment extends Fragment {
                         if (field.equals("height") || field.equals("weight")) {
                             recalculateBmi();
                         }
-                    } else {
-                        Toast.makeText(getContext(), "Failed to save " + field, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                // Save general user data
-                userRef.child(field).setValue(value).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), field + " saved successfully!", Toast.LENGTH_SHORT).show();
-                        updateTextView(field, value);
                     } else {
                         Toast.makeText(getContext(), "Failed to save " + field, Toast.LENGTH_SHORT).show();
                     }

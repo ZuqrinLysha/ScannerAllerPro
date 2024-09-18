@@ -1,9 +1,10 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
+    tools:context="ProfileFragment"
     android:background="@color/white">
 
 
@@ -12,12 +13,14 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!-- Row 1: Height and Weight -->
             <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -28,6 +31,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvHeight"
                     android:layout_width="0dp"
+                    android:backgroundTint="@color/softblue"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
@@ -68,6 +72,7 @@
                 <!-- Weight Card -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvWeight"
+                    android:backgroundTint="@color/softblue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -124,6 +129,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="8dp"
+                    android:backgroundTint="@color/softblue"
                     app:cardElevation="4dp">
 
                     <LinearLayout
@@ -161,6 +167,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvBloodType"
                     android:layout_width="0dp"
+                    android:backgroundTint="@color/softblue"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
@@ -202,9 +209,11 @@
 
             <!-- Medical History -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvAllergicHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/softblue"
                 app:cardElevation="4dp"
                 app:cardCornerRadius="8dp">
 
@@ -215,10 +224,10 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/btn_medical_history"
+                        android:id="@+id/btn_Allergic_History"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Medical History"
+                        android:text="Allergic History"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
@@ -234,8 +243,10 @@
 
             <!-- Family History -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvEmergencyContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/softblue"
                 app:cardElevation="4dp"
                 app:cardCornerRadius="8dp">
 
@@ -246,17 +257,17 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/btn_family_history"
+                        android:id="@+id/btn_Emergency_Contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Family History"
+                        android:text="Emergency Contact"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_exit"
+                        android:src="@drawable/baseline_next"
                         android:layout_gravity="end"/>
 
                 </LinearLayout>
