@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class SignUp extends AppCompatActivity {
 
     EditText txtFullNameSignUp, txtEmailSignUp, txtUsernameSignUp, txtPasswordSignUp, txtConfirmPssSignUp, txtPhoneNumberSignUp;
@@ -31,6 +33,7 @@ public class SignUp extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     boolean isPasswordVisible = false;
+    boolean isConfirmPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class SignUp extends AppCompatActivity {
         txtUsernameSignUp = findViewById(R.id.txtUsernameSignUp);
         txtPasswordSignUp = findViewById(R.id.txtPasswordSignUp);
         txtConfirmPssSignUp = findViewById(R.id.txtConfirmPssSignUp);
-        txtPhoneNumberSignUp = findViewById(R.id.txtPhoneNumberSignUp); // Initialize phone number field
+        txtPhoneNumberSignUp = findViewById(R.id.txtPhoneNumberSignUp);
         btnSignUp = findViewById(R.id.btnSignUp);
         txtSignUp = findViewById(R.id.txtSignUp);
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
@@ -56,15 +59,15 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fullname = txtFullNameSignUp.getText().toString();
-                String email = txtEmailSignUp.getText().toString();
-                String username = txtUsernameSignUp.getText().toString();
-                String password = txtPasswordSignUp.getText().toString();
-                String confirmPassword = txtConfirmPssSignUp.getText().toString();
-                String phoneNumber = txtPhoneNumberSignUp.getText().toString(); // Get phone number
+                String fullName = txtFullNameSignUp.getText().toString().trim();
+                String email = txtEmailSignUp.getText().toString().trim();
+                String username = txtUsernameSignUp.getText().toString().trim();
+                String password = txtPasswordSignUp.getText().toString().trim();
+                String confirmPassword = txtConfirmPssSignUp.getText().toString().trim();
+                String phoneNumber = txtPhoneNumberSignUp.getText().toString().trim();
 
                 // Validate input fields
-                if (fullname.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
+                if (fullName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
                     Toast.makeText(SignUp.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -85,20 +88,23 @@ public class SignUp extends AppCompatActivity {
                                     database = FirebaseDatabase.getInstance();
                                     reference = database.getReference("Users");
 
-                                    // Create a sanitized version of the full name to use as the key
-                                    String sanitizedFullName = fullname.replaceAll("[^a-zA-Z0-9]", "_"); // Replace spaces and special characters with underscores
+                                    // Use a HashMap to store user data with unique keys for password and confirmPassword
+                                    HashMap<String, Object> userData = new HashMap<>();
+                                    userData.put("fullName", fullName);
+                                    userData.put("email", email);
+                                    userData.put("username", username);
+                                    userData.put("phoneNumber", phoneNumber);
 
-                                    // Create a HelperClass object to store additional user information
-                                    HelperClass helperClass = new HelperClass(
-                                            fullname,
-                                            email,
-                                            username,
-                                            password,
-                                            phoneNumber // Include phone number
-                                    );
+                                    // Use unique keys for storing password and confirm password
+                                    HashMap<String, String> passwords = new HashMap<>();
+                                    passwords.put("password", password);
+                                    passwords.put("confirmPassword", confirmPassword);
 
-                                    // Save additional user info in the Realtime Database using full name as the key
-                                    reference.child(sanitizedFullName).setValue(helperClass)
+                                    // Store the passwords under a separate node for security (optional)
+                                    userData.put("passwords", passwords);
+
+                                    // Save user info in the Realtime Database using user UID as the key
+                                    reference.child(user.getUid()).setValue(userData)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -109,6 +115,7 @@ public class SignUp extends AppCompatActivity {
                                                     }
                                                 }
                                             });
+
 
                                     Toast.makeText(SignUp.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
 
@@ -138,17 +145,7 @@ public class SignUp extends AppCompatActivity {
         imgTogglePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPasswordVisible) {
-                    // Hide the password
-                    txtPasswordSignUp.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    imgTogglePassword.setImageResource(R.drawable.eyepassword); // Eye closed drawable
-                } else {
-                    // Show the password
-                    txtPasswordSignUp.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    imgTogglePassword.setImageResource(R.drawable.baseline_remove_red_eye_24); // Eye open drawable
-                }
-                isPasswordVisible = !isPasswordVisible;
-                txtPasswordSignUp.setSelection(txtPasswordSignUp.getText().length()); // Keep cursor at the end
+                togglePasswordVisibility(txtPasswordSignUp, imgTogglePassword);
             }
         });
 
@@ -156,20 +153,22 @@ public class SignUp extends AppCompatActivity {
         imgToggleConfirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPasswordVisible) {
-                    // Hide the password
-                    txtConfirmPssSignUp.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    imgToggleConfirmPassword.setImageResource(R.drawable.eyepassword); // Eye closed drawable
-                } else {
-                    // Show the password
-                    txtConfirmPssSignUp.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    imgToggleConfirmPassword.setImageResource(R.drawable.baseline_remove_red_eye_24); // Eye open drawable
-                }
-                isPasswordVisible = !isPasswordVisible;
-                txtConfirmPssSignUp.setSelection(txtConfirmPssSignUp.getText().length()); // Keep cursor at the end
+                togglePasswordVisibility(txtConfirmPssSignUp, imgToggleConfirmPassword);
             }
         });
+    }
 
-
+    private void togglePasswordVisibility(EditText editText, ImageView imageView) {
+        if (isPasswordVisible) {
+            // Hide the password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            imageView.setImageResource(R.drawable.eyepassword); // Eye closed drawable
+        } else {
+            // Show the password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            imageView.setImageResource(R.drawable.baseline_remove_red_eye_24); // Eye open drawable
+        }
+        isPasswordVisible = !isPasswordVisible;
+        editText.setSelection(editText.getText().length()); // Keep cursor at the end
     }
 }

@@ -4,8 +4,7 @@ public class HelperClass {
     String fullName, email, username, password, bmi,phoneNumber;
 
     // Constructor
-    public HelperClass(String fullName, String email, String username, String password,
-                       String phoneNumber) {
+    public HelperClass(String fullname, String s, String fullName, String email, String username, String password) {
         this.fullName = fullName;
         this.email = email;
         this.username = username;
@@ -46,23 +45,13 @@ public class HelperClass {
         this.password = password;
     }
 
-
-    public String getBmi() {
-        return bmi;
-    }
-
-    public void setBmi(String bmi) {
-        this.bmi = bmi;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
 
 }

@@ -1,10 +1,14 @@
 package com.example.scannerallerpro;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog; // Import AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -17,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,7 +36,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         setContentView(R.layout.activity_home_page);
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); // Correct toolbar class
+        setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,8 +89,35 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         } else if (itemId == R.id.nav_knowledge) {
             openFragment(new KnowledgeFragment());
         } else if (itemId == R.id.LogOut) {
-            openFragment(new LogOutFragment());
+            // Show confirmation dialog before logging out
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Exit")
+                    .setMessage("Are you sure you want to exit the application?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Log out the user
+                            FirebaseAuth.getInstance().signOut();
+
+                            // Redirect to LogIn page
+                            Intent intent = new Intent(HomePage.this, LogIn.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // This will clear the back stack
+                            startActivity(intent);
+                            finish(); // Close the current activity
+
+                            Toast.makeText(HomePage.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss(); // Dismiss the dialog if "No" is clicked
+                        }
+                    })
+                    .create()
+                    .show();
         }
+
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

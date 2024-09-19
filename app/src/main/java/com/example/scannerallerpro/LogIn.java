@@ -1,5 +1,6 @@
 package com.example.scannerallerpro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog; // Import AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -167,10 +169,10 @@ public class LogIn extends AppCompatActivity {
                             passwordUpdated = true;
 
                         }
-                            // Navigate to HomePage after login
-                            Intent intent = new Intent(LogIn.this, HomePage.class);
-                            startActivity(intent);
-                            finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
+                        // Navigate to HomePage after login
+                        Intent intent = new Intent(LogIn.this, HomePage.class);
+                        startActivity(intent);
+                        finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
 
 
                     }
@@ -182,10 +184,27 @@ public class LogIn extends AppCompatActivity {
                     txtPassword.requestFocus();
 
                     if (loginAttempts >= MAX_ATTEMPTS) {
-                        // Navigate to ForgotPasswordActivity
-                        Intent intent = new Intent(LogIn.this, ForgotPassword.class);
-                        startActivity(intent);
-                        finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
+                        // Show confirmation dialog before navigating to ForgotPasswordActivity
+                        new AlertDialog.Builder(LogIn.this)
+                                .setTitle("Too Many Attempts")
+                                .setMessage("You have entered the wrong password multiple times. Do you want to reset your password?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Navigate to ForgotPasswordActivity
+                                        Intent intent = new Intent(LogIn.this, ForgotPassword.class);
+                                        startActivity(intent);
+                                        finish(); // Optional: finish the LogIn activity so the user cannot navigate back to it
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss(); // Dismiss the dialog if "No" is clicked
+                                    }
+                                })
+                                .create()
+                                .show();
                     }
                 }
             }
@@ -232,4 +251,4 @@ public class LogIn extends AppCompatActivity {
             }
         });
     }
-    }
+}
