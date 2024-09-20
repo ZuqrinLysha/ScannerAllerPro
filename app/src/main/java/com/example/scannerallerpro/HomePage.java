@@ -38,6 +38,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Remove toolbar title
+        getSupportActionBar().setTitle(""); // This removes the title
+
         drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);

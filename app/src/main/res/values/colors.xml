@@ -8,6 +8,7 @@
     <color name="gray">#AAAAAA</color>
     <color name="blue1">#000080</color>
     <color name="light_gray">#F5F5F5</color>
+    <color name="red">#FF0000</color>
 
 
 </resources>

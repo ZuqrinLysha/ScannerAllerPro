@@ -33,18 +33,18 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.auth)
+    implementation(libs.vision.common)
+    implementation(libs.play.services.mlkit.text.recognition.common)
+    implementation(libs.play.services.mlkit.text.recognition)
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
+    implementation ("com.google.mlkit:text-recognition:16.1.1")
     androidTestImplementation(libs.ext.junit)
-    implementation(libs.play.services.auth)
-    implementation(libs.google.firebase.auth)
     androidTestImplementation(libs.espresso.core)
 }
