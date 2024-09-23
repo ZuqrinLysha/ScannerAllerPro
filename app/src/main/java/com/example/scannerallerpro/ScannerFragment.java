@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,20 +33,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ScannerFragment extends Fragment {
 
     private Button btnScanner;
     private TextView txtScanner;
+    private ImageView imgCaptured;
     private List<String> userAllergies = new ArrayList<>();
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
@@ -60,6 +59,7 @@ public class ScannerFragment extends Fragment {
 
         btnScanner = view.findViewById(R.id.btnCapture);
         txtScanner = view.findViewById(R.id.txtScanner);
+        imgCaptured = view.findViewById(R.id.imgCaptured);
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -130,52 +130,88 @@ public class ScannerFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_INTENT_CODE && resultCode == getActivity().RESULT_OK) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-            extractTextFromImage(imageBitmap);
+            if (imageBitmap != null) {
+                imgCaptured.setImageBitmap(imageBitmap);
+                imgCaptured.setVisibility(View.VISIBLE);
+                processImage(imageBitmap);
+            }
         }
     }
 
-    private void extractTextFromImage(Bitmap bitmap) {
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
-        TextRecognizer recognizer = TextRecognition.getClient(new TextRecognizerOptions.Builder().build());
+    private void processImage(Bitmap imageBitmap) {
+        InputImage image = InputImage.fromBitmap(imageBitmap, 0);
+        TextRecognizerOptions options = new TextRecognizerOptions.Builder().build();
+        TextRecognizer recognizer = TextRecognition.getClient(options);
 
         recognizer.process(image)
-                .addOnSuccessListener(result -> {
-                    StringBuilder extractedText = new StringBuilder();
-                    for (Text.TextBlock block : result.getTextBlocks()) {
-                        extractedText.append(block.getText()).append("\n");
-                    }
-
-                    String capturedText = extractedText.toString().trim();
-                    txtScanner.setText(capturedText); // Display the captured text
-                    highlightAllergens(capturedText); // Highlight allergens
+                .addOnSuccessListener(text -> {
+                    String extractedText = text.getText();
+                    Log.d("ScannerFragment", "Extracted Text: " + extractedText); // Log the extracted text
+                    // Set the extracted text in txtScanner and highlight allergens
+                    txtScanner.setText(highlightAllergens(extractedText));
+                    checkAllergiesInText(extractedText);
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("OCR", "Text recognition failed", e);
-                    Toast.makeText(getContext(), "Failed to recognize text.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Text recognition failed.", Toast.LENGTH_SHORT).show();
+                    Log.e("ScannerFragment", "Error: " + e.getMessage());
                 });
     }
 
-    private void highlightAllergens(String text) {
-        if (userAllergies.isEmpty()) {
-            Toast.makeText(getContext(), "No allergies loaded!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        SpannableString spannableText = new SpannableString(text);
-        boolean allergenDetected = false;
+    private SpannableString highlightAllergens(String text) {
+        SpannableString spannableString = new SpannableString(text);
 
         for (String allergy : userAllergies) {
-            String regex = "\\b" + Pattern.quote(allergy) + "\\b";
-            Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(text);
+            String lowerCaseAllergy = allergy.toLowerCase();
+            int index = text.toLowerCase().indexOf(lowerCaseAllergy);
 
-            while (matcher.find()) {
-                spannableText.setSpan(new ForegroundColorSpan(Color.RED), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                allergenDetected = true;
+            while (index >= 0) {
+                spannableString.setSpan(new ForegroundColorSpan(Color.RED),
+                        index,
+                        index + allergy.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                index = text.toLowerCase().indexOf(lowerCaseAllergy, index + allergy.length());
             }
         }
 
-        txtScanner.setText(spannableText);
+        return spannableString;
+    }
 
+    private void checkAllergiesInText(String text) {
+        List<String> detectedAllergies = new ArrayList<>();
+
+        for (String allergy : userAllergies) {
+            if (text.toLowerCase().contains(allergy.toLowerCase())) {
+                detectedAllergies.add(allergy);
+            }
+        }
+
+        if (!detectedAllergies.isEmpty()) {
+            showAllergyAlertDialog(detectedAllergies);
+        } else {
+            Toast.makeText(getContext(), "No allergies detected in the ingredients.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void showAllergyAlertDialog(List<String> detectedAllergies) {
+        StringBuilder messageBuilder = new StringBuilder("This product contains allergens:\n");
+
+        for (String allergy : detectedAllergies) {
+            messageBuilder.append(allergy).append("\n");
+        }
+
+        SpannableString message = new SpannableString(messageBuilder.toString());
+
+        for (String allergy : detectedAllergies) {
+            int startIndex = message.toString().indexOf(allergy);
+            if (startIndex >= 0) {
+                message.setSpan(new ForegroundColorSpan(Color.RED), startIndex, startIndex + allergy.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Allergy Alert")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+}

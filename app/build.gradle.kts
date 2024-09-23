@@ -31,7 +31,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -39,12 +38,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
-    implementation(libs.vision.common)
-    implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.play.services.mlkit.text.recognition)
+
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
-    implementation ("com.google.mlkit:text-recognition:16.1.1")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

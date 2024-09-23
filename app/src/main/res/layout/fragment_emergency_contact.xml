@@ -1,0 +1,94 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".EmergencyContactFragment"
+    android:background="@color/light_gray">
+
+    <!-- Header Section -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/softblue"
+        app:title="Emergency Contact"
+        app:titleTextColor="@android:color/white" />
+
+    <!-- Instructional Text -->
+    <TextView
+        android:id="@+id/txtInstructions"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Please provide your emergency contact information:"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <!-- ScrollView to contain the input fields -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <!-- EditText for Name -->
+            <EditText
+                android:id="@+id/edtContactName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Contact Name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:background="@drawable/edit_text_background" />
+
+            <!-- EditText for Phone Number -->
+            <EditText
+                android:id="@+id/edtContactPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:background="@drawable/edit_text_background" />
+
+            <!-- EditText for Relationship -->
+            <EditText
+                android:id="@+id/edtContactRelationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Relationship"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:background="" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/btnSaveContact"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="16sp"
+        android:backgroundTint="@color/blue1"
+        android:textColor="@android:color/white"
+        android:background="@drawable/custom"/>
+
+</LinearLayout>
