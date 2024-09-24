@@ -70,6 +70,9 @@ public class AllergicHistoryFragment extends Fragment {
                                         .getReference("Users")
                                         .child(fullName)
                                         .child("AllergicHistory");
+
+                                // Fetch and apply allergic history to checkboxes
+                                loadAllergicHistory();
                             }
                         }
                     }
@@ -113,5 +116,45 @@ public class AllergicHistoryFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "No allergies selected!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Method to load the allergic history from Firebase and update checkboxes
+    private void loadAllergicHistory() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Check and set checkboxes according to saved data
+                    chkPeanuts.setChecked(dataSnapshot.child("peanuts").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("peanuts").getValue(Boolean.class));
+
+                    chkDairy.setChecked(dataSnapshot.child("dairy").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("dairy").getValue(Boolean.class));
+
+                    chkGluten.setChecked(dataSnapshot.child("gluten").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("gluten").getValue(Boolean.class));
+
+                    chkSeafood.setChecked(dataSnapshot.child("seafood").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("seafood").getValue(Boolean.class));
+
+                    chkEggs.setChecked(dataSnapshot.child("eggs").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("eggs").getValue(Boolean.class));
+
+                    chkSoy.setChecked(dataSnapshot.child("soybeans").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("soybeans").getValue(Boolean.class));
+
+                    chkSesame.setChecked(dataSnapshot.child("sesame").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("sesame").getValue(Boolean.class));
+
+                    chkWheat.setChecked(dataSnapshot.child("wheat").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("wheat").getValue(Boolean.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Failed to load allergic history.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
     tools:context="ProfileFragment"
-    android:background="@color/white">
+    android:background="@color/light_gray">
 
 
     <ScrollView

@@ -39,10 +39,12 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class ScannerFragment extends Fragment {
 
     private Button btnScanner;
+    private Button WarningDone;
     private TextView txtScanner;
     private ImageView imgCaptured;
     private List<String> userAllergies = new ArrayList<>();
@@ -60,6 +62,7 @@ public class ScannerFragment extends Fragment {
         btnScanner = view.findViewById(R.id.btnCapture);
         txtScanner = view.findViewById(R.id.txtScanner);
         imgCaptured = view.findViewById(R.id.imgCaptured);
+
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -160,6 +163,7 @@ public class ScannerFragment extends Fragment {
     private SpannableString highlightAllergens(String text) {
         SpannableString spannableString = new SpannableString(text);
 
+        // Highlight user allergies
         for (String allergy : userAllergies) {
             String lowerCaseAllergy = allergy.toLowerCase();
             int index = text.toLowerCase().indexOf(lowerCaseAllergy);
@@ -173,18 +177,66 @@ public class ScannerFragment extends Fragment {
             }
         }
 
+        // Highlight ingredients mapped to broader allergens
+        for (String ingredient : ingredientAllergenMap.keySet()) {
+            String lowerCaseIngredient = ingredient.toLowerCase();
+            int index = text.toLowerCase().indexOf(lowerCaseIngredient);
+
+            while (index >= 0) {
+                spannableString.setSpan(new ForegroundColorSpan(Color.RED),
+                        index,
+                        index + ingredient.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                index = text.toLowerCase().indexOf(lowerCaseIngredient, index + ingredient.length());
+            }
+        }
+
         return spannableString;
     }
 
+
+    // Add this HashMap to your ScannerFragment class to map ingredients to allergens
+    private static HashMap<String, String> ingredientAllergenMap = new HashMap<>();
+
+    static {
+        // Map specific ingredients to broader allergens (butter -> milk, cheese -> milk, etc.)
+        ingredientAllergenMap.put("butter", "dairy");
+        ingredientAllergenMap.put("cheese", "dairy");
+        ingredientAllergenMap.put("yogurt", "dairy");
+        // You can add more mappings for other allergens
+        ingredientAllergenMap.put("peanut butter", "peanuts");
+        ingredientAllergenMap.put("soy sauce", "soybeans");
+        ingredientAllergenMap.put("soy beans", "soybeans");
+        ingredientAllergenMap.put("soy milk", "soybeans");
+        ingredientAllergenMap.put("vegetable oil", "soybeans");
+        ingredientAllergenMap.put("sesame oil", "sesame");
+    }
+
+
+    // Modify the checkAllergiesInText method to check both the user's allergens and the ingredient mappings
     private void checkAllergiesInText(String text) {
         List<String> detectedAllergies = new ArrayList<>();
 
+        // First, check for direct allergens from the user's allergy list
         for (String allergy : userAllergies) {
             if (text.toLowerCase().contains(allergy.toLowerCase())) {
                 detectedAllergies.add(allergy);
             }
         }
 
+        // Next, check for ingredients that map to broader allergens
+        for (String ingredient : ingredientAllergenMap.keySet()) {
+            if (text.toLowerCase().contains(ingredient.toLowerCase())) {
+                String mappedAllergen = ingredientAllergenMap.get(ingredient);
+
+                // If the user is allergic to the mapped allergen, add it to the detected allergens
+                if (userAllergies.contains(mappedAllergen)) {
+                    detectedAllergies.add(mappedAllergen);
+                }
+            }
+        }
+
+        // If allergens are detected, show the allergy alert dialog
         if (!detectedAllergies.isEmpty()) {
             showAllergyAlertDialog(detectedAllergies);
         } else {
@@ -193,25 +245,37 @@ public class ScannerFragment extends Fragment {
     }
 
     private void showAllergyAlertDialog(List<String> detectedAllergies) {
-        StringBuilder messageBuilder = new StringBuilder("This product contains allergens:\n");
+        // Inflate your custom dialog layout
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View customView = inflater.inflate(R.layout.warning_dialog, null); // Reference your dialog layout here
 
+        // Find views in the custom layout
+        TextView warningTitle = customView.findViewById(R.id.WarningTitle);
+        TextView warningDesc = customView.findViewById(R.id.WarningDesc);
+        Button warningDoneButton = customView.findViewById(R.id.WarningDone);
+
+
+        // Build the message from detected allergies
+        StringBuilder allergiesMessage = new StringBuilder();
         for (String allergy : detectedAllergies) {
-            messageBuilder.append(allergy).append("\n");
+            allergiesMessage.append(allergy).append("\n");
         }
 
-        SpannableString message = new SpannableString(messageBuilder.toString());
+        // Set the static text along with the detected allergies
+        String fullMessage = "This ingredient contains the Allergic Reaction:\n" + allergiesMessage.toString();
+        warningDesc.setText(fullMessage); // Set the message in the WarningDesc TextView
 
-        for (String allergy : detectedAllergies) {
-            int startIndex = message.toString().indexOf(allergy);
-            if (startIndex >= 0) {
-                message.setSpan(new ForegroundColorSpan(Color.RED), startIndex, startIndex + allergy.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
+        // Create an AlertDialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(customView); // Set the custom view for the dialog
 
-        new AlertDialog.Builder(getContext())
-                .setTitle("Allergy Alert")
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show();
+        // Create the dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Set the button listener to dismiss the dialog
+        warningDoneButton.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Show the dialog
+        alertDialog.show();
     }
 }
