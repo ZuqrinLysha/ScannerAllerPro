@@ -1,0 +1,107 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".EmergencyContactFragment"
+    android:background="@color/light_gray">
+
+
+    <!-- Instructional Text -->
+    <TextView
+        android:id="@+id/txtInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="9dp"
+        android:background="@color/white"
+        android:text="Fill in the details of your emergency contacts below:"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/txtFamilyMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:drawableStart="@drawable/baseline_family_restroom_24"
+        android:drawablePadding="8dp"
+        android:text="Family Members"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- ScrollView to contain the input fields -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/familyMemberContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <!-- EditText for Name -->
+        <EditText
+            android:id="@+id/edtFamilyContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Contact Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:background="@color/white" />
+
+        <!-- EditText for Phone Number -->
+        <EditText
+            android:id="@+id/edtFamilyContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:background="@color/white" />
+
+        <!-- EditText for Relationship -->
+        <EditText
+            android:id="@+id/edtFamilyContactRelationship"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Relationship"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:background="@color/white" />
+
+        <Button
+            android:id="@+id/btnAddFamilyMember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue1"
+            android:text="Add Family Member"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+    <!-- Save Button -->
+
+</LinearLayout>
+

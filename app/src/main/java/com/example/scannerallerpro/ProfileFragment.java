@@ -97,6 +97,7 @@ public class ProfileFragment extends Fragment {
 
         // Find the CardView by its ID
         CardView cvAllergicHistory = rootView.findViewById(R.id.cvAllergicHistory);
+        CardView cvEmergencyContact = rootView.findViewById(R.id.cvEmergencyContact);
 
         // Set the OnClickListener for btn_Allergic_History
         cvAllergicHistory.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +114,21 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+// Set the OnClickListener for cvEmergencyContact
+        cvEmergencyContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to the EmergencyContactFragment
+                Fragment emergencyContactFragment = new EmergencyContactFragment();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, emergencyContactFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+
         // Initialize CardViews and set click listeners
         CardView cvHeight = rootView.findViewById(R.id.cvHeight);
         CardView cvWeight = rootView.findViewById(R.id.cvWeight);
@@ -125,6 +141,7 @@ public class ProfileFragment extends Fragment {
 
         return rootView;
     }
+
 
     private void showInputDialog(String title, String field) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
