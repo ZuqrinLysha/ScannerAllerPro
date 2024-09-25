@@ -94,7 +94,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/blue1"
-            android:text="Add Family Member"
+            android:text="Add Family Member kat sini jur"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
