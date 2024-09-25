@@ -15,25 +15,27 @@
         android:id="@+id/txtInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="17dp"
         android:layout_marginBottom="9dp"
         android:background="@color/white"
         android:text="Fill in the details of your emergency contacts below:"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="17sp" />
 
 
     <TextView
         android:id="@+id/txtFamilyMembers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:background="@color/white"
-        android:drawableStart="@drawable/baseline_family_restroom_24"
+        android:layout_marginBottom="16dp"
+        android:background="@color/softblue"
+        android:drawableStart="@drawable/baseline_family_24"
         android:drawablePadding="8dp"
         android:text="Family Members"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <!-- ScrollView to contain the input fields -->
@@ -49,18 +51,59 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/txtFamilyContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/baseline_account_box_24"
+            android:drawablePadding="8dp"
+            android:text="Contact Name :"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
 
         <!-- EditText for Name -->
         <EditText
-            android:id="@+id/edtFamilyContactName"
+            android:id="@+id/edtFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Contact Name"
+            android:hint="First Name"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:padding="16dp"
             android:background="@color/white" />
+
+        <EditText
+            android:id="@+id/edtLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Last Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:background="@color/white" />
+
+
+        <TextView
+            android:id="@+id/txtFamilyPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/baseline_phone_24"
+            android:drawablePadding="8dp"
+            android:text="Phone Number :"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <!-- EditText for Phone Number -->
         <EditText
@@ -68,40 +111,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Phone Number"
+            android:layout_marginBottom="16dp"
+            android:hint="Please Enter Phone Number"
             android:inputType="phone"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:padding="16dp"
             android:background="@color/white" />
 
-        <!-- EditText for Relationship -->
-        <EditText
-            android:id="@+id/edtFamilyContactRelationship"
+        <TextView
+            android:id="@+id/txtRelationship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/baseline_diversity_3_24"
+            android:drawablePadding="8dp"
+            android:text="Relationship :"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinnerRelationship"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Relationship"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             android:padding="16dp"
             android:background="@color/white" />
-
-        <Button
-            android:id="@+id/btnAddFamilyMember"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/blue1"
-            android:text="Add Family Member kat sini jur"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
 
 
     </LinearLayout>
 
     <!-- Save Button -->
+    <Button
+        android:id="@+id/btnAddFamilyMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue1"
+        android:text="Add Family Member"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+
+
 
 </LinearLayout>
 
