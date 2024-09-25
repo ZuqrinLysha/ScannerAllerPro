@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +61,30 @@ public class EmergencyContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_emergency_contact, container, false);
+        View view = inflater.inflate(R.layout.fragment_emergency_contact, container, false);
+
+        // Add Family Member Button Listener
+        Button btnAddFamilyMember = view.findViewById(R.id.btnAddFamilyMember);
+        btnAddFamilyMember.setOnClickListener(v -> {
+            // Code to dynamically add another family member section
+            // Example: create new EditTexts for name, phone, relationship
+        });
+
+        // Save Button Listener
+        Button btnSaveContact = view.findViewById(R.id.btnSaveContact);
+        btnSaveContact.setOnClickListener(v -> {
+            // Code to save the entered contact information
+            // You can collect the data from the EditTexts here
+        });
+
+        return view;
     }
+
+
 }
+
+
+
