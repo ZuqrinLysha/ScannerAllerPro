@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
     implementation(libs.play.services.mlkit.text.recognition)
-
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
     androidTestImplementation(libs.ext.junit)

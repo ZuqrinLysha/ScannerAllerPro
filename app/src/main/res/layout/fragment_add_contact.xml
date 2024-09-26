@@ -9,19 +9,7 @@
     tools:context=".EmergencyContactFragment"
     android:background="@color/light_gray">
 
-
     <!-- Instructional Text -->
-    <TextView
-        android:id="@+id/txtInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="9dp"
-        android:background="@color/white"
-        android:text="Fill in the details of your emergency contacts below:"
-        android:textColor="@color/black"
-        android:textSize="17sp" />
-
 
     <TextView
         android:id="@+id/txtFamilyMembers"
@@ -38,111 +26,109 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- ScrollView to contain the input fields -->
+    <!-- Scrollable content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+        android:layout_height="447dp"
+        android:layout_weight="0">
 
-    <LinearLayout
-        android:id="@+id/familyMemberContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txtFamilyContact"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/familyMemberContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="9dp"
             android:background="@color/white"
-            android:drawableStart="@drawable/baseline_account_box_24"
-            android:drawablePadding="8dp"
-            android:text="Contact Name :"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/txtFamilyContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/white"
+                android:drawableStart="@drawable/baseline_account_box_24"
+                android:drawablePadding="8dp"
+                android:text="Contact Name :"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <!-- EditText for Name -->
-        <EditText
-            android:id="@+id/edtFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="First Name"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:padding="16dp"
-            android:background="@color/white" />
+            <!-- EditText for Name -->
+            <EditText
+                android:id="@+id/edtFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:hint="First Name"
+                android:padding="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/edtLastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:hint="Last Name"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:padding="16dp"
-            android:background="@color/white" />
+            <EditText
+                android:id="@+id/edtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:hint="Last Name"
+                android:padding="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/txtFamilyPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/white"
+                android:drawableStart="@drawable/baseline_phone_24"
+                android:drawablePadding="8dp"
+                android:text="Phone Number :"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtFamilyPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="9dp"
-            android:background="@color/white"
-            android:drawableStart="@drawable/baseline_phone_24"
-            android:drawablePadding="8dp"
-            android:text="Phone Number :"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <!-- EditText for Phone Number -->
+            <EditText
+                android:id="@+id/edtFamilyContactPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:hint="XXX-XXXXXXX"
+                android:inputType="phone"
+                android:padding="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-        <!-- EditText for Phone Number -->
-        <EditText
-            android:id="@+id/edtFamilyContactPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:hint="Please Enter Phone Number"
-            android:inputType="phone"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:padding="16dp"
-            android:background="@color/white" />
+            <TextView
+                android:id="@+id/txtRelationship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/white"
+                android:drawableStart="@drawable/baseline_diversity_3_24"
+                android:drawablePadding="8dp"
+                android:text="Relationship :"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtRelationship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="9dp"
-            android:background="@color/white"
-            android:drawableStart="@drawable/baseline_diversity_3_24"
-            android:drawablePadding="8dp"
-            android:text="Relationship :"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spinnerRelationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:padding="16dp" />
 
-        <Spinner
-            android:id="@+id/spinnerRelationship"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:background="@color/white" />
-
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Save Button -->
     <Button
@@ -150,14 +136,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
         android:backgroundTint="@color/blue1"
         android:text="Add Family Member"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
-
-
-
 </LinearLayout>
-

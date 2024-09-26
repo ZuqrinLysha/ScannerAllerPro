@@ -6,6 +6,7 @@
     <string name="close_drawer">Close Drawer</string>
 
     <string-array name="relationship_options">
+        <item>Please choose a relationship</item>
         <item>Father</item>
         <item>Mother</item>
         <item>Husband</item>
@@ -15,7 +16,5 @@
         <item>Children</item>
         <item>Aunty</item>
         <item>Uncle</item>
-        <item>Grandfather</item>
-        <item>Grandmother</item>
     </string-array>
 </resources>
