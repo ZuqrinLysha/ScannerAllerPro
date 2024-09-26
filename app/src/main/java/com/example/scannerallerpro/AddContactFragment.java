@@ -17,11 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DataSnapshot;
 
 public class AddContactFragment extends Fragment {
 
@@ -34,6 +34,7 @@ public class AddContactFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
+    private String userId; // To store the user's unique ID
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,38 +51,6 @@ public class AddContactFragment extends Fragment {
         // Initialize Firebase
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
-
-        if (currentUser != null) {
-            String userEmail = currentUser.getEmail();
-            if (userEmail != null) {
-                // Reference to the users node
-                DatabaseReference usersRef = database.getReference("Users");
-                usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                String fullName = userSnapshot.child("fullName").getValue(String.class);
-                                if (fullName != null) {
-                                    // Set the Firebase reference using the fullName
-                                    databaseReference = FirebaseDatabase.getInstance()
-                                            .getReference("Users")
-                                            .child(fullName)
-                                            .child("ContactEmergency");
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle possible errors
-                        Toast.makeText(getContext(), "Error loading user data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }
 
         // Initialize ViewModel
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
@@ -92,43 +61,45 @@ public class AddContactFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRelationship.setAdapter(adapter);
 
+        // Retrieve user's unique ID
+        retrieveUserId();
+
         // Add contact on button click
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String firstName = edtFirstName.getText().toString().trim();
-                String phoneNumber = edtPhoneNumber.getText().toString().trim();
+                String firstName = edtFirstName.getText().toString();
+                String phoneNumber = edtPhoneNumber.getText().toString();
                 String relationship = spinnerRelationship.getSelectedItem().toString();
 
-                // Validate input
-                if (TextUtils.isEmpty(firstName)) {
-                    Toast.makeText(getContext(), "Please enter the first name", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(phoneNumber)) {
+                    Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Validate phone number
-                if (isValidPhoneNumber(phoneNumber)) {
-                    // Create contact object without last name
-                    ContactManager.Contact contact = new ContactManager.Contact(firstName, phoneNumber, relationship);
+                // Create contact object
+                ContactViewModel.Contact contactData = new ContactViewModel.Contact(firstName, phoneNumber, relationship);
 
-                    // Store contact data in Firebase directly under ContactEmergency
-                    databaseReference.push().setValue(contact)
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
+                // Store contact data in Firebase under user's node
+                if (userId != null) {
+                    String contactId = database.getReference("Users").child(userId).child("Contacts").push().getKey();
+                    if (contactId != null) {
+                        database.getReference("Users").child(userId).child("Contacts").child(contactId).setValue(contactData)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Add to ViewModel after successful Firebase write
+                                    contactViewModel.addContact(contactData);
+                                    Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
 
-                    // Pass data to ViewModel without last name
-                    ContactViewModel.Contact contactData = new ContactViewModel.Contact(firstName, phoneNumber, relationship);
-                    contactViewModel.setContact(contactData);
-
-                    // Clear input fields for the next contact
-                    edtFirstName.setText("");
-                    edtPhoneNumber.setText("");
+                                    // Clear input fields for the next contact
+                                    edtFirstName.setText("");
+                                    edtPhoneNumber.setText("");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    }
                 } else {
-                    edtPhoneNumber.setError("Invalid phone number format! Only numbers allowed.");
+                    Toast.makeText(getContext(), "User ID is not available.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -136,8 +107,14 @@ public class AddContactFragment extends Fragment {
         return view;
     }
 
-    // Function to validate phone number format (allowing only numbers)
-    private boolean isValidPhoneNumber(String phoneNumber) {
-        return phoneNumber.matches("\\d{10,11}"); // Example: allowing 10 or 11 digits
+    // Method to retrieve user's unique ID from Firebase
+    private void retrieveUserId() {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            userId = currentUser.getUid(); // Get user ID directly
+            // Optionally, you can also fetch other user details if needed
+        } else {
+            Toast.makeText(getContext(), "No user is logged in.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

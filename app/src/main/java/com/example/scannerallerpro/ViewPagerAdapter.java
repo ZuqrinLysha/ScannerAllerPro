@@ -18,7 +18,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new AddContactFragment();
             case 1:
-                return new ViewContact_Fragment();
+                return new ViewContactFragment();
 
         }
         return null;
