@@ -17,10 +17,88 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="Knowledge Page"
+        android:text="Let's Learn!"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <!-- CardView Section for Articles -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:backgroundTint="@color/softblue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/med_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food Allergy Medicine"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/med_info_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine.\n\n2. Epinephrine:\nUsed for severe allergic reactions (anaphylaxis).\nAlways carry an EpiPen if you have a known severe allergy.\n\n3. Corticosteroids:\nPrescribed for severe reactions or for managing inflammation.\nUsed under the guidance of a healthcare provider.\nExamples: Prednisone."
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:inputType="textMultiLine"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view2"
+        android:backgroundTint="@color/softblue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@color/softblue">
+
+            <TextView
+                android:id="@+id/symptoms_lvl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Symptoms by Severity"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/symptoms_lvl_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mild Reaction:\n1. Runny Nose: Excessive nasal discharge (rhinorrhea).\n2. Sneezing: Frequent and uncontrollable sneezing.\n3. Itchy Eyes: Itching and irritation in the eyes.\n4. Nasal Congestion: Stuffy or blocked nasal passages.\n5. Mild Skin Reactions: Itching or localized hives (urticaria).\n\nModerate Reaction:\n1. Coughing: Persistent cough due to post-nasal drip or airway irritation.\n2. Wheezing: Whistling sound when breathing, indicating some airway constriction.\n3. Fatigue: General tiredness resulting from ongoing allergic symptoms.\n4. Mild Asthma Symptoms: Shortness of breath or chest tightness that does not lead to severe distress.\n\nSevere Reaction:\nSevere reaction is called Anaphylaxis, a life-threatening reaction that can cause:\n1. Difficulty breathing or swallowing.\n2. Swelling of the face, lips, or throat (angioedema).\n3. Rapid or weak pulse.\n4. Dizziness or fainting."
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:inputType="textMultiLine"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </LinearLayout>
