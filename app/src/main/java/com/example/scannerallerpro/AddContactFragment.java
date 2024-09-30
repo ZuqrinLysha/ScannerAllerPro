@@ -42,7 +42,7 @@ public class AddContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_contact, container, false);
 
         // Initialize views
-        spinnerRelationship = view.findViewById(R.id.spinnerFamilyRelationship); // Corrected ID
+        spinnerRelationship = view.findViewById(R.id.spinnerRelationship); // Corrected ID
         edtHealthCareContactName = view.findViewById(R.id.edtHealthCareContactName); // Corrected ID
         edtHealthCareContactPhone = view.findViewById(R.id.edtHealthCareContactPhone); // Corrected ID
         edtMedicalCenterContactName = view.findViewById(R.id.edtMedicalCenterContactName); // Corrected ID
@@ -74,21 +74,21 @@ public class AddContactFragment extends Fragment {
     }
 
     private void saveContact() {
-        // Create a contact object
-        ContactViewModel.Contact contactData = new ContactViewModel.Contact();
+        // Create a contact object using values from the input fields
+        Contact contactData = new Contact();
 
         // Check for filled fields and set values
         if (!TextUtils.isEmpty(edtHealthCareContactName.getText().toString())) {
-            contactData.setDoctorName(edtHealthCareContactName.getText().toString());
+            contactData.setHealthCareContactName(edtHealthCareContactName.getText().toString());
         }
         if (!TextUtils.isEmpty(edtHealthCareContactPhone.getText().toString())) {
-            contactData.setDoctorContactPhone(edtHealthCareContactPhone.getText().toString());
+            contactData.setHealthCareContactPhone(edtHealthCareContactPhone.getText().toString());
         }
         if (!TextUtils.isEmpty(edtMedicalCenterContactName.getText().toString())) {
-            contactData.setMedicalInstitutionName(edtMedicalCenterContactName.getText().toString());
+            contactData.setMedicalCenterContactName(edtMedicalCenterContactName.getText().toString());
         }
         if (!TextUtils.isEmpty(edtMedicalCenterContactPhone.getText().toString())) {
-            contactData.setMedicalContactPhone(edtMedicalCenterContactPhone.getText().toString());
+            contactData.setMedicalCenterContactPhone(edtMedicalCenterContactPhone.getText().toString());
         }
         if (!TextUtils.isEmpty(edtFamilyContactName.getText().toString())) {
             contactData.setFamilyContactName(edtFamilyContactName.getText().toString());
@@ -98,13 +98,13 @@ public class AddContactFragment extends Fragment {
         }
 
         // Check if at least one field is filled
-        if (TextUtils.isEmpty(contactData.getDoctorName()) && TextUtils.isEmpty(contactData.getFamilyContactName())
-                && TextUtils.isEmpty(contactData.getMedicalInstitutionName())) {
+        if (TextUtils.isEmpty(contactData.getHealthCareContactName()) && TextUtils.isEmpty(contactData.getFamilyContactName())
+                && TextUtils.isEmpty(contactData.getMedicalCenterContactName())) {
             Toast.makeText(getContext(), "Please fill in at least one contact detail.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Set the relationship
+        // Set the relationship from the spinner
         contactData.setRelationship(spinnerRelationship.getSelectedItem().toString());
 
         // Store contact data in Firebase under user's node

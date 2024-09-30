@@ -1,4 +1,4 @@
-package com.example.scannerallerpro; // Change this to your actual package name if it's different
+package com.example.scannerallerpro; // Ensure this is your actual package name
 
 public class Contact {
 
@@ -8,7 +8,7 @@ public class Contact {
     private String medicalCenterContactPhone;
     private String familyContactName;
     private String familyContactPhone;
-    private String relationship;
+    private String relationship; // This represents the relationship
 
     // Default constructor required for calls to DataSnapshot.getValue(Contact.class)
     public Contact() {
@@ -25,7 +25,7 @@ public class Contact {
         this.medicalCenterContactPhone = medicalCenterContactPhone;
         this.familyContactName = familyContactName;
         this.familyContactPhone = familyContactPhone;
-        this.relationship = relationship;
+        this.relationship = relationship; // This is the relationship
     }
 
     // Getter and setter methods for healthCareContactName
