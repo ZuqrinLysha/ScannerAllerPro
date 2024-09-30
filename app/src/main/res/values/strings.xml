@@ -23,7 +23,7 @@
     </string-array>
 
 
-    <string-array name="healthcarerole_options">
+    <string-array name="healthcare_role_options">
         <item>Choose Here</item>
         <item>Doctor</item>
         <item>Nurse</item>
@@ -46,7 +46,8 @@
         <item>Medical Researcher</item>
     </string-array>
 
-    <string-array name="medicalcenter_options">
+
+    <string-array name="medical_center_options">
         <item>Choose Here</item>
         <item>Hospital</item>
         <item>Clinic</item>

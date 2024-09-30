@@ -54,7 +54,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Height"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -96,7 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Weight"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -148,7 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="BMI"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -190,7 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Blood Type"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -228,7 +228,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Allergic History"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"/>
 
                     <ImageView
@@ -261,7 +261,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Emergency Contact"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"/>
 
                     <ImageView

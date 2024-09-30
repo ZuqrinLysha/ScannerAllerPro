@@ -126,6 +126,7 @@
             android:background="@color/white"
             android:padding="16dp" />
 
+
         <TextView
             android:id="@+id/txtMedicalCenterTitle"
             android:layout_width="wrap_content"
@@ -182,6 +183,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/white"
             android:padding="16dp" />
+
 
         <!-- Save Button -->
         <Button
