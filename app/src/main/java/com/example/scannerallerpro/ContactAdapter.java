@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
-    private List<ContactViewModel.Contact> contactList;
+    private List<ContactViewModel.Contact> contactList; // Keep it as ContactViewModel.Contact
+    private OnContactClickListener onContactClickListener; // Listener for handling button clicks
 
-    public ContactAdapter(List<ContactViewModel.Contact> contactList) {
+    // Constructor to initialize the contact list and listener
+    public ContactAdapter(List<ContactViewModel.Contact> contactList, OnContactClickListener listener) {
         this.contactList = contactList;
+        this.onContactClickListener = listener; // Set the listener
     }
 
     @NonNull
@@ -28,17 +31,21 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         ContactViewModel.Contact contact = contactList.get(position);
-        holder.textViewContactName.setText(contact.fullName);
-        holder.textViewPhoneNumber.setText(contact.phoneNumber);
-        holder.textRelationship.setText(contact.relationship);
+        holder.textViewContactName.setText(contact.getFamilyContactName()); // Use family contact name
+        holder.textViewPhoneNumber.setText(contact.getFamilyContactPhone()); // Use family contact phone
+        holder.textRelationship.setText(contact.getRelationship()); // Use the relationship
 
-        // Set up button listeners if necessary
+        // Set up button listeners
         holder.buttonCall.setOnClickListener(v -> {
-            // Handle call action
+            if (onContactClickListener != null) {
+                onContactClickListener.onCallClick(contact); // Pass the contact to the listener
+            }
         });
 
         holder.buttonDelete.setOnClickListener(v -> {
-            // Handle delete action
+            if (onContactClickListener != null) {
+                onContactClickListener.onDeleteClick(contact); // Pass the contact to the listener
+            }
         });
     }
 
@@ -47,6 +54,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return contactList.size();
     }
 
+    // ViewHolder class
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView textViewContactName, textViewPhoneNumber, textRelationship;
         Button buttonCall, buttonDelete;
@@ -59,5 +67,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             buttonCall = itemView.findViewById(R.id.buttonCall);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
         }
+    }
+
+    // Interface for handling contact click events
+    public interface OnContactClickListener {
+        void onCallClick(ContactViewModel.Contact contact);
+        void onDeleteClick(ContactViewModel.Contact contact);
     }
 }

@@ -17,16 +17,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class AddContactFragment extends Fragment {
 
     private Spinner spinnerRelationship;
-    private EditText edtFirstName, edtPhoneNumber;
+    private EditText edtDoctorName, edtDoctorContactPhone;
+    private EditText edtMedicalInstitutionName, edtMedicalContactPhone;
+    private EditText edtFamilyContactName, edtFamilyContactPhone;
     private Button btnSave;
     private ContactViewModel contactViewModel;
 
@@ -44,9 +43,13 @@ public class AddContactFragment extends Fragment {
 
         // Initialize views
         spinnerRelationship = view.findViewById(R.id.spinnerRelationship);
-        edtFirstName = view.findViewById(R.id.edtFirstName);
-        edtPhoneNumber = view.findViewById(R.id.edtFamilyContactPhone);
-        btnSave = view.findViewById(R.id.btnAddFamilyMember);
+        edtDoctorName = view.findViewById(R.id.edtDoctorName);
+        edtDoctorContactPhone = view.findViewById(R.id.edtDoctorContactPhone);
+        edtMedicalInstitutionName = view.findViewById(R.id.edtMedicalInstitutionName);
+        edtMedicalContactPhone = view.findViewById(R.id.edtMedicalContactPhone);
+        edtFamilyContactName = view.findViewById(R.id.edtFamilyContactName);
+        edtFamilyContactPhone = view.findViewById(R.id.edtFamilyContactPhone);
+        btnSave = view.findViewById(R.id.btnSaveContact);
 
         // Initialize Firebase
         database = FirebaseDatabase.getInstance();
@@ -65,46 +68,74 @@ public class AddContactFragment extends Fragment {
         retrieveUserId();
 
         // Add contact on button click
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String firstName = edtFirstName.getText().toString();
-                String phoneNumber = edtPhoneNumber.getText().toString();
-                String relationship = spinnerRelationship.getSelectedItem().toString();
-
-                if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(phoneNumber)) {
-                    Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Create contact object
-                ContactViewModel.Contact contactData = new ContactViewModel.Contact(firstName, phoneNumber, relationship);
-
-                // Store contact data in Firebase under user's node
-                if (userId != null) {
-                    String contactId = database.getReference("Users").child(userId).child("Contacts").push().getKey();
-                    if (contactId != null) {
-                        database.getReference("Users").child(userId).child("Contacts").child(contactId).setValue(contactData)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Add to ViewModel after successful Firebase write
-                                    contactViewModel.addContact(contactData);
-                                    Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
-
-                                    // Clear input fields for the next contact
-                                    edtFirstName.setText("");
-                                    edtPhoneNumber.setText("");
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "User ID is not available.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        btnSave.setOnClickListener(v -> saveContact());
 
         return view;
+    }
+
+    private void saveContact() {
+        // Create a contact object
+        ContactViewModel.Contact contactData = new ContactViewModel.Contact();
+
+        // Check for filled fields and set values
+        if (!TextUtils.isEmpty(edtDoctorName.getText().toString())) {
+            contactData.setDoctorName(edtDoctorName.getText().toString());
+        }
+        if (!TextUtils.isEmpty(edtDoctorContactPhone.getText().toString())) {
+            contactData.setDoctorContactPhone(edtDoctorContactPhone.getText().toString());
+        }
+        if (!TextUtils.isEmpty(edtMedicalInstitutionName.getText().toString())) {
+            contactData.setMedicalInstitutionName(edtMedicalInstitutionName.getText().toString());
+        }
+        if (!TextUtils.isEmpty(edtMedicalContactPhone.getText().toString())) {
+            contactData.setMedicalContactPhone(edtMedicalContactPhone.getText().toString());
+        }
+        if (!TextUtils.isEmpty(edtFamilyContactName.getText().toString())) {
+            contactData.setFamilyContactName(edtFamilyContactName.getText().toString());
+        }
+        if (!TextUtils.isEmpty(edtFamilyContactPhone.getText().toString())) {
+            contactData.setFamilyContactPhone(edtFamilyContactPhone.getText().toString());
+        }
+
+        // Check if at least one field is filled
+        if (TextUtils.isEmpty(contactData.getDoctorName()) && TextUtils.isEmpty(contactData.getFamilyContactName())
+                && TextUtils.isEmpty(contactData.getMedicalInstitutionName())) {
+            Toast.makeText(getContext(), "Please fill in at least one contact detail.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Set the relationship
+        contactData.setRelationship(spinnerRelationship.getSelectedItem().toString());
+
+        // Store contact data in Firebase under user's node
+        if (userId != null) {
+            String contactId = database.getReference("Users").child(userId).child("Contacts").push().getKey();
+            if (contactId != null) {
+                database.getReference("Users").child(userId).child("Contacts").child(contactId).setValue(contactData)
+                        .addOnSuccessListener(aVoid -> {
+                            // Add to ViewModel after successful Firebase write
+                            contactViewModel.addContact(contactData);
+                            Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
+
+                            // Clear input fields for the next contact
+                            clearInputFields();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            }
+        } else {
+            Toast.makeText(getContext(), "User ID is not available.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void clearInputFields() {
+        edtDoctorName.setText("");
+        edtDoctorContactPhone.setText("");
+        edtMedicalInstitutionName.setText("");
+        edtMedicalContactPhone.setText("");
+        edtFamilyContactName.setText("");
+        edtFamilyContactPhone.setText("");
     }
 
     // Method to retrieve user's unique ID from Firebase

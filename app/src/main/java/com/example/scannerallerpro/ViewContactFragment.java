@@ -61,13 +61,24 @@ public class ViewContactFragment extends Fragment {
         contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<ContactViewModel.Contact>>() {
             @Override
             public void onChanged(List<ContactViewModel.Contact> contacts) {
-                contactAdapter = new ContactAdapter(contacts);
+                contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactClickListener() {
+                    @Override
+                    public void onCallClick(ContactViewModel.Contact contact) {
+                        // Handle call action
+                    }
+
+                    @Override
+                    public void onDeleteClick(ContactViewModel.Contact contact) {
+                        // Handle delete action
+                    }
+                });
                 recyclerViewContacts.setAdapter(contactAdapter);
             }
         });
 
         return view;
     }
+
 
     // Method to load contacts from Firebase
     private void loadContactsFromFirebase() {

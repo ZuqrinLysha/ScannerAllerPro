@@ -33,7 +33,6 @@ public class ContactViewModel extends ViewModel {
         }
     }
 
-
     // Method to remove a contact
     public void removeContact(Contact contact) {
         List<Contact> currentList = contacts.getValue();
@@ -43,36 +42,79 @@ public class ContactViewModel extends ViewModel {
         }
     }
 
-    // Contact class definition
+    // Updated Contact class definition
     public static class Contact {
-        public String fullName;
-        public String phoneNumber;
-        public String relationship;
+        private String doctorName;
+        private String doctorContactPhone;
+        private String medicalInstitutionName;
+        private String medicalContactPhone;
+        private String familyContactName;
+        private String familyContactPhone;
+        private String relationship;
 
         // Default constructor required for calls to DataSnapshot.getValue(Contact.class)
         public Contact() {
         }
 
-        public Contact(String fullName, String phoneNumber, String relationship) {
-            this.fullName = fullName;
-            this.phoneNumber = phoneNumber;
+        public Contact(String doctorName, String doctorContactPhone, String medicalInstitutionName,
+                       String medicalContactPhone, String familyContactName, String familyContactPhone,
+                       String relationship) {
+            this.doctorName = doctorName;
+            this.doctorContactPhone = doctorContactPhone;
+            this.medicalInstitutionName = medicalInstitutionName;
+            this.medicalContactPhone = medicalContactPhone;
+            this.familyContactName = familyContactName;
+            this.familyContactPhone = familyContactPhone;
             this.relationship = relationship;
         }
+
         // Getters and Setters
-        public String getFullName() {
-            return fullName;
+        public String getDoctorName() {
+            return doctorName;
         }
 
-        public void setFullName(String firstName) {
-            this.fullName = firstName;
+        public void setDoctorName(String doctorName) {
+            this.doctorName = doctorName;
         }
 
-        public String getPhoneNumber() {
-            return phoneNumber;
+        public String getDoctorContactPhone() {
+            return doctorContactPhone;
         }
 
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
+        public void setDoctorContactPhone(String doctorContactPhone) {
+            this.doctorContactPhone = doctorContactPhone;
+        }
+
+        public String getMedicalInstitutionName() {
+            return medicalInstitutionName;
+        }
+
+        public void setMedicalInstitutionName(String medicalInstitutionName) {
+            this.medicalInstitutionName = medicalInstitutionName;
+        }
+
+        public String getMedicalContactPhone() {
+            return medicalContactPhone;
+        }
+
+        public void setMedicalContactPhone(String medicalContactPhone) {
+            this.medicalContactPhone = medicalContactPhone;
+        }
+
+        public String getFamilyContactName() {
+            return familyContactName;
+        }
+
+        public void setFamilyContactName(String familyContactName) {
+            this.familyContactName = familyContactName;
+        }
+
+        public String getFamilyContactPhone() {
+            return familyContactPhone;
+        }
+
+        public void setFamilyContactPhone(String familyContactPhone) {
+            this.familyContactPhone = familyContactPhone;
         }
 
         public String getRelationship() {
@@ -84,4 +126,3 @@ public class ContactViewModel extends ViewModel {
         }
     }
 }
-
