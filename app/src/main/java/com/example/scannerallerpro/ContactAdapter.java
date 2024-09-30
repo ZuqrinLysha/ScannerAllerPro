@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
-    private List<ContactViewModel.Contact> contactList; // Keep it as ContactViewModel.Contact
+    private List<Contact> contactList; // Use the standalone Contact class
     private OnContactClickListener onContactClickListener; // Listener for handling button clicks
 
     // Constructor to initialize the contact list and listener
-    public ContactAdapter(List<ContactViewModel.Contact> contactList, OnContactClickListener listener) {
+    public ContactAdapter(List<Contact> contactList, OnContactClickListener listener) {
         this.contactList = contactList;
         this.onContactClickListener = listener; // Set the listener
     }
@@ -30,10 +30,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        ContactViewModel.Contact contact = contactList.get(position);
-        holder.textViewContactName.setText(contact.getFamilyContactName()); // Use family contact name
-        holder.textViewPhoneNumber.setText(contact.getFamilyContactPhone()); // Use family contact phone
-        holder.textRelationship.setText(contact.getRelationship()); // Use the relationship
+        Contact contact = contactList.get(position); // Use the standalone Contact class
+        holder.textViewContactName.setText(contact.getFamilyContactName());
+        holder.textViewPhoneNumber.setText(contact.getFamilyContactPhone());
+        holder.textRelationship.setText(contact.getRelationship());
 
         // Set up button listeners
         holder.buttonCall.setOnClickListener(v -> {
@@ -71,7 +71,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     // Interface for handling contact click events
     public interface OnContactClickListener {
-        void onCallClick(ContactViewModel.Contact contact);
-        void onDeleteClick(ContactViewModel.Contact contact);
+        void onCallClick(Contact contact);
+        void onDeleteClick(Contact contact);
     }
 }

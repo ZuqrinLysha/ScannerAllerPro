@@ -58,17 +58,17 @@ public class ViewContactFragment extends Fragment {
         }
 
         // Observe the contact list data
-        contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<ContactViewModel.Contact>>() {
+        contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() { // Change ContactViewModel.Contact to Contact
             @Override
-            public void onChanged(List<ContactViewModel.Contact> contacts) {
+            public void onChanged(List<Contact> contacts) { // Change this line
                 contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactClickListener() {
                     @Override
-                    public void onCallClick(ContactViewModel.Contact contact) {
+                    public void onCallClick(Contact contact) { // Change this line
                         // Handle call action
                     }
 
                     @Override
-                    public void onDeleteClick(ContactViewModel.Contact contact) {
+                    public void onDeleteClick(Contact contact) { // Change this line
                         // Handle delete action
                     }
                 });
@@ -79,7 +79,6 @@ public class ViewContactFragment extends Fragment {
         return view;
     }
 
-
     // Method to load contacts from Firebase
     private void loadContactsFromFirebase() {
         if (userId != null) {
@@ -87,14 +86,14 @@ public class ViewContactFragment extends Fragment {
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<ContactViewModel.Contact> contactList = new ArrayList<>();
+                    List<Contact> contactList = new ArrayList<>(); // Change ContactViewModel.Contact to Contact
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        ContactViewModel.Contact contact = snapshot.getValue(ContactViewModel.Contact.class);
+                        Contact contact = snapshot.getValue(Contact.class); // Change to Contact
                         if (contact != null) {
                             contactList.add(contact);
                         }
                     }
-                    contactViewModel.setContactList(contactList); // Update ViewModel with the loaded contacts
+                    contactViewModel.setContactList(contactList); // Ensure setContactList accepts List<Contact>
                 }
 
                 @Override

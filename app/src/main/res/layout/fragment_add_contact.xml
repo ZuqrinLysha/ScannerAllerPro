@@ -51,8 +51,6 @@
             android:background="@color/white" />
 
         <!-- Relationship TextView -->
-
-        <!-- Spinner for Relationship -->
         <TextView
             android:id="@+id/txtFamilyRelationship"
             android:layout_width="wrap_content"
@@ -110,8 +108,6 @@
             android:background="@color/white" />
 
         <!-- MedicalRole TextView -->
-
-        <!-- Spinner for Medical Role -->
         <TextView
             android:id="@+id/txtHealthCareRole"
             android:layout_width="wrap_content"
@@ -129,7 +125,6 @@
             android:layout_marginTop="8dp"
             android:background="@color/white"
             android:padding="16dp" />
-
 
         <TextView
             android:id="@+id/txtMedicalCenterTitle"
@@ -169,10 +164,7 @@
             android:textSize="16sp"
             android:background="@color/white" />
 
-
         <!-- MedicalCenter TextView -->
-
-        <!-- Spinner for Medical Center -->
         <TextView
             android:id="@+id/txtMedicalCenter"
             android:layout_width="wrap_content"
@@ -190,8 +182,6 @@
             android:layout_marginTop="8dp"
             android:background="@color/white"
             android:padding="16dp" />
-
-
 
         <!-- Save Button -->
         <Button
