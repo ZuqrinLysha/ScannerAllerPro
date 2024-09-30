@@ -44,77 +44,77 @@ public class ContactViewModel extends ViewModel {
 
     // Updated Contact class definition
     public static class Contact {
-        private String doctorName;
-        private String doctorContactPhone;
-        private String medicalInstitutionName;
-        private String medicalContactPhone;
-        private String familyContactName;
-        private String familyContactPhone;
-        private String relationship;
+        private String FamilyContactName;
+        private String FamilyContactPhone;
+        private String HealthCareContactName;
+        private String HealthCareContactPhone;
+        private String MedicalCenterContactName;
+        private String MedicalCenterContactPhone;
+        private String relationship; // This can be renamed to a more specific term if needed
 
         // Default constructor required for calls to DataSnapshot.getValue(Contact.class)
         public Contact() {
         }
 
-        public Contact(String doctorName, String doctorContactPhone, String medicalInstitutionName,
-                       String medicalContactPhone, String familyContactName, String familyContactPhone,
-                       String relationship) {
-            this.doctorName = doctorName;
-            this.doctorContactPhone = doctorContactPhone;
-            this.medicalInstitutionName = medicalInstitutionName;
-            this.medicalContactPhone = medicalContactPhone;
-            this.familyContactName = familyContactName;
-            this.familyContactPhone = familyContactPhone;
+        public Contact(String FamilyContactName, String FamilyContactPhone, String HealthCareContactName,
+                       String HealthCareContactPhone, String MedicalCenterContactName,
+                       String MedicalCenterContactPhone, String relationship) {
+            this.FamilyContactName = FamilyContactName;
+            this.FamilyContactPhone = FamilyContactPhone;
+            this.HealthCareContactName = HealthCareContactName;
+            this.HealthCareContactPhone = HealthCareContactPhone;
+            this.MedicalCenterContactName = MedicalCenterContactName;
+            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
             this.relationship = relationship;
         }
 
         // Getters and Setters
-        public String getDoctorName() {
-            return doctorName;
-        }
-
-        public void setDoctorName(String doctorName) {
-            this.doctorName = doctorName;
-        }
-
-        public String getDoctorContactPhone() {
-            return doctorContactPhone;
-        }
-
-        public void setDoctorContactPhone(String doctorContactPhone) {
-            this.doctorContactPhone = doctorContactPhone;
-        }
-
-        public String getMedicalInstitutionName() {
-            return medicalInstitutionName;
-        }
-
-        public void setMedicalInstitutionName(String medicalInstitutionName) {
-            this.medicalInstitutionName = medicalInstitutionName;
-        }
-
-        public String getMedicalContactPhone() {
-            return medicalContactPhone;
-        }
-
-        public void setMedicalContactPhone(String medicalContactPhone) {
-            this.medicalContactPhone = medicalContactPhone;
-        }
-
         public String getFamilyContactName() {
-            return familyContactName;
+            return FamilyContactName;
         }
 
-        public void setFamilyContactName(String familyContactName) {
-            this.familyContactName = familyContactName;
+        public void setFamilyContactName(String FamilyContactName) {
+            this.FamilyContactName = FamilyContactName;
         }
 
         public String getFamilyContactPhone() {
-            return familyContactPhone;
+            return FamilyContactPhone;
         }
 
-        public void setFamilyContactPhone(String familyContactPhone) {
-            this.familyContactPhone = familyContactPhone;
+        public void setFamilyContactPhone(String FamilyContactPhone) {
+            this.FamilyContactPhone = FamilyContactPhone;
+        }
+
+        public String getHealthCareContactName() {
+            return HealthCareContactName;
+        }
+
+        public void setHealthCareContactName(String HealthCareContactName) {
+            this.HealthCareContactName = HealthCareContactName;
+        }
+
+        public String getHealthCareContactPhone() {
+            return HealthCareContactPhone;
+        }
+
+        public void setHealthCareContactPhone(String HealthCareContactPhone) {
+            this.HealthCareContactPhone = HealthCareContactPhone;
+        }
+
+        public String getMedicalCenterContactName() {
+            return MedicalCenterContactName;
+        }
+
+        public void setMedicalCenterContactName(String MedicalCenterContactName) {
+            this.MedicalCenterContactName = MedicalCenterContactName;
+        }
+
+        public String getMedicalCenterContactPhone() {
+            return MedicalCenterContactPhone;
+        }
+
+        public void setMedicalCenterContactPhone(String MedicalCenterContactPhone) {
+            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
         }
 
         public String getRelationship() {

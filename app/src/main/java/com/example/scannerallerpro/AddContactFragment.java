@@ -22,9 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AddContactFragment extends Fragment {
 
-    private Spinner spinnerRelationship;
-    private EditText edtDoctorName, edtDoctorContactPhone;
-    private EditText edtMedicalInstitutionName, edtMedicalContactPhone;
+    private Spinner spinnerRelationship, spinnerHealthCareRole, spinnerMedicalCenter;
+    private EditText edtHealthCareContactName, edtHealthCareContactPhone;
+    private EditText edtMedicalCenterContactName, edtMedicalCenterContactPhone;
     private EditText edtFamilyContactName, edtFamilyContactPhone;
     private Button btnSave;
     private ContactViewModel contactViewModel;
@@ -42,11 +42,11 @@ public class AddContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_contact, container, false);
 
         // Initialize views
-        spinnerRelationship = view.findViewById(R.id.spinnerRelationship);
-        edtDoctorName = view.findViewById(R.id.edtDoctorName);
-        edtDoctorContactPhone = view.findViewById(R.id.edtDoctorContactPhone);
-        edtMedicalInstitutionName = view.findViewById(R.id.edtMedicalInstitutionName);
-        edtMedicalContactPhone = view.findViewById(R.id.edtMedicalContactPhone);
+        spinnerRelationship = view.findViewById(R.id.spinnerFamilyRelationship); // Corrected ID
+        edtHealthCareContactName = view.findViewById(R.id.edtHealthCareContactName); // Corrected ID
+        edtHealthCareContactPhone = view.findViewById(R.id.edtHealthCareContactPhone); // Corrected ID
+        edtMedicalCenterContactName = view.findViewById(R.id.edtMedicalCenterContactName); // Corrected ID
+        edtMedicalCenterContactPhone = view.findViewById(R.id.edtMedicalCenterContactPhone); // Corrected ID
         edtFamilyContactName = view.findViewById(R.id.edtFamilyContactName);
         edtFamilyContactPhone = view.findViewById(R.id.edtFamilyContactPhone);
         btnSave = view.findViewById(R.id.btnSaveContact);
@@ -78,17 +78,17 @@ public class AddContactFragment extends Fragment {
         ContactViewModel.Contact contactData = new ContactViewModel.Contact();
 
         // Check for filled fields and set values
-        if (!TextUtils.isEmpty(edtDoctorName.getText().toString())) {
-            contactData.setDoctorName(edtDoctorName.getText().toString());
+        if (!TextUtils.isEmpty(edtHealthCareContactName.getText().toString())) {
+            contactData.setDoctorName(edtHealthCareContactName.getText().toString());
         }
-        if (!TextUtils.isEmpty(edtDoctorContactPhone.getText().toString())) {
-            contactData.setDoctorContactPhone(edtDoctorContactPhone.getText().toString());
+        if (!TextUtils.isEmpty(edtHealthCareContactPhone.getText().toString())) {
+            contactData.setDoctorContactPhone(edtHealthCareContactPhone.getText().toString());
         }
-        if (!TextUtils.isEmpty(edtMedicalInstitutionName.getText().toString())) {
-            contactData.setMedicalInstitutionName(edtMedicalInstitutionName.getText().toString());
+        if (!TextUtils.isEmpty(edtMedicalCenterContactName.getText().toString())) {
+            contactData.setMedicalInstitutionName(edtMedicalCenterContactName.getText().toString());
         }
-        if (!TextUtils.isEmpty(edtMedicalContactPhone.getText().toString())) {
-            contactData.setMedicalContactPhone(edtMedicalContactPhone.getText().toString());
+        if (!TextUtils.isEmpty(edtMedicalCenterContactPhone.getText().toString())) {
+            contactData.setMedicalContactPhone(edtMedicalCenterContactPhone.getText().toString());
         }
         if (!TextUtils.isEmpty(edtFamilyContactName.getText().toString())) {
             contactData.setFamilyContactName(edtFamilyContactName.getText().toString());
@@ -130,10 +130,10 @@ public class AddContactFragment extends Fragment {
     }
 
     private void clearInputFields() {
-        edtDoctorName.setText("");
-        edtDoctorContactPhone.setText("");
-        edtMedicalInstitutionName.setText("");
-        edtMedicalContactPhone.setText("");
+        edtHealthCareContactName.setText("");
+        edtHealthCareContactPhone.setText("");
+        edtMedicalCenterContactName.setText("");
+        edtMedicalCenterContactPhone.setText("");
         edtFamilyContactName.setText("");
         edtFamilyContactPhone.setText("");
     }

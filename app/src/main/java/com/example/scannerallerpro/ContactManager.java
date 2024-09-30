@@ -8,86 +8,87 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ContactManager {
     // Define the Contact class
     public static class Contact {
-        private String doctorName;
-        private String doctorContactPhone;
-        private String medicalInstitutionName;
-        private String medicalContactPhone;
-        private String familyContactName;
-        private String familyContactPhone;
-        private String relationship;
+        private String HealthCareContactName; // Updated field name
+        private String HealthCareContactPhone; // Updated field name
+        private String MedicalCenterContactName; // Updated field name
+        private String MedicalCenterContactPhone; // Updated field name
+        private String FamilyContactName; // Updated field name
+        private String FamilyContactPhone; // Updated field name
+        private String spinnerRelationship; // Updated field name
 
         // Default constructor required for Firebase
         public Contact() {
         }
 
         // Constructor with parameters
-        public Contact(String doctorName, String doctorContactPhone, String medicalInstitutionName,
-                       String medicalContactPhone, String familyContactName, String familyContactPhone,
-                       String relationship) {
-            this.doctorName = doctorName;
-            this.doctorContactPhone = doctorContactPhone;
-            this.medicalInstitutionName = medicalInstitutionName;
-            this.medicalContactPhone = medicalContactPhone;
-            this.familyContactName = familyContactName;
-            this.familyContactPhone = familyContactPhone;
-            this.relationship = relationship;
+        public Contact(String HealthCareContactName, String HealthCareContactPhone,
+                       String MedicalCenterContactName, String MedicalCenterContactPhone,
+                       String FamilyContactName, String FamilyContactPhone,
+                       String spinnerRelationship) {
+            this.HealthCareContactName = HealthCareContactName;
+            this.HealthCareContactPhone = HealthCareContactPhone;
+            this.MedicalCenterContactName = MedicalCenterContactName;
+            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
+            this.FamilyContactName = FamilyContactName;
+            this.FamilyContactPhone = FamilyContactPhone;
+            this.spinnerRelationship = spinnerRelationship;
         }
 
         // Getters and setters
-        public String getDoctorName() {
-            return doctorName;
+        public String getHealthCareContactName() {
+            return HealthCareContactName;
         }
 
-        public void setDoctorName(String doctorName) {
-            this.doctorName = doctorName;
+        public void setHealthCareContactName(String HealthCareContactName) {
+            this.HealthCareContactName = HealthCareContactName;
         }
 
-        public String getDoctorContactPhone() {
-            return doctorContactPhone;
+        public String getHealthCareContactPhone() {
+            return HealthCareContactPhone;
         }
 
-        public void setDoctorContactPhone(String doctorContactPhone) {
-            this.doctorContactPhone = doctorContactPhone;
+        public void setHealthCareContactPhone(String HealthCareContactPhone) {
+            this.HealthCareContactPhone = HealthCareContactPhone;
         }
 
-        public String getMedicalInstitutionName() {
-            return medicalInstitutionName;
+        public String getMedicalCenterContactName() {
+            return MedicalCenterContactName;
         }
 
-        public void setMedicalInstitutionName(String medicalInstitutionName) {
-            this.medicalInstitutionName = medicalInstitutionName;
+        public void setMedicalCenterContactName(String MedicalCenterContactName) {
+            this.MedicalCenterContactName = MedicalCenterContactName;
         }
 
-        public String getMedicalContactPhone() {
-            return medicalContactPhone;
+        public String getMedicalCenterContactPhone() {
+            return MedicalCenterContactPhone;
         }
 
-        public void setMedicalContactPhone(String medicalContactPhone) {
-            this.medicalContactPhone = medicalContactPhone;
+        public void setMedicalCenterContactPhone(String MedicalCenterContactPhone) {
+            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
         }
 
         public String getFamilyContactName() {
-            return familyContactName;
+            return FamilyContactName;
         }
 
-        public void setFamilyContactName(String familyContactName) {
-            this.familyContactName = familyContactName;
+        public void setFamilyContactName(String FamilyContactName) {
+            this.FamilyContactName = FamilyContactName;
         }
 
         public String getFamilyContactPhone() {
-            return familyContactPhone;
+            return FamilyContactPhone;
         }
 
-        public void setFamilyContactPhone(String familyContactPhone) {
-            this.familyContactPhone = familyContactPhone;
+        public void setFamilyContactPhone(String FamilyContactPhone) {
+            this.FamilyContactPhone = FamilyContactPhone;
         }
 
-        public String getRelationship() {
-            return relationship;
+        public String getSpinnerRelationship() {
+            return spinnerRelationship;
         }
 
-        public void setRelationship(String relationship) {
-            this.relationship = relationship;
+        public void setSpinnerRelationship(String spinnerRelationship) {
+            this.spinnerRelationship = spinnerRelationship;
         }
     }
 

@@ -6,7 +6,7 @@
     <string name="close_drawer">Close Drawer</string>
 
     <string-array name="relationship_options">
-        <item>Please choose a relationship</item>
+        <item>Choose Here</item>
         <item>Father</item>
         <item>Mother</item>
         <item>Husband</item>
@@ -16,6 +16,54 @@
         <item>Children</item>
         <item>Aunty</item>
         <item>Uncle</item>
+        <item>Cousin</item>
+        <item>Nephew</item>
+        <item>Niece</item>
         <item>Guardian</item>
     </string-array>
+
+
+    <string-array name="healthcarerole_options">
+        <item>Choose Here</item>
+        <item>Doctor</item>
+        <item>Nurse</item>
+        <item>Medical Assistant</item>
+        <item>Allergist</item>
+        <item>Immunologist</item>
+        <item>Pulmonologist</item>
+        <item>Respiratory Therapist</item>
+        <item>Clinical Pharmacologist</item>
+        <item>Asthma Educator</item>
+        <item>Allergy Technician</item>
+        <item>Dermatologist</item>
+        <item>Pediatric Allergist</item>
+        <item>ENT Specialist</item>
+        <item>Clinical Laboratory Technician</item>
+        <item>Environmental Health Specialist</item>
+        <item>Occupational Health Specialist</item>
+        <item>Genetic Counselor</item>
+        <item>Health Educator</item>
+        <item>Medical Researcher</item>
+    </string-array>
+
+    <string-array name="medicalcenter_options">
+        <item>Choose Here</item>
+        <item>Hospital</item>
+        <item>Clinic</item>
+        <item>Pharmacy</item>
+        <item>Allergy and Asthma Center</item>
+        <item>Immunology Institute</item>
+        <item>Respiratory Care Center</item>
+        <item>Dermatology Center</item>
+        <item>Pediatric Allergy Center</item>
+        <item>ENT Center</item>
+        <item>Pulmonology Institute</item>
+        <item>Occupational Health Center</item>
+        <item>Environmental Health Clinic</item>
+        <item>Holistic Health Center</item>
+        <item>Clinical Research Center</item>
+        <item>Rehabilitation Center</item>
+        <item>Health Education Center</item>
+    </string-array>
+
 </resources>

@@ -2,10 +2,10 @@ package com.example.scannerallerpro; // Change this to your actual package name 
 
 public class Contact {
 
-    private String doctorName;
-    private String doctorContactPhone;
-    private String medicalInstitutionName;
-    private String medicalContactPhone;
+    private String healthCareContactName;
+    private String healthCareContactPhone;
+    private String medicalCenterContactName;
+    private String medicalCenterContactPhone;
     private String familyContactName;
     private String familyContactPhone;
     private String relationship;
@@ -15,52 +15,53 @@ public class Contact {
     }
 
     // Constructor for initializing the Contact object
-    public Contact(String doctorName, String doctorContactPhone, String medicalInstitutionName,
-                   String medicalContactPhone, String familyContactName, String familyContactPhone,
+    public Contact(String healthCareContactName, String healthCareContactPhone,
+                   String medicalCenterContactName, String medicalCenterContactPhone,
+                   String familyContactName, String familyContactPhone,
                    String relationship) {
-        this.doctorName = doctorName;
-        this.doctorContactPhone = doctorContactPhone;
-        this.medicalInstitutionName = medicalInstitutionName;
-        this.medicalContactPhone = medicalContactPhone;
+        this.healthCareContactName = healthCareContactName;
+        this.healthCareContactPhone = healthCareContactPhone;
+        this.medicalCenterContactName = medicalCenterContactName;
+        this.medicalCenterContactPhone = medicalCenterContactPhone;
         this.familyContactName = familyContactName;
         this.familyContactPhone = familyContactPhone;
         this.relationship = relationship;
     }
 
-    // Getter and setter methods for doctorName
-    public String getDoctorName() {
-        return doctorName;
+    // Getter and setter methods for healthCareContactName
+    public String getHealthCareContactName() {
+        return healthCareContactName;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+    public void setHealthCareContactName(String healthCareContactName) {
+        this.healthCareContactName = healthCareContactName;
     }
 
-    // Getter and setter methods for doctorContactPhone
-    public String getDoctorContactPhone() {
-        return doctorContactPhone;
+    // Getter and setter methods for healthCareContactPhone
+    public String getHealthCareContactPhone() {
+        return healthCareContactPhone;
     }
 
-    public void setDoctorContactPhone(String doctorContactPhone) {
-        this.doctorContactPhone = doctorContactPhone;
+    public void setHealthCareContactPhone(String healthCareContactPhone) {
+        this.healthCareContactPhone = healthCareContactPhone;
     }
 
-    // Getter and setter methods for medicalInstitutionName
-    public String getMedicalInstitutionName() {
-        return medicalInstitutionName;
+    // Getter and setter methods for medicalCenterContactName
+    public String getMedicalCenterContactName() {
+        return medicalCenterContactName;
     }
 
-    public void setMedicalInstitutionName(String medicalInstitutionName) {
-        this.medicalInstitutionName = medicalInstitutionName;
+    public void setMedicalCenterContactName(String medicalCenterContactName) {
+        this.medicalCenterContactName = medicalCenterContactName;
     }
 
-    // Getter and setter methods for medicalContactPhone
-    public String getMedicalContactPhone() {
-        return medicalContactPhone;
+    // Getter and setter methods for medicalCenterContactPhone
+    public String getMedicalCenterContactPhone() {
+        return medicalCenterContactPhone;
     }
 
-    public void setMedicalContactPhone(String medicalContactPhone) {
-        this.medicalContactPhone = medicalContactPhone;
+    public void setMedicalCenterContactPhone(String medicalCenterContactPhone) {
+        this.medicalCenterContactPhone = medicalCenterContactPhone;
     }
 
     // Getter and setter methods for familyContactName

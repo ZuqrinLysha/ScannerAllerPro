@@ -13,85 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <TextView
-            android:id="@+id/txtPrimaryCareDoctor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/baseline_account_box_24"
-            android:drawablePadding="8dp"
-            android:text="Doctor"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <!-- EditText for Doctor's Name -->
-        <EditText
-            android:id="@+id/edtDoctorName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:hint="Contact Name"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <!-- EditText for Doctor's Phone Number -->
-        <EditText
-            android:id="@+id/edtDoctorContactPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="12dp"
-            android:padding="16dp"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <TextView
-            android:id="@+id/txtMedicalInstitution"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/baseline_local_hospital_24"
-            android:drawablePadding="8dp"
-            android:text="Medical Institution"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <!-- EditText for Medical Institution's Name -->
-        <EditText
-            android:id="@+id/edtMedicalInstitutionName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:hint="Medical Institution Name"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <!-- EditText for Medical Institution's Phone Number -->
-        <EditText
-            android:id="@+id/edtMedicalContactPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="12dp"
-            android:padding="16dp"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <TextView
-            android:id="@+id/txtFamilyMembers"
+            android:id="@+id/txtFamilyMember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -131,22 +54,144 @@
 
         <!-- Spinner for Relationship -->
         <TextView
-            android:id="@+id/txtRelationship"
+            android:id="@+id/txtFamilyRelationship"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="9dp"
-            android:text="Relationship:"
+            android:text="Please choose a relationship :"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Spinner
-            android:id="@+id/spinnerRelationship"
+            android:id="@+id/spinnerFamilyRelationship"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/white"
             android:padding="16dp" />
+
+        <TextView
+            android:id="@+id/txtHealthCare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/baseline_vaccines_24"
+            android:drawablePadding="8dp"
+            android:text="Allergy And Healthcare Professionals"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- EditText for Doctor's Name -->
+        <EditText
+            android:id="@+id/edtHealthCareContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="16dp"
+            android:hint="Contact Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <!-- EditText for Doctor's Phone Number -->
+        <EditText
+            android:id="@+id/edtHealthCareContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <!-- MedicalRole TextView -->
+
+        <!-- Spinner for Medical Role -->
+        <TextView
+            android:id="@+id/txtHealthCareRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:text="Please choose a role :"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerHealthCareRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:padding="16dp" />
+
+
+        <TextView
+            android:id="@+id/txtMedicalCenterTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/baseline_local_hospital_24"
+            android:drawablePadding="8dp"
+            android:text="Medical Center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- EditText for Medical Institution's Name -->
+        <EditText
+            android:id="@+id/edtMedicalCenterContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="16dp"
+            android:hint="Medical Center Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <!-- EditText for Medical Institution's Phone Number -->
+        <EditText
+            android:id="@+id/edtMedicalCenterContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+
+        <!-- MedicalCenter TextView -->
+
+        <!-- Spinner for Medical Center -->
+        <TextView
+            android:id="@+id/txtMedicalCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:text="Please choose a medical center :"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerMedicalCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:padding="16dp" />
+
+
 
         <!-- Save Button -->
         <Button
