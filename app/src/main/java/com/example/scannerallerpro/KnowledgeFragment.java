@@ -24,10 +24,12 @@ public class KnowledgeFragment extends Fragment {
         // Find the CardView
         CardView cardView = view.findViewById(R.id.card_view);
         CardView cardView2 = view.findViewById(R.id.card_view2);
+        CardView cardView3 = view.findViewById(R.id.card_view3);
 
         // Find the CardView and TextViews
         final TextView medInfoDetails = view.findViewById(R.id.med_info_details);
         final TextView symptomsLvlDetails = view.findViewById(R.id.symptoms_lvl_details);
+        final TextView recipe_details = view.findViewById(R.id.recipe_details);
 
         // Set an OnClickListener to expand/collapse the details
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +53,19 @@ public class KnowledgeFragment extends Fragment {
                     symptomsLvlDetails.setVisibility(View.VISIBLE);
                 } else {
                     symptomsLvlDetails.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        // Set an OnClickListener for the third card view
+        cardView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle visibility of recipe_details
+                if (recipe_details.getVisibility() == View.GONE) {
+                    recipe_details.setVisibility(View.VISIBLE);
+                } else {
+                    recipe_details.setVisibility(View.GONE);
                 }
             }
         });
