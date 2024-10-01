@@ -159,7 +159,7 @@
             android:id="@+id/spinnerMedicalCenter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="5dp"
             android:background="@color/white"
             android:entries="@array/medical_center_options" />
 
