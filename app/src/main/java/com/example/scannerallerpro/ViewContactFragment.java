@@ -1,10 +1,10 @@
 package com.example.scannerallerpro;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,21 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewContactFragment extends Fragment {
     private ContactViewModel contactViewModel;
     private RecyclerView recyclerViewContacts;
     private ContactAdapter contactAdapter;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private String userId;
 
@@ -44,7 +36,6 @@ public class ViewContactFragment extends Fragment {
         recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialize Firebase
-        database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
         // Initialize ViewModel
@@ -54,43 +45,52 @@ public class ViewContactFragment extends Fragment {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             userId = currentUser.getUid();
-            loadContactsFromFirebase(); // Load contacts from Firebase
         }
 
         // Observe the contact list data
         contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<ContactViewModel.Contact>>() {
             @Override
             public void onChanged(List<ContactViewModel.Contact> contacts) {
-                contactAdapter = new ContactAdapter(contacts);
+                contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
+                    @Override
+                    public void onDeleteContact(ContactViewModel.Contact contact) {
+                        showDeleteConfirmationDialog(contact);// Remove contact using ViewModel
+                    }
+
+
+                    public void onContactSelected(ContactViewModel.Contact contact) {
+                        // Handle contact selection here
+                    }
+                }, getContext());
                 recyclerViewContacts.setAdapter(contactAdapter);
             }
         });
 
-        return view;
+        return view; // Ensure this is at the end of onCreateView
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadContactsFromFirebase(); // Refresh contacts when the fragment is resumed
     }
 
     // Method to load contacts from Firebase
     private void loadContactsFromFirebase() {
         if (userId != null) {
-            databaseReference = database.getReference("Users").child(userId).child("Contacts");
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<ContactViewModel.Contact> contactList = new ArrayList<>();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        ContactViewModel.Contact contact = snapshot.getValue(ContactViewModel.Contact.class);
-                        if (contact != null) {
-                            contactList.add(contact);
-                        }
-                    }
-                    contactViewModel.setContactList(contactList); // Update ViewModel with the loaded contacts
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle possible errors.
-                }
-            });
+            contactViewModel.loadContacts(); // Use ViewModel to load contacts
         }
     }
+    // Method to show confirmation dialog for contact deletion
+    private void showDeleteConfirmationDialog(ContactViewModel.Contact contact) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete Contact")
+                .setMessage("Are you sure you want to delete this contact?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    contactViewModel.removeContact(contact); // Remove contact from ViewModel and Firebase
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
 }
+

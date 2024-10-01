@@ -1,10 +1,14 @@
 package com.example.scannerallerpro;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,9 +17,13 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
     private List<ContactViewModel.Contact> contactList;
+    private OnContactActionListener onContactActionListener;
+    private Context context;
 
-    public ContactAdapter(List<ContactViewModel.Contact> contactList) {
-        this.contactList = contactList;
+    public ContactAdapter(List<ContactViewModel.Contact> contacts, OnContactActionListener listener, Context context) {
+        this.contactList = contacts;
+        this.onContactActionListener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -28,23 +36,38 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         ContactViewModel.Contact contact = contactList.get(position);
-        holder.textViewContactName.setText(contact.fullName);
-        holder.textViewPhoneNumber.setText(contact.phoneNumber);
-        holder.textRelationship.setText(contact.relationship);
+        holder.textViewContactName.setText(contact.getFullName());
+        holder.textViewPhoneNumber.setText(contact.getPhoneNumber());
+        holder.textRelationship.setText(contact.getRelationship());
 
-        // Set up button listeners if necessary
+        // Call button action
         holder.buttonCall.setOnClickListener(v -> {
-            // Handle call action
+            String phoneNumber = contact.getPhoneNumber();
+            if (!phoneNumber.isEmpty()) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + phoneNumber));
+                context.startActivity(intent); // Start the dialer app
+            } else {
+                Toast.makeText(context, "Phone number is not available", Toast.LENGTH_SHORT).show();
+            }
         });
 
+        // Delete button action
         holder.buttonDelete.setOnClickListener(v -> {
-            // Handle delete action
+            if (onContactActionListener != null) {
+                onContactActionListener.onDeleteContact(contact); // Notify the parent fragment/activity to delete the contact
+            }
         });
     }
 
     @Override
     public int getItemCount() {
         return contactList.size();
+    }
+
+    public void updateContacts(List<ContactViewModel.Contact> newContactList) {
+        this.contactList = newContactList;
+        notifyDataSetChanged(); // Notify the adapter about data change
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
@@ -59,5 +82,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             buttonCall = itemView.findViewById(R.id.buttonCall);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
         }
+    }
+
+    // Callback interface for handling actions like deleting a contact
+    public interface OnContactActionListener {
+        void onDeleteContact(ContactViewModel.Contact contact);
     }
 }

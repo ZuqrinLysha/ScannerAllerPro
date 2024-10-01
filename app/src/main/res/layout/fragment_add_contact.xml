@@ -1,144 +1,178 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".EmergencyContactFragment"
     android:background="@color/light_gray">
 
-    <!-- Instructional Text -->
-
-    <TextView
-        android:id="@+id/txtFamilyMembers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/softblue"
-        android:drawableStart="@drawable/baseline_family_24"
-        android:drawablePadding="8dp"
-        android:text="Family Members"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- Scrollable content -->
-    <ScrollView
+    <!-- Inner LinearLayout to contain all the views -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="447dp"
-        android:layout_weight="0">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/familyMemberContainer"
+        <!-- Family Member Section -->
+        <TextView
+            android:id="@+id/txtFamilyMembers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/baseline_family_24"
+            android:drawablePadding="8dp"
+            android:text="Family Member"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtFamilyContactName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Contact Name"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <EditText
+            android:id="@+id/edtFamilyContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/txtChooseRelationship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Please choose a relationship:"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerRelationship"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white" />
+
+        <!-- Allergy and Healthcare Professionals Section -->
+        <TextView
+            android:id="@+id/txtHealthcareProfessionals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/baseline_health_and_safety"
+            android:drawablePadding="8dp"
+            android:text="Allergy And Healthcare Professionals"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtHealthcareContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact Name"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <EditText
+            android:id="@+id/edtHealthcarePhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/txtChooseRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Please choose a role:"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
             android:background="@color/white"
-            android:orientation="vertical">
+            android:entries="@array/healthcare_options"/>
 
-            <TextView
-                android:id="@+id/txtFamilyContact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="9dp"
-                android:background="@color/white"
-                android:drawableStart="@drawable/baseline_account_box_24"
-                android:drawablePadding="8dp"
-                android:text="Contact Name :"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <!-- Medical Center Section -->
+        <TextView
+            android:id="@+id/txtMedicalCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/baseline_local_hospital_24"
+            android:drawablePadding="8dp"
+            android:text="Medical Center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <!-- EditText for Name -->
-            <EditText
-                android:id="@+id/edtFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:hint="First Name"
-                android:padding="16dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <EditText
+            android:id="@+id/edtMedicalCenterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medical Center Name"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
 
-            <EditText
-                android:id="@+id/edtLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/white"
-                android:hint="Last Name"
-                android:padding="16dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <EditText
+            android:id="@+id/edtMedicalCenterPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:background="@color/white" />
 
-            <TextView
-                android:id="@+id/txtFamilyPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="9dp"
-                android:background="@color/white"
-                android:drawableStart="@drawable/baseline_phone_24"
-                android:drawablePadding="8dp"
-                android:text="Phone Number :"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtChooseMedicalCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Please choose a medical center:"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-            <!-- EditText for Phone Number -->
-            <EditText
-                android:id="@+id/edtFamilyContactPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/white"
-                android:hint="XXX-XXXXXXX"
-                android:inputType="phone"
-                android:padding="16dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <Spinner
+            android:id="@+id/spinnerMedicalCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:entries="@array/medical_center_options" />
 
-            <TextView
-                android:id="@+id/txtRelationship"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="9dp"
-                android:background="@color/white"
-                android:drawableStart="@drawable/baseline_diversity_3_24"
-                android:drawablePadding="8dp"
-                android:text="Relationship :"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnAddFamilyMember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/blue1"
+            android:text="SAVE"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
-            <Spinner
-                android:id="@+id/spinnerRelationship"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:padding="16dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/btnAddFamilyMember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/blue1"
-        android:text="Add Family Member"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

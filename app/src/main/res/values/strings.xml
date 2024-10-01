@@ -5,16 +5,31 @@
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
 
-    <string-array name="relationship_options">
-        <item>Please choose a relationship</item>
-        <item>Father</item>
-        <item>Mother</item>
-        <item>Husband</item>
-        <item>Wife</item>
-        <item>Sister</item>
-        <item>Brother</item>
-        <item>Children</item>
-        <item>Aunty</item>
-        <item>Uncle</item>
-    </string-array>
-</resources>
+        <string-array name="relationship_options">
+            <item>Choose Here</item>
+            <item>Mother</item>
+            <item>Father</item>
+            <item>Brother</item>
+            <item>Sister</item>
+            <item>Spouse</item>
+            <item>Other</item>
+        </string-array>
+
+        <string-array name="healthcare_options">
+            <item>Choose Here</item>
+            <item>Doctor</item>
+            <item>Nurse</item>
+            <item>Specialist</item>
+            <item>Therapist</item>
+        </string-array>
+
+        <string-array name="medical_center_options">
+            <item>Choose Here</item>
+            <item>General Hospital</item>
+            <item>Clinic</item>
+            <item>Urgent Care</item>
+            <item>Pharmacy</item>
+        </string-array>
+    </resources>
+
+

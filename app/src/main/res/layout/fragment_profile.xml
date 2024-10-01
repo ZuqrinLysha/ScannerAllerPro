@@ -48,7 +48,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/height"/>
+                            android:src="@drawable/height1"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/weight"/>
+                            android:src="@drawable/weight1"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/bmi"/>
+                            android:src="@drawable/bmi1"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/blood"/>
+                            android:src="@drawable/blood1"/>
 
                         <TextView
                             android:layout_width="wrap_content"

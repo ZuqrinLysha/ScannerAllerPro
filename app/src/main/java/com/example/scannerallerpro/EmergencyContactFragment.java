@@ -39,7 +39,7 @@ public class EmergencyContactFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewpager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText("Add Contact");
+                    tab.setText("Add New Contact");
                     break;
                 case 1:
                     tab.setText("View Contact");
