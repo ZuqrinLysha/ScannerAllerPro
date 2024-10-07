@@ -9,6 +9,7 @@
     tools:context=".AllergicHistoryFragment"
     android:background="@color/light_gray">
 
+
     <!-- Header Section -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,7 +17,18 @@
         android:layout_height="wrap_content"
         android:background="@color/softblue"
         app:title="Allergic History"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/white">
+
+        <!-- ImageButton for Save -->
+        <ImageButton
+            android:id="@+id/btnSaveAllergic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/baseline_save_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="20dp" />
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- Instructional Text -->
     <TextView
@@ -32,7 +44,8 @@
     <!-- ScrollView to contain the checkboxes -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="8dp">
 
         <LinearLayout
@@ -41,7 +54,17 @@
             android:background="@color/softwhite"
             android:orientation="vertical">
 
-            <!-- Checkboxes for Allergic Reactions -->
+            <!-- Nuts Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuts"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
+
             <CheckBox
                 android:id="@+id/chkPeanuts"
                 android:layout_width="wrap_content"
@@ -51,12 +74,106 @@
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/chkDairy"
+                android:id="@+id/chkSoybeans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dairy"
+                android:text="Soybeans"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCashew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Broad/Kacang Parang"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkAlmond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Almond"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkWalnuts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walnuts"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!-- Dairy Products Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dairy Products"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <CheckBox
+                android:id="@+id/chkCowMilk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cow Milk"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkSoyMilk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Soy Milk"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkButter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Butter"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCheese"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cheese"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkYogurt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yogurt"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCereal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cereal"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!-- Grains Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grains"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
 
             <CheckBox
                 android:id="@+id/chkGluten"
@@ -67,39 +184,6 @@
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/chkSeafood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seafood"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/chkEggs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Eggs"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/chkSoy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Soybeans"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/chkSesame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sesame"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-
-            <CheckBox
                 android:id="@+id/chkWheat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,20 +191,137 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
+            <CheckBox
+                android:id="@+id/chkBarley"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Barley"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!-- Seafood Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seafood"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <CheckBox
+                android:id="@+id/chkCrab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crab"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkPrawns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prawns"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkLobster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lobster"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkScallops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scallop"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkSalmon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salmon"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!-- Oil Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oil"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <CheckBox
+                android:id="@+id/chkOliveOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Olive Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkSunflowerOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sunflower Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCanolaOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Canola Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkVegetableOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegetable Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCoconutOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coconut Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!-- Other Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Others"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+
+            <EditText
+                android:id="@+id/txtOtherAllergic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="Please state here your allergic ingredients" />
+
+
         </LinearLayout>
-
     </ScrollView>
-
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/btnSaveAllergies"
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textSize="16sp"
-        android:backgroundTint="@color/blue1"
-        android:textColor="@android:color/white"
-        android:background="@drawable/custom"/>
-
 </LinearLayout>

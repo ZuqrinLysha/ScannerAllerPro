@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -39,12 +40,10 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 
 public class ScannerFragment extends Fragment {
 
     private Button btnScanner;
-    private Button WarningDone;
     private TextView txtScanner;
     private ImageView imgCaptured;
     private List<String> userAllergies = new ArrayList<>();
@@ -57,12 +56,24 @@ public class ScannerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        return inflater.inflate(R.layout.fragment_scanner, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Hide the toolbar when entering the ScannerFragment
+        if (getActivity() != null) {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                toolbar.setVisibility(View.GONE);
+            }
+        }
 
         btnScanner = view.findViewById(R.id.btnCapture);
         txtScanner = view.findViewById(R.id.txtScanner);
         imgCaptured = view.findViewById(R.id.imgCaptured);
-
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -102,8 +113,26 @@ public class ScannerFragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_CODE);
             }
         });
+    }
 
-        return view;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Show the toolbar again when leaving the ScannerFragment
+        if (getActivity() != null) {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                toolbar.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void fetchUserAllergies() {
@@ -148,11 +177,8 @@ public class ScannerFragment extends Fragment {
 
         recognizer.process(image)
                 .addOnSuccessListener(text -> {
-                    String extractedText = text.getText();
-                    Log.d("ScannerFragment", "Extracted Text: " + extractedText); // Log the extracted text
-                    // Set the extracted text in txtScanner and highlight allergens
-                    txtScanner.setText(highlightAllergens(extractedText));
-                    checkAllergiesInText(extractedText);
+                    Log.d("ScannerFragment", "Extracted Text: " + text.getText()); // Log the extracted text
+                    checkAllergiesInText(text.getText()); // Proceed to check for allergies
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "Text recognition failed.", Toast.LENGTH_SHORT).show();
@@ -160,78 +186,31 @@ public class ScannerFragment extends Fragment {
                 });
     }
 
-    private SpannableString highlightAllergens(String text) {
-        SpannableString spannableString = new SpannableString(text);
-
-        // Highlight user allergies
-        for (String allergy : userAllergies) {
-            String lowerCaseAllergy = allergy.toLowerCase();
-            int index = text.toLowerCase().indexOf(lowerCaseAllergy);
-
-            while (index >= 0) {
-                spannableString.setSpan(new ForegroundColorSpan(Color.RED),
-                        index,
-                        index + allergy.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                index = text.toLowerCase().indexOf(lowerCaseAllergy, index + allergy.length());
-            }
-        }
-
-        // Highlight ingredients mapped to broader allergens
-        for (String ingredient : ingredientAllergenMap.keySet()) {
-            String lowerCaseIngredient = ingredient.toLowerCase();
-            int index = text.toLowerCase().indexOf(lowerCaseIngredient);
-
-            while (index >= 0) {
-                spannableString.setSpan(new ForegroundColorSpan(Color.RED),
-                        index,
-                        index + ingredient.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                index = text.toLowerCase().indexOf(lowerCaseIngredient, index + ingredient.length());
-            }
-        }
-
-        return spannableString;
-    }
-
-
-    // Add this HashMap to your ScannerFragment class to map ingredients to allergens
-    private static HashMap<String, String> ingredientAllergenMap = new HashMap<>();
-
-    static {
-        // Map specific ingredients to broader allergens (butter -> milk, cheese -> milk, etc.)
-        ingredientAllergenMap.put("butter", "dairy");
-        ingredientAllergenMap.put("cheese", "dairy");
-        ingredientAllergenMap.put("yogurt", "dairy");
-        // You can add more mappings for other allergens
-        ingredientAllergenMap.put("peanut butter", "peanuts");
-        ingredientAllergenMap.put("soy sauce", "soybeans");
-        ingredientAllergenMap.put("soy beans", "soybeans");
-        ingredientAllergenMap.put("soy milk", "soybeans");
-        ingredientAllergenMap.put("vegetable oil", "soybeans");
-        ingredientAllergenMap.put("sesame oil", "sesame");
-    }
-
-
-    // Modify the checkAllergiesInText method to check both the user's allergens and the ingredient mappings
     private void checkAllergiesInText(String text) {
         List<String> detectedAllergies = new ArrayList<>();
 
-        // First, check for direct allergens from the user's allergy list
+        // Normalize the text to lower case for comparison
+        String normalizedText = text.toLowerCase();
+
+        // Check for direct allergens from the user's allergy list
         for (String allergy : userAllergies) {
-            if (text.toLowerCase().contains(allergy.toLowerCase())) {
+            String normalizedAllergy = allergy.toLowerCase();
+
+            // Check if the normalized text contains the normalized allergy
+            if (normalizedText.contains(normalizedAllergy)) {
                 detectedAllergies.add(allergy);
             }
-        }
 
-        // Next, check for ingredients that map to broader allergens
-        for (String ingredient : ingredientAllergenMap.keySet()) {
-            if (text.toLowerCase().contains(ingredient.toLowerCase())) {
-                String mappedAllergen = ingredientAllergenMap.get(ingredient);
-
-                // If the user is allergic to the mapped allergen, add it to the detected allergens
-                if (userAllergies.contains(mappedAllergen)) {
-                    detectedAllergies.add(mappedAllergen);
+            // Additional check for singular/plural variations
+            if (normalizedAllergy.endsWith("s")) { // Check if allergy ends with 's'
+                String singularForm = normalizedAllergy.substring(0, normalizedAllergy.length() - 1); // Remove the 's'
+                if (normalizedText.contains(singularForm)) {
+                    detectedAllergies.add(allergy);
+                }
+            } else {
+                String pluralForm = normalizedAllergy + "s"; // Add 's' to form plural
+                if (normalizedText.contains(pluralForm)) {
+                    detectedAllergies.add(allergy);
                 }
             }
         }
@@ -253,7 +232,6 @@ public class ScannerFragment extends Fragment {
         TextView warningTitle = customView.findViewById(R.id.WarningTitle);
         TextView warningDesc = customView.findViewById(R.id.WarningDesc);
         Button warningDoneButton = customView.findViewById(R.id.WarningDone);
-
 
         // Build the message from detected allergies
         StringBuilder allergiesMessage = new StringBuilder();

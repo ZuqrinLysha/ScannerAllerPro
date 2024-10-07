@@ -11,5 +11,18 @@
     <color name="light_gray">#FAFAFF</color>
     <color name="red">#FF0000</color>
 
+    <color name="colorSuccess">#4BB543</color>
+    <color name="colorAlert">#FFDE21</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorNuetral">#434343</color>
+
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/softwhite</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+
+
+    </style>
+
 
 </resources>

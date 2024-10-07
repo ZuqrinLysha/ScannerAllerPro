@@ -83,14 +83,14 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.nav_home) {
+        if (itemId == R.id.about_us) {
             openFragment(new HomeFragment());
         } else if (itemId == R.id.nav_profile) {
             openFragment(new ProfileFragment());
-        } else if (itemId == R.id.nav_scanner) {
-            openFragment(new ScannerFragment());
-        } else if (itemId == R.id.nav_knowledge) {
-            openFragment(new KnowledgeFragment());
+        } else if (itemId == R.id.nav_emergency_contact) {
+            openFragment(new ViewContactFragment());
+        } else if (itemId == R.id.nav_allergic_history) {
+            openFragment(new AllergicHistoryFragment());
         } else if (itemId == R.id.LogOut) {
             // Show confirmation dialog before logging out
             new AlertDialog.Builder(this)

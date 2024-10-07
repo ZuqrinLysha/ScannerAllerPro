@@ -1,11 +1,30 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/light_gray">
 
+
+    <!-- Display Contact List using RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewContacts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="705dp"
+        android:layout_marginBottom="80dp"
+    android:background="@color/white" />
+
+    <!-- Floating Action Button to Add More Contacts -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="150dp"
+        android:layout_marginRight="50dp"
+        android:backgroundTint="@color/blue1"
+        android:contentDescription="Add New Contact"
+        android:elevation="8dp"
+        android:src="@drawable/baseline_person_add_24" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

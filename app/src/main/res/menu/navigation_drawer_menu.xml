@@ -7,9 +7,9 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
-            android:title="Home"
-            android:icon="@drawable/baseline_home_24" />
+            android:id="@+id/about_us"
+            android:title="About Us"
+            android:icon="@drawable/baseline_info_24" />
 
         <item
             android:id="@+id/nav_profile"
@@ -17,14 +17,15 @@
             android:icon="@drawable/baseline_person_24" />
 
         <item
-            android:id="@+id/nav_scanner"
-            android:title="Scanner"
-            android:icon="@drawable/baseline_qr_code_scanner_24" />
+            android:id="@+id/nav_emergency_contact"
+            android:title="Emergency Contact"
+            android:icon="@drawable/baseline_contact_phone_24" />
 
         <item
-            android:id="@+id/nav_knowledge"
-            android:title="knowledge"
-            android:icon="@drawable/baseline_menu_book_24" />
+            android:id="@+id/nav_allergic_history"
+            android:title="Allergic History"
+            android:icon="@drawable/baseline_health_and_safety" />
+
 
         <item
             android:id="@+id/LogOut"

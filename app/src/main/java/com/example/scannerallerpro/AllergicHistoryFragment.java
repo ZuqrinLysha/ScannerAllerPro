@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,10 +24,13 @@ import java.util.Map;
 
 public class AllergicHistoryFragment extends Fragment {
 
-    private CheckBox chkPeanuts, chkDairy, chkGluten, chkSeafood, chkEggs, chkSoy, chkSesame, chkWheat;
-    private Button btnSaveAllergies;
+    private CheckBox chkPeanuts, chkSoybeans, chkCashew, chkAlmond, chkWalnuts;
+    private CheckBox chkCowMilk, chkSoyMilk, chkButter, chkCheese, chkYogurt, chkCereal;
+    private CheckBox chkGluten, chkWheat, chkBarley;
+    private CheckBox chkCrab, chkPrawns, chkLobster, chkScallops, chkSalmon;
+    private CheckBox chkOliveOil, chkSunflowerOil, chkCanolaOil, chkVegetableOil, chkCoconutOil;
 
-    // Firebase Database reference
+    private EditText txtOtherAllergic;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private DatabaseReference usersRef;
@@ -35,23 +39,18 @@ public class AllergicHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_allergic_history, container, false);
 
-        // Initialize checkboxes
-        chkPeanuts = view.findViewById(R.id.chkPeanuts);
-        chkDairy = view.findViewById(R.id.chkDairy);
-        chkGluten = view.findViewById(R.id.chkGluten);
-        chkSeafood = view.findViewById(R.id.chkSeafood);
-        chkEggs = view.findViewById(R.id.chkEggs);
-        chkSoy = view.findViewById(R.id.chkSoy);
-        chkSesame = view.findViewById(R.id.chkSesame);
-        chkWheat = view.findViewById(R.id.chkWheat);
+        // Initialize CheckBoxes
+        initializeCheckBoxes(view);
 
-        // Save Button
-        btnSaveAllergies = view.findViewById(R.id.btnSaveAllergies);
-        btnSaveAllergies.setOnClickListener(v -> saveAllergicHistory());
+        // Initialize EditText
+        txtOtherAllergic = view.findViewById(R.id.txtOtherAllergic);
+
+        ImageButton btnSave = view.findViewById(R.id.btnSaveAllergic);
+        btnSave.setOnClickListener(v -> saveAllergicHistory());
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
-        String userEmail = auth.getCurrentUser().getEmail();
+        String userEmail = auth.getCurrentUser() != null ? auth.getCurrentUser().getEmail() : null;
 
         if (userEmail != null) {
             usersRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -65,7 +64,7 @@ public class AllergicHistoryFragment extends Fragment {
                             // Retrieve the full name of the user
                             String fullName = userSnapshot.child("fullName").getValue(String.class);
                             if (fullName != null) {
-                                // Set the Firebase reference using the fullName instead of userId
+                                // Set the Firebase reference using the fullName
                                 databaseReference = FirebaseDatabase.getInstance()
                                         .getReference("Users")
                                         .child(fullName)
@@ -88,21 +87,74 @@ public class AllergicHistoryFragment extends Fragment {
         return view;
     }
 
+    private void initializeCheckBoxes(View view) {
+        chkPeanuts = view.findViewById(R.id.chkPeanuts);
+        chkSoybeans = view.findViewById(R.id.chkSoybeans);
+        chkCashew = view.findViewById(R.id.chkCashew);
+        chkAlmond = view.findViewById(R.id.chkAlmond);
+        chkWalnuts = view.findViewById(R.id.chkWalnuts);
+
+        chkCowMilk = view.findViewById(R.id.chkCowMilk);
+        chkSoyMilk = view.findViewById(R.id.chkSoyMilk);
+        chkButter = view.findViewById(R.id.chkButter);
+        chkCheese = view.findViewById(R.id.chkCheese);
+        chkYogurt = view.findViewById(R.id.chkYogurt);
+        chkCereal = view.findViewById(R.id.chkCereal);
+
+        chkGluten = view.findViewById(R.id.chkGluten);
+        chkWheat = view.findViewById(R.id.chkWheat);
+        chkBarley = view.findViewById(R.id.chkBarley);
+
+        chkCrab = view.findViewById(R.id.chkCrab);
+        chkPrawns = view.findViewById(R.id.chkPrawns);
+        chkLobster = view.findViewById(R.id.chkLobster);
+        chkScallops = view.findViewById(R.id.chkScallops);
+        chkSalmon = view.findViewById(R.id.chkSalmon);
+
+        chkOliveOil = view.findViewById(R.id.chkOliveOil);
+        chkSunflowerOil = view.findViewById(R.id.chkSunflowerOil);
+        chkCanolaOil = view.findViewById(R.id.chkCanolaOil);
+        chkVegetableOil = view.findViewById(R.id.chkVegetableOil);
+        chkCoconutOil = view.findViewById(R.id.chkCoconutOil);
+    }
+
     private void saveAllergicHistory() {
         if (databaseReference == null) {
             Toast.makeText(getContext(), "Unable to save. Please try again later.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Map<String, Boolean> allergies = new HashMap<>();
+        Map<String, Object> allergies = new HashMap<>();
         allergies.put("peanuts", chkPeanuts.isChecked());
-        allergies.put("dairy", chkDairy.isChecked());
+        allergies.put("soybeans", chkSoybeans.isChecked());
+        allergies.put("cashew", chkCashew.isChecked());
+        allergies.put("almond", chkAlmond.isChecked());
+        allergies.put("walnuts", chkWalnuts.isChecked());
+        allergies.put("cowMilk", chkCowMilk.isChecked());
+        allergies.put("soyMilk", chkSoyMilk.isChecked());
+        allergies.put("butter", chkButter.isChecked());
+        allergies.put("cheese", chkCheese.isChecked());
+        allergies.put("yogurt", chkYogurt.isChecked());
+        allergies.put("cereal", chkCereal.isChecked());
         allergies.put("gluten", chkGluten.isChecked());
-        allergies.put("seafood", chkSeafood.isChecked());
-        allergies.put("eggs", chkEggs.isChecked());
-        allergies.put("soybeans", chkSoy.isChecked());
-        allergies.put("sesame", chkSesame.isChecked());
         allergies.put("wheat", chkWheat.isChecked());
+        allergies.put("barley", chkBarley.isChecked());
+        allergies.put("crab", chkCrab.isChecked());
+        allergies.put("prawns", chkPrawns.isChecked());
+        allergies.put("lobster", chkLobster.isChecked());
+        allergies.put("scallops", chkScallops.isChecked());
+        allergies.put("salmon", chkSalmon.isChecked());
+        allergies.put("oliveOil", chkOliveOil.isChecked());
+        allergies.put("sunflowerOil", chkSunflowerOil.isChecked());
+        allergies.put("canolaOil", chkCanolaOil.isChecked());
+        allergies.put("vegetableOil", chkVegetableOil.isChecked());
+        allergies.put("coconutOil", chkCoconutOil.isChecked());
+
+        // Add the user's additional input if it's not empty
+        String otherAllergic = txtOtherAllergic.getText().toString().trim();
+        if (!otherAllergic.isEmpty()) {
+            allergies.put("other", otherAllergic);
+        }
 
         if (!allergies.isEmpty()) {
             // Store data in Firebase
@@ -128,26 +180,74 @@ public class AllergicHistoryFragment extends Fragment {
                     chkPeanuts.setChecked(dataSnapshot.child("peanuts").getValue(Boolean.class) != null &&
                             dataSnapshot.child("peanuts").getValue(Boolean.class));
 
-                    chkDairy.setChecked(dataSnapshot.child("dairy").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("dairy").getValue(Boolean.class));
+                    chkSoybeans.setChecked(dataSnapshot.child("soybeans").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("soybeans").getValue(Boolean.class));
+
+                    chkCashew.setChecked(dataSnapshot.child("cashew").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("cashew").getValue(Boolean.class));
+
+                    chkAlmond.setChecked(dataSnapshot.child("almond").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("almond").getValue(Boolean.class));
+
+                    chkWalnuts.setChecked(dataSnapshot.child("walnuts").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("walnuts").getValue(Boolean.class));
+
+                    chkCowMilk.setChecked(dataSnapshot.child("cowMilk").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("cowMilk").getValue(Boolean.class));
+
+                    chkSoyMilk.setChecked(dataSnapshot.child("soyMilk").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("soyMilk").getValue(Boolean.class));
+
+                    chkButter.setChecked(dataSnapshot.child("butter").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("butter").getValue(Boolean.class));
+
+                    chkCheese.setChecked(dataSnapshot.child("cheese").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("cheese").getValue(Boolean.class));
+
+                    chkYogurt.setChecked(dataSnapshot.child("yogurt").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("yogurt").getValue(Boolean.class));
+
+                    chkCereal.setChecked(dataSnapshot.child("cereal").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("cereal").getValue(Boolean.class));
 
                     chkGluten.setChecked(dataSnapshot.child("gluten").getValue(Boolean.class) != null &&
                             dataSnapshot.child("gluten").getValue(Boolean.class));
 
-                    chkSeafood.setChecked(dataSnapshot.child("seafood").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("seafood").getValue(Boolean.class));
-
-                    chkEggs.setChecked(dataSnapshot.child("eggs").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("eggs").getValue(Boolean.class));
-
-                    chkSoy.setChecked(dataSnapshot.child("soybeans").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("soybeans").getValue(Boolean.class));
-
-                    chkSesame.setChecked(dataSnapshot.child("sesame").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("sesame").getValue(Boolean.class));
-
                     chkWheat.setChecked(dataSnapshot.child("wheat").getValue(Boolean.class) != null &&
                             dataSnapshot.child("wheat").getValue(Boolean.class));
+
+                    chkBarley.setChecked(dataSnapshot.child("barley").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("barley").getValue(Boolean.class));
+
+                    chkCrab.setChecked(dataSnapshot.child("crab").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("crab").getValue(Boolean.class));
+
+                    chkPrawns.setChecked(dataSnapshot.child("prawns").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("prawns").getValue(Boolean.class));
+
+                    chkLobster.setChecked(dataSnapshot.child("lobster").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("lobster").getValue(Boolean.class));
+
+                    chkScallops.setChecked(dataSnapshot.child("scallops").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("scallops").getValue(Boolean.class));
+
+                    chkSalmon.setChecked(dataSnapshot.child("salmon").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("salmon").getValue(Boolean.class));
+
+                    chkOliveOil.setChecked(dataSnapshot.child("oliveOil").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("oliveOil").getValue(Boolean.class));
+
+                    chkSunflowerOil.setChecked(dataSnapshot.child("sunflowerOil").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("sunflowerOil").getValue(Boolean.class));
+
+                    chkCanolaOil.setChecked(dataSnapshot.child("canolaOil").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("canolaOil").getValue(Boolean.class));
+
+                    chkVegetableOil.setChecked(dataSnapshot.child("vegetableOil").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("vegetableOil").getValue(Boolean.class));
+
+                    chkCoconutOil.setChecked(dataSnapshot.child("coconutOil").getValue(Boolean.class) != null &&
+                            dataSnapshot.child("coconutOil").getValue(Boolean.class));
                 }
             }
 

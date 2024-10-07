@@ -3,16 +3,22 @@ package com.example.scannerallerpro;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar; // Use this import
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +34,10 @@ import java.util.Map;
 
 public class AddContactFragment extends Fragment {
 
-    private Spinner spinnerRelationship, spinnerRole, spinnerMedicalCenter;
-    private EditText edtFamilyContactName, edtFamilyContactPhone, edtHealthcareContactName, edtHealthcarePhoneNumber, edtMedicalCenterName, edtMedicalCenterPhoneNumber;
-    private Button btnSave;
+    private Spinner spinnerRelationship;
+    private EditText edtContactName, edtPhone;
     private ContactViewModel contactViewModel;
+
 
     // Initialize Firebase
     private DatabaseReference databaseReference;
@@ -45,16 +51,16 @@ public class AddContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_contact, container, false);
 
         // Initialize views
-        spinnerRelationship = view.findViewById(R.id.spinnerRelationship);
-        spinnerRole = view.findViewById(R.id.spinnerRole);
-        spinnerMedicalCenter = view.findViewById(R.id.spinnerMedicalCenter);
-        edtFamilyContactName = view.findViewById(R.id.edtFamilyContactName);
-        edtFamilyContactPhone = view.findViewById(R.id.edtFamilyContactPhone);
-        edtHealthcareContactName = view.findViewById(R.id.edtHealthcareContactName);
-        edtHealthcarePhoneNumber = view.findViewById(R.id.edtHealthcarePhoneNumber);
-        edtMedicalCenterName = view.findViewById(R.id.edtMedicalCenterName);
-        edtMedicalCenterPhoneNumber = view.findViewById(R.id.edtMedicalCenterPhoneNumber);
-        btnSave = view.findViewById(R.id.btnAddFamilyMember);
+        spinnerRelationship = view.findViewById(R.id.relationship_options);
+        edtContactName = view.findViewById(R.id.edtContactName);
+        edtPhone = view.findViewById(R.id.edtPhone);
+        // Initialize views
+        ImageButton buttonCancel = view.findViewById(R.id.button_cancel);
+        ImageButton buttonSave = view.findViewById(R.id.button_save);
+
+        buttonCancel.setOnClickListener(v -> navigateToViewContactFragment()); // Navigate back when clicked
+        buttonSave.setOnClickListener(v -> saveContact()); // Save contact when clicked
+
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -69,42 +75,26 @@ public class AddContactFragment extends Fragment {
         // Retrieve user's email
         retrieveUserEmail();
 
-        // Add contact on button click
-        btnSave.setOnClickListener(v -> saveContact());
+
 
         return view;
     }
+
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> relationshipAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.relationship_options, android.R.layout.simple_spinner_item);
         relationshipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRelationship.setAdapter(relationshipAdapter);
-
-        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.healthcare_options, android.R.layout.simple_spinner_item);
-        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRole.setAdapter(roleAdapter);
-
-        ArrayAdapter<CharSequence> medicalCenterAdapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.medical_center_options, android.R.layout.simple_spinner_item);
-        medicalCenterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMedicalCenter.setAdapter(medicalCenterAdapter);
     }
 
     private void saveContact() {
-        String familyContactName = edtFamilyContactName.getText().toString();
-        String familyPhoneNumber = edtFamilyContactPhone.getText().toString();
-        String healthcareContactName = edtHealthcareContactName.getText().toString();
-        String healthcarePhoneNumber = edtHealthcarePhoneNumber.getText().toString();
-        String medicalCenterName = edtMedicalCenterName.getText().toString();
-        String medicalCenterPhoneNumber = edtMedicalCenterPhoneNumber.getText().toString();
+        String contactName = edtContactName.getText().toString(); // Keep the variable name
+        String phone = edtPhone.getText().toString(); // Keep the variable name
         String relationship = spinnerRelationship.getSelectedItem().toString();
-        String role = spinnerRole.getSelectedItem().toString();
-        String medicalCenter = spinnerMedicalCenter.getSelectedItem().toString();
 
         // Validation
-        if (TextUtils.isEmpty(familyContactName) || TextUtils.isEmpty(familyPhoneNumber)) {
+        if (TextUtils.isEmpty(contactName) || TextUtils.isEmpty(phone)) {
             Toast.makeText(getContext(), "Please fill in all family contact fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -124,20 +114,17 @@ public class AddContactFragment extends Fragment {
 
                                 // Create a map to store the contact data
                                 Map<String, Object> contactData = new HashMap<>();
-                                contactData.put("family_name", familyContactName);
-                                contactData.put("family_phone", familyPhoneNumber);
-                                contactData.put("healthcare_name", healthcareContactName);
-                                contactData.put("healthcare_phone", healthcarePhoneNumber);
-                                contactData.put("healthcare_role", role);
-                                contactData.put("medical_center_name", medicalCenterName);
-                                contactData.put("medical_center_phone", medicalCenterPhoneNumber);
+                                contactData.put("contact_name", contactName); // Use contactName instead of edtContactName
+                                contactData.put("no_phone", phone); // Use phone instead of edtPhone
+                                contactData.put("relationship", relationship); // use relationship instead of spinnerRelationship
 
                                 // Store contact data in Firebase
                                 contactRef.setValue(contactData)
                                         .addOnSuccessListener(aVoid -> {
-                                            contactViewModel.addContact(new ContactViewModel.Contact(familyContactName, familyPhoneNumber, relationship));
+                                            contactViewModel.addContact(new ContactViewModel.Contact(contactName, phone, relationship));
                                             Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
-                                            clearInputFields();
+                                            clearInputFields(); // Clear fields after saving
+                                            navigateToViewContactFragment(); // Navigate after successful save
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -158,12 +145,8 @@ public class AddContactFragment extends Fragment {
     }
 
     private void clearInputFields() {
-        edtFamilyContactName.setText("");
-        edtFamilyContactPhone.setText("");
-        edtHealthcareContactName.setText("");
-        edtHealthcarePhoneNumber.setText("");
-        edtMedicalCenterName.setText("");
-        edtMedicalCenterPhoneNumber.setText("");
+        edtContactName.setText("");
+        edtPhone.setText("");
     }
 
     // Method to retrieve user's email from Firebase
@@ -172,5 +155,14 @@ public class AddContactFragment extends Fragment {
         if (currentUser != null) {
             userEmail = currentUser.getEmail(); // Get user email directly
         }
+    }
+
+    // Method to navigate back to ViewContactFragment
+    private void navigateToViewContactFragment() {
+        Fragment viewContactFragment = new ViewContactFragment();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, viewContactFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

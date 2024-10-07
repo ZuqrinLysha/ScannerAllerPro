@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +32,10 @@ public class ViewContactFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_contact_, container, false);
 
+
+        // Hide the Toolbar
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().hide(); // Hides the Toolbar
+
         // Initialize RecyclerView
         recyclerViewContacts = view.findViewById(R.id.recyclerViewContacts);
         recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -51,18 +56,38 @@ public class ViewContactFragment extends Fragment {
         contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<ContactViewModel.Contact>>() {
             @Override
             public void onChanged(List<ContactViewModel.Contact> contacts) {
-                contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
-                    @Override
-                    public void onDeleteContact(ContactViewModel.Contact contact) {
-                        showDeleteConfirmationDialog(contact);// Remove contact using ViewModel
-                    }
+                if (contactAdapter == null) { // Handle initial data load
+                    contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
+                        @Override
+                        public void onDeleteContact(ContactViewModel.Contact contact) {
+                            showDeleteConfirmationDialog(contact); // Remove contact using ViewModel
+                        }
 
+                        public void onContactSelected(ContactViewModel.Contact contact) {
+                            // Handle contact selection here
+                        }
+                    }, getContext());
+                    recyclerViewContacts.setAdapter(contactAdapter);
+                } else {
+                    // Update existing adapter with new data
+                    contactAdapter.updateContacts(contacts);
+                }
+            }
+        });
 
-                    public void onContactSelected(ContactViewModel.Contact contact) {
-                        // Handle contact selection here
-                    }
-                }, getContext());
-                recyclerViewContacts.setAdapter(contactAdapter);
+        // Floating Action Button for Adding Contacts
+        com.google.android.material.floatingactionbutton.FloatingActionButton fabAddContact = view.findViewById(R.id.fabAddContact);
+        fabAddContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to AddContactFragment when FAB is clicked
+                Fragment addContactFragment = new AddContactFragment(); // Ensure you have this fragment
+
+                // Use FragmentTransaction to navigate
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, addContactFragment) // R.id.fragment_container should be the ID of the container where the fragment is displayed
+                        .addToBackStack(null) // This adds the transaction to the back stack
+                        .commit();
             }
         });
 
@@ -73,6 +98,7 @@ public class ViewContactFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadContactsFromFirebase(); // Refresh contacts when the fragment is resumed
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().hide(); // Ensure the Toolbar is hidden
     }
 
     // Method to load contacts from Firebase

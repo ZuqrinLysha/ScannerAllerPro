@@ -1,178 +1,135 @@
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:orientation="vertical"
     android:background="@color/light_gray">
 
-    <!-- Inner LinearLayout to contain all the views -->
+    <!-- Top Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- Family Member Section -->
-        <TextView
-            android:id="@+id/txtFamilyMembers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/baseline_family_24"
-            android:drawablePadding="8dp"
-            android:text="Family Member"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edtFamilyContactName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Name"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <EditText
-            android:id="@+id/edtFamilyContactPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/txtChooseRelationship"
-            android:layout_width="wrap_content"
+            android:id="@+id/title_contact"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Please choose a relationship:"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:text="New Contact"
+            android:textSize="30sp"
+            android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/spinnerRelationship"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/white" />
+        <ImageButton
+            android:id="@+id/button_cancel"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Cancel"
+            android:src="@drawable/baseline_cancel_24" />
 
-        <!-- Allergy and Healthcare Professionals Section -->
-        <TextView
-            android:id="@+id/txtHealthcareProfessionals"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/baseline_health_and_safety"
-            android:drawablePadding="8dp"
-            android:text="Allergy And Healthcare Professionals"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edtHealthcareContactName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Name"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <EditText
-            android:id="@+id/edtHealthcarePhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <TextView
-            android:id="@+id/txtChooseRole"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Please choose a role:"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Spinner
-            android:id="@+id/spinnerRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/white"
-            android:entries="@array/healthcare_options"/>
-
-        <!-- Medical Center Section -->
-        <TextView
-            android:id="@+id/txtMedicalCenter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/baseline_local_hospital_24"
-            android:drawablePadding="8dp"
-            android:text="Medical Center"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edtMedicalCenterName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Medical Center Name"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <EditText
-            android:id="@+id/edtMedicalCenterPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:background="@color/white" />
-
-        <TextView
-            android:id="@+id/txtChooseMedicalCenter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Please choose a medical center:"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Spinner
-            android:id="@+id/spinnerMedicalCenter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:background="@color/white"
-            android:entries="@array/medical_center_options" />
-
-        <!-- Save Button -->
-        <Button
-            android:id="@+id/btnAddFamilyMember"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/blue1"
-            android:text="SAVE"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
+        <ImageButton
+            android:id="@+id/button_save"
+            android:layout_width="53dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Save"
+            android:src="@drawable/baseline_save_24" />
     </LinearLayout>
-</ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/contactForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Name Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:padding="8dp"
+                    android:background="@color/softblue">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="46dp"
+                        android:src="@drawable/baseline_person_24" />
+
+                    <EditText
+                        android:id="@+id/edtContactName"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:hint=" Input Name"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:padding="8dp"
+                    android:background="@color/softblue">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="39dp"
+                        android:src="@drawable/baseline_phone_24" />
+
+                    <EditText
+                        android:id="@+id/edtPhone"
+                        android:layout_width="332dp"
+                        android:layout_height="51dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:hint=" +60 xxxxxxxxxx"
+                        android:inputType="phone"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- Relationship Section (Spinner) -->
+                <TextView
+                    android:id="@+id/txtChooseRelationship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Relationship"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/relationship_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/spinner_background"
+                    android:padding="8dp"
+                    android:popupBackground="@color/softblue" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+</LinearLayout>

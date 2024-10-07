@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity {
 
-    EditText txtFullNameSignUp, txtEmailSignUp, txtUsernameSignUp, txtPasswordSignUp, txtConfirmPssSignUp, txtPhoneNumberSignUp;
+    EditText txtFullNameSignUp, txtEmailSignUp, txtPasswordSignUp, txtConfirmPssSignUp, txtPhoneNumberSignUp;
     TextView txtSignUp;
     Button btnSignUp;
     ImageView imgTogglePassword, imgToggleConfirmPassword;
@@ -43,7 +43,6 @@ public class SignUp extends AppCompatActivity {
         // Initializing the views
         txtFullNameSignUp = findViewById(R.id.txtFullNameSignUp);
         txtEmailSignUp = findViewById(R.id.txtEmailSignUp);
-        txtUsernameSignUp = findViewById(R.id.txtUsernameSignUp);
         txtPasswordSignUp = findViewById(R.id.txtPasswordSignUp);
         txtConfirmPssSignUp = findViewById(R.id.txtConfirmPssSignUp);
         txtPhoneNumberSignUp = findViewById(R.id.txtPhoneNumberSignUp);
@@ -61,13 +60,12 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 String fullName = txtFullNameSignUp.getText().toString().trim();
                 String email = txtEmailSignUp.getText().toString().trim();
-                String username = txtUsernameSignUp.getText().toString().trim();
                 String password = txtPasswordSignUp.getText().toString().trim();
                 String confirmPassword = txtConfirmPssSignUp.getText().toString().trim();
                 String phoneNumber = txtPhoneNumberSignUp.getText().toString().trim();
 
                 // Validate input fields
-                if (fullName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
+                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
                     Toast.makeText(SignUp.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -92,7 +90,6 @@ public class SignUp extends AppCompatActivity {
                                     HashMap<String, Object> userData = new HashMap<>();
                                     userData.put("fullName", fullName);
                                     userData.put("email", email);
-                                    userData.put("username", username);
                                     userData.put("phoneNumber", phoneNumber);
 
                                     // Use unique keys for storing password and confirm password

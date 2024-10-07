@@ -70,19 +70,6 @@
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background" />
 
-                <EditText
-                    android:id="@+id/txtUsernameSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_person_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Username"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
-
                 <!-- Phone Number EditText -->
 
                 <EditText
