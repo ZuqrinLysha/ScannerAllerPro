@@ -24,7 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScannerAllerPro"
         tools:targetApi="31">
-
+        <activity
+            android:name=".AboutUs"
+            android:exported="false" />
         <activity
             android:name=".Profile"
             android:exported="false" />
@@ -47,5 +49,7 @@
             android:name=".SignUp"
             android:exported="true" />
     </application>
+
+
 
 </manifest>

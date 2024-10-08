@@ -84,7 +84,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.about_us) {
-            openFragment(new HomeFragment());
+            openFragment(new AboutUsFragment());
         } else if (itemId == R.id.nav_profile) {
             openFragment(new ProfileFragment());
         } else if (itemId == R.id.nav_emergency_contact) {
