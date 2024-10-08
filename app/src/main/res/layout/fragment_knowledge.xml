@@ -15,14 +15,14 @@
         <!-- Header Section -->
         <TextView
             android:id="@+id/txtKnowledge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:gravity="center"
+            android:background="@drawable/knowledge_background"
             android:text="Let's Learn!"
-            android:textColor="@color/black"
+            android:textColor="#5D4D53"
             android:textSize="32sp"
             android:textStyle="bold" />
 
@@ -36,13 +36,13 @@
             android:elevation="4dp"
             app:cardElevation="10dp"
             app:cardCornerRadius="20dp"
-            app:contentPadding="2dp">
+            app:contentPadding="2dp"> <!-- Set corner radius here -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/med_info"
@@ -53,17 +53,87 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/med_info_details"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine.\n\n2. Epinephrine:\nUsed for severe allergic reactions (anaphylaxis).\nAlways carry an EpiPen if you have a known severe allergy.\n\n3. Corticosteroids:\nPrescribed for severe reactions or for managing inflammation.\nUsed under the guidance of a healthcare provider.\nExamples: Prednisone."
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textMultiLine"
-                    android:visibility="gone"/>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
 
+                    <TextView
+                        android:id="@+id/med_first"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine."
+                        android:textSize="18sp"
+                        android:layout_marginTop="4dp"
+                        android:inputType="textMultiLine"/>
+
+                    <ImageView
+                        android:id="@+id/image_view1"
+                        android:layout_width="90dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="25dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/antihistamine" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/med_second"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:text="2. Epinephrine:\nUsed for severe allergic reactions (anaphylaxis).\nAlways carry an EpiPen if you have a known severe allergy."
+                        android:textSize="18sp"
+                        android:layout_marginTop="4dp"
+                        android:inputType="textMultiLine"/>
+
+                    <ImageView
+                        android:id="@+id/image_view2"
+                        android:layout_width="90dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="25dp"
+                        android:src="@drawable/epinephrine"
+                        android:scaleType="centerCrop"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/med_third"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:text="3. Corticosteroids:\nPrescribed for severe reactions or for managing inflammation.\nUsed under the guidance of a healthcare provider.\nExamples: Prednisone"
+                        android:textSize="18sp"
+                        android:layout_marginTop="4dp"
+                        android:inputType="textMultiLine"/>
+
+                    <ImageView
+                        android:id="@+id/image_view3"
+                        android:layout_width="90dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="25dp"
+                        android:src="@drawable/prednisone"
+                        android:scaleType="centerCrop"/>
+
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
