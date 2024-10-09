@@ -4,22 +4,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog; // Import AlertDialog
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,54 +26,47 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     FragmentManager fragmentManager;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        // Remove toolbar title
-        getSupportActionBar().setTitle(""); // This removes the title
-
+        // Initialize DrawerLayout
         drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+                this, drawerLayout, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Initialize NavigationView
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setBackground(null);
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int itemId = item.getItemId();
-                if (itemId == R.id.home) {
-                    openFragment(new HomeFragment());
-                    return true;
-                } else if (itemId == R.id.scanner) {
-                    openFragment(new ScannerFragment());
-                    return true;
-                } else if (itemId == R.id.knowledge) {
-                    openFragment(new KnowledgeFragment());
-                    return true;
-                } else if (itemId == R.id.profile) {
-                    openFragment(new ProfileFragment());
-                    return true;
-                }
-
-                return false;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.home) {
+                openFragment(new HomeFragment()); // HomeFragment now contains the toolbar
+                return true;
+            } else if (item.getItemId() == R.id.scanner) {
+                openFragment(new ScannerFragment());
+                return true;
+            } else if (item.getItemId() == R.id.knowledge) {
+                openFragment(new KnowledgeFragment());
+                return true;
+            } else if (item.getItemId() == R.id.profile) {
+                openFragment(new ProfileFragment());
+                return true;
             }
+            return false;
         });
 
+        // Initialize FragmentManager and open the default fragment
         fragmentManager = getSupportFragmentManager();
         openFragment(new HomeFragment());
     }
@@ -140,4 +131,5 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }

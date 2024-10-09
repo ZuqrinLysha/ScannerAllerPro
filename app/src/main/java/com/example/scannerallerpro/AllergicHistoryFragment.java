@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,8 +46,11 @@ public class AllergicHistoryFragment extends Fragment {
         // Initialize EditText
         txtOtherAllergic = view.findViewById(R.id.txtOtherAllergic);
 
-        ImageButton btnSave = view.findViewById(R.id.btnSaveAllergic);
+        ImageButton btnSave = view.findViewById(R.id.button_save);
         btnSave.setOnClickListener(v -> saveAllergicHistory());
+
+        ImageButton btnBack = view.findViewById(R.id.backArrow);
+        btnBack.setOnClickListener(v -> navigateBack());
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -85,6 +89,15 @@ public class AllergicHistoryFragment extends Fragment {
         }
 
         return view;
+    }
+
+    // Method to navigate back to HomeFragment
+    private void navigateBack() {
+        Fragment homeFragment = new HomeFragment(); // Create an instance of HomeFragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, homeFragment); // Assuming you have a container with this ID
+        transaction.addToBackStack(null); // Optional: Add to back stack
+        transaction.commit();
     }
 
     private void initializeCheckBoxes(View view) {

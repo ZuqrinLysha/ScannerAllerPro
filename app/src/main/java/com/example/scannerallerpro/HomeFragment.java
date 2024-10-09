@@ -7,16 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class HomeFragment extends Fragment {
 
     private ViewPager2 viewPager;
-    private int[] images = {R.drawable.poster1, R.drawable.poster2, R.drawable.poster3,
-            R.drawable.poster4, R.drawable.poster5, R.drawable.poster6, R.drawable.poster7}; // Your image resources
+    private int[] images = {
+            R.drawable.poster1, R.drawable.poster2, R.drawable.poster3,
+            R.drawable.poster4, R.drawable.poster5, R.drawable.poster6, R.drawable.poster7
+    }; // Your image resources
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
     private Handler handler;
     private Runnable runnable;
     private int currentPage = 0;
@@ -27,6 +35,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Initialize Toolbar
+        toolbar = view.findViewById(R.id.toolbarHomePage);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle(""); // Remove the title from the toolbar
+
+        // Set navigation icon for the toolbar
+        toolbar.setNavigationIcon(R.drawable.baseline_menu); // Replace with your drawable resource
+        toolbar.setNavigationOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        // Initialize DrawerLayout
+        drawerLayout = requireActivity().findViewById(R.id.drawerLayout);
+
+        // Initialize ViewPager2
         viewPager = view.findViewById(R.id.newsSlider);
         ImageSliderAdapter adapter = new ImageSliderAdapter(images);
         viewPager.setAdapter(adapter);
@@ -38,6 +65,10 @@ public class HomeFragment extends Fragment {
         setupAutoSliding();
 
         return view;
+    }
+
+    private void clearToolbarTitle() {
+        toolbar.setTitle(""); // Set the title to an empty string
     }
 
     private void setupCardViewListeners(View view) {
@@ -59,7 +90,7 @@ public class HomeFragment extends Fragment {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (currentPage == images.length) {
+                if (currentPage >= images.length) {
                     currentPage = 0; // Reset to the first image
                 }
                 viewPager.setCurrentItem(currentPage++, true); // Slide to the next image
@@ -69,7 +100,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction(); // Use getParentFragmentManager() for fragments
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

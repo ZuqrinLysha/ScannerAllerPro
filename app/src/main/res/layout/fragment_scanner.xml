@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/light_gray"
     tools:context=".ScannerFragment">
+
+    <!-- Include the scanner toolbar -->
+    <include
+        layout="@layout/toolbar_scanner"
+        android:id="@+id/toolbarScanner" /> <!-- Assign an ID to the toolbar for reference -->
 
     <!-- ImageView for the captured image -->
     <ImageView
@@ -14,44 +18,46 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:visibility="gone" /> <!-- Initially hidden -->
+        android:visibility="gone"
+        android:layout_below="@id/toolbarScanner" /> <!-- Position below the toolbar -->
 
     <!-- Scroll View -->
     <ScrollView
-        android:layout_above="@+id/Linear_Hold"
+        android:layout_above="@id/Linear_Hold"
         android:layout_below="@id/imgCaptured"
-    android:layout_marginTop="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/txtScanner"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"> <!-- Adjust height to fill available space -->
+
+        <TextView
+            android:id="@+id/txtScanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Please capture the list of ingredients"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/Linear_Hold"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/btnCapture"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Please capture the list of ingredients"
-        android:textColor="@color/black"
-        android:textSize="22sp" />
-
-</ScrollView>
-
-<LinearLayout
-android:id="@+id/Linear_Hold"
-android:layout_alignParentBottom="true"
-android:layout_marginBottom="100dp"
-android:layout_width="match_parent"
-android:layout_height="wrap_content">
-
-<Button
-    android:id="@+id/btnCapture"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Capture"
-    android:layout_margin="8dp"/>
+        android:layout_weight="1"
+        android:layout_marginEnd="20dp"
+        android:text="Capture"
+        android:layout_margin="8dp" />
 </LinearLayout>
 
     </RelativeLayout>

@@ -3,9 +3,6 @@ package com.example.scannerallerpro;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar; // Use this import
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,7 +34,7 @@ public class AddContactFragment extends Fragment {
     private Spinner spinnerRelationship;
     private EditText edtContactName, edtPhone;
     private ContactViewModel contactViewModel;
-
+    private ImageButton buttonSave;
 
     // Initialize Firebase
     private DatabaseReference databaseReference;
@@ -50,17 +47,22 @@ public class AddContactFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_contact, container, false);
 
+        // Initialize the Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbarAddContact);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+
         // Initialize views
         spinnerRelationship = view.findViewById(R.id.relationship_options);
         edtContactName = view.findViewById(R.id.edtContactName);
         edtPhone = view.findViewById(R.id.edtPhone);
-        // Initialize views
-        ImageButton buttonCancel = view.findViewById(R.id.button_cancel);
-        ImageButton buttonSave = view.findViewById(R.id.button_save);
+        buttonSave = view.findViewById(R.id.button_save); // Initialize the button
 
-        buttonCancel.setOnClickListener(v -> navigateToViewContactFragment()); // Navigate back when clicked
-        buttonSave.setOnClickListener(v -> saveContact()); // Save contact when clicked
+        // Initialize back arrow button
+        ImageButton backArrow = view.findViewById(R.id.backArrow);
 
+        // Set click listeners for the buttons
+        backArrow.setOnClickListener(v -> navigateToViewContactFragment());
+        buttonSave.setOnClickListener(v -> saveContact());
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -75,11 +77,8 @@ public class AddContactFragment extends Fragment {
         // Retrieve user's email
         retrieveUserEmail();
 
-
-
         return view;
     }
-
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> relationshipAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -89,8 +88,8 @@ public class AddContactFragment extends Fragment {
     }
 
     private void saveContact() {
-        String contactName = edtContactName.getText().toString(); // Keep the variable name
-        String phone = edtPhone.getText().toString(); // Keep the variable name
+        String contactName = edtContactName.getText().toString();
+        String phone = edtPhone.getText().toString();
         String relationship = spinnerRelationship.getSelectedItem().toString();
 
         // Validation
@@ -106,25 +105,21 @@ public class AddContactFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            // Retrieve the full name of the user
                             String fullName = userSnapshot.child("fullName").getValue(String.class);
                             if (fullName != null) {
-                                // Set the Firebase reference using the fullName
                                 DatabaseReference contactRef = databaseReference.child(fullName).child("ContactData").push();
 
-                                // Create a map to store the contact data
                                 Map<String, Object> contactData = new HashMap<>();
-                                contactData.put("contact_name", contactName); // Use contactName instead of edtContactName
-                                contactData.put("no_phone", phone); // Use phone instead of edtPhone
-                                contactData.put("relationship", relationship); // use relationship instead of spinnerRelationship
+                                contactData.put("contact_name", contactName);
+                                contactData.put("no_phone", phone);
+                                contactData.put("relationship", relationship);
 
-                                // Store contact data in Firebase
                                 contactRef.setValue(contactData)
                                         .addOnSuccessListener(aVoid -> {
                                             contactViewModel.addContact(new ContactViewModel.Contact(contactName, phone, relationship));
                                             Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
-                                            clearInputFields(); // Clear fields after saving
-                                            navigateToViewContactFragment(); // Navigate after successful save
+                                            clearInputFields();
+                                            navigateToViewContactFragment();
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -149,15 +144,13 @@ public class AddContactFragment extends Fragment {
         edtPhone.setText("");
     }
 
-    // Method to retrieve user's email from Firebase
     private void retrieveUserEmail() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
-            userEmail = currentUser.getEmail(); // Get user email directly
+            userEmail = currentUser.getEmail();
         }
     }
 
-    // Method to navigate back to ViewContactFragment
     private void navigateToViewContactFragment() {
         Fragment viewContactFragment = new ViewContactFragment();
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

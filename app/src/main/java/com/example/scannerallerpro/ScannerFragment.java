@@ -5,27 +5,26 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +55,7 @@ public class ScannerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_scanner, container, false);
     }
 
@@ -63,11 +63,22 @@ public class ScannerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Hide the toolbar when entering the ScannerFragment
+        // Initialize the Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbarScanner); // Use the correct ID from the layout
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle(""); // Remove the title from the toolbar
+
+        ImageButton btnBack = view.findViewById(R.id.backArrow);
+        btnBack.setOnClickListener(v -> navigateBack());
+
+        // Handle back button press
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+
+        // Hide the main toolbar when entering the ScannerFragment
         if (getActivity() != null) {
-            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                toolbar.setVisibility(View.GONE);
+            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage); // Assuming this is the ID of the main toolbar
+            if (mainToolbar != null) {
+                mainToolbar.setVisibility(View.GONE);
             }
         }
 
@@ -114,25 +125,27 @@ public class ScannerFragment extends Fragment {
             }
         });
     }
+    // Method to navigate back to HomeFragment
+    private void navigateBack() {
+        Fragment homeFragment = new HomeFragment(); // Create an instance of HomeFragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, homeFragment); // Assuming you have a container with this ID
+        transaction.addToBackStack(null); // Optional: Add to back stack
+        transaction.commit();
+    }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        // Show the toolbar again when leaving the ScannerFragment
+        // Show the main toolbar again when leaving the ScannerFragment
         if (getActivity() != null) {
-            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                toolbar.setVisibility(View.VISIBLE);
+            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarScanner);
+            if (mainToolbar != null) {
+                mainToolbar.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     private void fetchUserAllergies() {
@@ -233,27 +246,24 @@ public class ScannerFragment extends Fragment {
         TextView warningDesc = customView.findViewById(R.id.WarningDesc);
         Button warningDoneButton = customView.findViewById(R.id.WarningDone);
 
-        // Build the message from detected allergies
-        StringBuilder allergiesMessage = new StringBuilder();
+        // Set the title and description
+        warningTitle.setText("Allergy Alert!");
+        StringBuilder descriptionBuilder = new StringBuilder("The following allergens were detected:\n");
         for (String allergy : detectedAllergies) {
-            allergiesMessage.append(allergy).append("\n");
+            descriptionBuilder.append("- ").append(allergy).append("\n");
         }
+        warningDesc.setText(descriptionBuilder.toString());
 
-        // Set the static text along with the detected allergies
-        String fullMessage = "This ingredient contains the Allergic Reaction:\n" + allergiesMessage.toString();
-        warningDesc.setText(fullMessage); // Set the message in the WarningDesc TextView
+        // Create the AlertDialog
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogBuilder.setView(customView);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
 
-        // Create an AlertDialog builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(customView); // Set the custom view for the dialog
-
-        // Create the dialog
-        AlertDialog alertDialog = builder.create();
-
-        // Set the button listener to dismiss the dialog
+        // Handle the done button click
         warningDoneButton.setOnClickListener(v -> alertDialog.dismiss());
 
-        // Show the dialog
+// Show the dialog
         alertDialog.show();
     }
 }

@@ -9,26 +9,8 @@
     tools:context=".AllergicHistoryFragment"
     android:background="@color/light_gray">
 
-
-    <!-- Header Section -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/softblue"
-        app:title="Allergic History"
-        app:titleTextColor="@android:color/white">
-
-        <!-- ImageButton for Save -->
-        <ImageButton
-            android:id="@+id/btnSaveAllergic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:src="@drawable/baseline_save_24"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="20dp" />
-    </androidx.appcompat.widget.Toolbar>
+    <!-- Toolbar at the top -->
+    <include layout="@layout/toolbar_allergic_history" />
 
     <!-- Instructional Text -->
     <TextView
@@ -320,6 +302,13 @@
                 android:ems="10"
                 android:inputType="text"
                 android:hint="Please state here your allergic ingredients" />
+
+            <EditText
+                android:id="@+id/txtsaja"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text" />
 
 
         </LinearLayout>

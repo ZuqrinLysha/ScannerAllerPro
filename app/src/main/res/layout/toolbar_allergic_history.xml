@@ -1,0 +1,48 @@
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbarAddContact"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/softblue"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Back arrow icon -->
+        <ImageButton
+            android:id="@+id/backArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:contentDescription="Back"
+            android:layout_marginEnd="8dp" /> <!-- Margin for spacing -->
+
+        <!-- Centered Title -->
+        <TextView
+            android:id="@+id/titleADD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Allergic History"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_gravity="center" />
+
+
+        <ImageButton
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/baseline_save_24"
+            android:background="@drawable/button_background"
+            android:contentDescription="Save" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.Toolbar>

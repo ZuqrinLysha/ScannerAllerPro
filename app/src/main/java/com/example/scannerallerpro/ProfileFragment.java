@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
+
         // Set up UI elements
         switchDarkMode = rootView.findViewById(R.id.switch_dark_mode);
         displayHeight = rootView.findViewById(R.id.display_height);
@@ -86,8 +87,15 @@ public class ProfileFragment extends Fragment {
         cvWeight.setOnClickListener(v -> showInputDialog("Enter Your Weight", "weight"));
         cvBloodType.setOnClickListener(v -> showInputDialog("Enter Your Blood Type", "bloodType"));
         cvChangePhone.setOnClickListener(v -> showInputDialog("Enter New Phone Number", "phone"));
-        cvChangePassword.setOnClickListener(v -> showInputDialog("Enter New Password", "password"));
+        cvChangePassword.setOnClickListener(v -> navigateToChangePasswordFragment());
         cvDeleteAccount.setOnClickListener(v -> confirmDeleteAccount());
+    }
+
+    private void navigateToChangePasswordFragment() {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new ChangePasswordFragment());
+        transaction.addToBackStack(null); // Optional: Add to back stack for navigation
+        transaction.commit();
     }
 
     private void loadDarkModePreference() {
@@ -108,10 +116,11 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+
     private void setupToolbarAndDrawer() {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null) {
-            Toolbar toolbar = activity.findViewById(R.id.toolbar);
+            Toolbar toolbar = activity.findViewById(R.id.toolbarHomePage);
             activity.setSupportActionBar(toolbar);
 
             DrawerLayout drawerLayout = activity.findViewById(R.id.drawerLayout);
@@ -206,10 +215,10 @@ public class ProfileFragment extends Fragment {
     private void updateTextView(String field, String value) {
         switch (field) {
             case "height":
-                displayHeight.setText(value);
+                displayHeight.setText(value + " cm"); // Append " cm" for height
                 break;
             case "weight":
-                displayWeight.setText(value);
+                displayWeight.setText(value + " kg"); // Append " kg" for weight
                 break;
             case "bmi":
                 displayBmi.setText(value);

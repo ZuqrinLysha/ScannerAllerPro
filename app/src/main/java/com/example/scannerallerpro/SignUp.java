@@ -91,14 +91,7 @@ public class SignUp extends AppCompatActivity {
                                     userData.put("fullName", fullName);
                                     userData.put("email", email);
                                     userData.put("phoneNumber", phoneNumber);
-
-                                    // Use unique keys for storing password and confirm password
-                                    HashMap<String, String> passwords = new HashMap<>();
-                                    passwords.put("password", password);
-                                    passwords.put("confirmPassword", confirmPassword);
-
-                                    // Store the passwords under a separate node for security (optional)
-                                    userData.put("passwords", passwords);
+                                    userData.put("password", password); // Store only the password
 
                                     // Save user info in the Realtime Database using user UID as the key
                                     reference.child(user.getUid()).setValue(userData)

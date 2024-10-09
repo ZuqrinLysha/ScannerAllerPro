@@ -5,14 +5,17 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
+    <!-- Toolbar at the top -->
+    <include layout="@layout/toolbar__view_contact" />
 
     <!-- Display Contact List using RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewContacts"
         android:layout_width="match_parent"
-        android:layout_height="705dp"
+        android:layout_height="640dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="80dp"
-    android:background="@color/white" />
+        android:background="@color/white" />
 
     <!-- Floating Action Button to Add More Contacts -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginRight="50dp"
         android:backgroundTint="@color/blue1"
         android:contentDescription="Add New Contact"

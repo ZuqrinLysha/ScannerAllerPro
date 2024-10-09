@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class KnowledgeFragment extends Fragment {
 
@@ -22,6 +26,25 @@ public class KnowledgeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_knowledge, container, false);
+
+        // Initialize the Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbarKnowledge); // Use the correct ID from the layout
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle(""); // Remove the title from the toolbar
+
+        ImageButton btnBack = view.findViewById(R.id.backArrow);
+        btnBack.setOnClickListener(v -> navigateBack());;
+
+        // Handle back button press
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+
+        // Hide the main toolbar when entering the ScannerFragment
+        if (getActivity() != null) {
+            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage); // Assuming this is the ID of the main toolbar
+            if (mainToolbar != null) {
+                mainToolbar.setVisibility(View.GONE);
+            }
+        }
 
         // Initialize TextView references for details
         medFirstDetails = view.findViewById(R.id.med_first);
@@ -41,6 +64,7 @@ public class KnowledgeFragment extends Fragment {
         CardView cardView = view.findViewById(R.id.card_view);
         CardView cardView2 = view.findViewById(R.id.card_view2);
         CardView cardView3 = view.findViewById(R.id.card_view3);
+
 
         // Set OnClickListener for the first CardView to expand/collapse details
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +103,15 @@ public class KnowledgeFragment extends Fragment {
             }
         });
 
+
         return view;
+    }
+    // Method to navigate back to HomeFragment
+    private void navigateBack() {
+        Fragment homeFragment = new HomeFragment(); // Create an instance of HomeFragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, homeFragment); // Assuming you have a container with this ID
+        transaction.addToBackStack(null); // Optional: Add to back stack
+        transaction.commit();
     }
 }

@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/light_gray"
     tools:context=".KnowledgeFragment">
 
+    <!-- Wrap everything inside a LinearLayout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/toolbar_knowledge"/>
+
         <!-- Header Section -->
         <TextView
             android:id="@+id/txtKnowledge"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
@@ -36,7 +40,7 @@
             android:elevation="4dp"
             app:cardElevation="10dp"
             app:cardCornerRadius="20dp"
-            app:contentPadding="2dp"> <!-- Set corner radius here -->
+            app:contentPadding="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +65,7 @@
 
                     <TextView
                         android:id="@+id/med_first"
-                        android:layout_width="250dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine."
@@ -87,7 +91,7 @@
 
                     <TextView
                         android:id="@+id/med_second"
-                        android:layout_width="250dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:visibility="gone"
@@ -115,7 +119,7 @@
 
                     <TextView
                         android:id="@+id/med_third"
-                        android:layout_width="250dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:visibility="gone"
@@ -190,30 +194,51 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/softblue"
                 android:orientation="vertical"
-                android:padding="20dp"
-                android:background="@color/softblue">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/recipe"
-                    android:text="Allergy-Friendly Recipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Allergy-Friendly Recipes"
+                    android:textColor="@color/black"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/recipe_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1. Quinoa Salad\n2. Chicken Stir-Fry\n3. Oatmeal Cookies"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
                     android:layout_marginTop="15dp"
-                    android:visibility="gone"/>
+                    android:inputType="textMultiLine"
+                    android:text="1. Quinoa Salad: A refreshing salad made with quinoa, cherry tomatoes, cucumber, and a lemon vinaigrette.\n\n2. Coconut Macaroons: Sweet treats made with shredded coconut, egg whites, and sugar.\n\n3. Rice Stir-Fry: Stir-fried vegetables with rice, soy sauce, and sesame oil."
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/saja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/saja1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </ScrollView>
