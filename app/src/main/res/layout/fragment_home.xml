@@ -5,16 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
-    <!-- Wrap everything in a LinearLayout or another layout type -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Include the toolbar -->
         <include layout="@layout/toolbar_homepage" />
 
-        <!-- Main content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Banner Section -->
                 <ImageView
                     android:id="@+id/bannerImage"
                     android:layout_width="match_parent"
@@ -32,7 +28,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/aller_pro" />
 
-                <!-- GridLayout for Features -->
                 <GridLayout
                     android:id="@+id/gridLayoutFeatures"
                     android:layout_width="match_parent"
@@ -54,12 +49,11 @@
                         android:layout_margin="8dp">
 
                         <LinearLayout
-                            android:layout_width="161dp"
-                            android:background="@drawable/custom_bkg"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="16dp"
+                            android:gravity="center"> <!-- Center content -->
 
                             <ImageView
                                 android:layout_width="40dp"
@@ -75,7 +69,7 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <!-- Contact History -->
+                    <!-- Emergency Contact -->
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardEmergencyContact"
                         android:layout_width="wrap_content"
@@ -85,10 +79,11 @@
                         app:cardElevation="4dp">
 
                         <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp">
+                            android:padding="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center"> <!-- Center content -->
 
                             <ImageView
                                 android:layout_width="40dp"
@@ -114,10 +109,11 @@
                         app:cardElevation="4dp">
 
                         <LinearLayout
-                            android:layout_width="173dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="175dp"
+                            android:layout_height="91dp"
+                            android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="16dp"> <!-- Center content -->
 
                             <ImageView
                                 android:layout_width="40dp"
@@ -143,10 +139,11 @@
                         app:cardElevation="4dp">
 
                         <LinearLayout
-                            android:layout_width="154dp"
+                            android:layout_width="153dp"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="16dp"> <!-- Center content -->
 
                             <ImageView
                                 android:layout_width="40dp"
@@ -164,7 +161,6 @@
 
                 </GridLayout>
 
-                <!-- Flash Sale or News Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

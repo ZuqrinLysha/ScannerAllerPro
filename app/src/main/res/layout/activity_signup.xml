@@ -78,7 +78,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_phone_24"
+                    android:drawableLeft="@drawable/baseline_local_phone_24"
                     android:drawablePadding="8dp"
                     android:hint="Phone Number"
                     android:inputType="phone"

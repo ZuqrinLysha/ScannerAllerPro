@@ -10,7 +10,9 @@
     android:background="@color/light_gray">
 
     <!-- Toolbar at the top -->
-    <include layout="@layout/toolbar_allergic_history" />
+    <include layout="@layout/toolbar_allergic_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <!-- Instructional Text -->
     <TextView
@@ -260,18 +262,18 @@
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/chkCanolaOil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Canola Oil"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <CheckBox
                 android:id="@+id/chkVegetableOil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vegetable Oil"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chkCanolaOil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Canola Oil"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -283,34 +285,36 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <!-- Other Category -->
+
+            <!-- Additional allergies and final notes -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Others"
+                android:text="Additional Allergies:"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-medium" />
 
-
             <EditText
                 android:id="@+id/txtOtherAllergic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text"
-                android:hint="Please state here your allergic ingredients" />
+                android:hint="Please specify any other allergies"
+                android:background="@color/white"
+                android:textColor="@color/black" />
 
             <EditText
-                android:id="@+id/txtsaja"
+                android:id="@+id/edtsaja"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" />
-
+                android:background="@color/white"
+                android:textColor="@color/black" />
 
         </LinearLayout>
     </ScrollView>
+
+
+
 </LinearLayout>

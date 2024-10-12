@@ -27,16 +27,7 @@ public class KnowledgeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_knowledge, container, false);
 
-        // Initialize the Toolbar
-        Toolbar toolbar = view.findViewById(R.id.toolbarKnowledge); // Use the correct ID from the layout
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(""); // Remove the title from the toolbar
 
-        ImageButton btnBack = view.findViewById(R.id.backArrow);
-        btnBack.setOnClickListener(v -> navigateBack());;
-
-        // Handle back button press
-        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
 
         // Hide the main toolbar when entering the ScannerFragment
         if (getActivity() != null) {
@@ -106,12 +97,5 @@ public class KnowledgeFragment extends Fragment {
 
         return view;
     }
-    // Method to navigate back to HomeFragment
-    private void navigateBack() {
-        Fragment homeFragment = new HomeFragment(); // Create an instance of HomeFragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, homeFragment); // Assuming you have a container with this ID
-        transaction.addToBackStack(null); // Optional: Add to back stack
-        transaction.commit();
-    }
+
 }

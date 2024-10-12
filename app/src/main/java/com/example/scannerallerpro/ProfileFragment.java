@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
         cvHeight.setOnClickListener(v -> showInputDialog("Enter Your Height", "height"));
         cvWeight.setOnClickListener(v -> showInputDialog("Enter Your Weight", "weight"));
         cvBloodType.setOnClickListener(v -> showInputDialog("Enter Your Blood Type", "bloodType"));
-        cvChangePhone.setOnClickListener(v -> showInputDialog("Enter New Phone Number", "phone"));
+        cvChangePhone.setOnClickListener(v -> navigateToChangeNoPhoneFragment());
         cvChangePassword.setOnClickListener(v -> navigateToChangePasswordFragment());
         cvDeleteAccount.setOnClickListener(v -> confirmDeleteAccount());
     }
@@ -97,6 +97,15 @@ public class ProfileFragment extends Fragment {
         transaction.addToBackStack(null); // Optional: Add to back stack for navigation
         transaction.commit();
     }
+
+    private void navigateToChangeNoPhoneFragment() {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new ChangeNoPhoneFragment());
+        transaction.addToBackStack(null); // Optional: Add to back stack for navigation
+        transaction.commit();
+    }
+
+
 
     private void loadDarkModePreference() {
         boolean isDarkModeEnabled = getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
@@ -213,6 +222,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateTextView(String field, String value) {
+        if (value == null || value.isEmpty()) {
+            // Optionally handle cases where value is null or empty
+            Toast.makeText(getContext(), "Invalid value for " + field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         switch (field) {
             case "height":
                 displayHeight.setText(value + " cm"); // Append " cm" for height
@@ -228,6 +243,7 @@ public class ProfileFragment extends Fragment {
                 break;
         }
     }
+
 
     private void loadDataFromFirebase() {
         if (userRef != null) {
@@ -266,20 +282,24 @@ public class ProfileFragment extends Fragment {
     }
 
     private void recalculateBmi() {
-        String heightStr = displayHeight.getText().toString();
-        String weightStr = displayWeight.getText().toString();
+        String heightStr = displayHeight.getText().toString().replace(" cm", ""); // Remove " cm" to get numeric part
+        String weightStr = displayWeight.getText().toString().replace(" kg", ""); // Remove " kg" to get numeric part
 
         if (!heightStr.isEmpty() && !weightStr.isEmpty()) {
-            // Convert height to meters and weight to kg
-            double height = Double.parseDouble(heightStr) / 100;  // Assuming height is in cm
-            double weight = Double.parseDouble(weightStr);  // Assuming weight is in kg
-            double bmi = weight / (height * height);
+            try {
+                // Convert height to meters and weight to kg
+                double height = Double.parseDouble(heightStr) / 100;  // Assuming height is in cm
+                double weight = Double.parseDouble(weightStr);  // Assuming weight is in kg
+                double bmi = weight / (height * height);
 
-            // Update BMI TextView
-            displayBmi.setText(String.format("%.1f", bmi));
+                // Update BMI TextView
+                displayBmi.setText(String.format("%.1f", bmi));
 
-            // Save BMI to Firebase
-            saveToFirebase("bmi", String.format("%.1f", bmi));
+                // Save BMI to Firebase
+                saveToFirebase("bmi", String.format("%.1f", bmi));
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Invalid height or weight format", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

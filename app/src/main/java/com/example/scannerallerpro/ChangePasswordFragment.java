@@ -88,20 +88,21 @@ public class ChangePasswordFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        // Update the password
+                        // Update the password for the same user (no new row created)
                         user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getContext(), "Password changed successfully!", Toast.LENGTH_SHORT).show();
-                                    // Optionally navigate back or finish the activity
+                                    // Navigate back to ProfileFragment or close the current fragment
+                                    navigateBack(); // Optional: Go back to profile
                                 } else {
-                                    Toast.makeText(getContext(), "Failed to change password.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Failed to change password: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     } else {
-                        Toast.makeText(getContext(), "Current password is incorrect.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Current password is incorrect: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

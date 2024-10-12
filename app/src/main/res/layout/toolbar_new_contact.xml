@@ -23,10 +23,11 @@
         <!-- Centered Title -->
         <TextView
             android:id="@+id/titleADD"
-            android:layout_width="0dp"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:text="New Contact"
-            android:textSize="30sp"
+            android:layout_marginLeft="60dp"
+            android:textSize="25sp"
             android:textStyle="bold"
             android:textColor="#5D4D53"
             android:layout_weight="1"

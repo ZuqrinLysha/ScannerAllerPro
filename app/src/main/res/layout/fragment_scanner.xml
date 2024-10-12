@@ -22,22 +22,24 @@
         android:layout_below="@id/toolbarScanner" /> <!-- Position below the toolbar -->
 
     <!-- Scroll View -->
+
     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_above="@id/Linear_Hold"
         android:layout_below="@id/imgCaptured"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="77dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_marginBottom="-13dp"
         android:layout_weight="1"> <!-- Adjust height to fill available space -->
 
         <TextView
             android:id="@+id/txtScanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="Please capture the list of ingredients"
             android:textColor="@color/black"
             android:textSize="22sp" />
@@ -53,11 +55,12 @@
     <Button
         android:id="@+id/btnCapture"
         android:layout_width="0dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/rounded_button"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginEnd="20dp"
-        android:text="Capture"
-        android:layout_margin="8dp" />
+        android:text="Capture" />
 </LinearLayout>
 
     </RelativeLayout>

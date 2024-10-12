@@ -10,6 +10,7 @@
     <color name="blue1">#000080</color>
     <color name="light_gray">#FAFAFF</color>
     <color name="red">#FF0000</color>
+    <color name="bckground">#cddee5</color>
 
     <color name="colorSuccess">#4BB543</color>
     <color name="colorAlert">#FFDE21</color>

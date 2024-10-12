@@ -233,7 +233,7 @@
                         android:layout_width="38dp"
                         android:layout_height="39dp"
                         android:contentDescription="Change Phone Icon"
-                        android:src="@drawable/baseline_phone_24" />
+                        android:src="@drawable/baseline_local_phone_24" />
 
                     <TextView
                         android:layout_width="wrap_content"

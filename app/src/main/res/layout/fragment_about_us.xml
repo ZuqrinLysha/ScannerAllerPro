@@ -158,11 +158,25 @@
                     android:drawablePadding="8dp"
                     android:inputType="textMultiLine"
                     android:padding="16dp"
-                    android:text="allerpro@gmail.com"
+                    android:text="allerproscanner@gmail.com"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- EditText at the bottom -->
+        <EditText
+            android:id="@+id/editTextFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view3"
+            android:layout_margin="16dp"
+        android:padding="10dp" />
+
     </RelativeLayout>
 </ScrollView>
