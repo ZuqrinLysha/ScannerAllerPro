@@ -23,11 +23,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/knowledge_background"
-            android:text="Let's Learn!"
-            android:textColor="#5D4D53"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            android:background="@drawable/knowledge_background" />
 
         <!-- CardView Section for Articles -->
         <androidx.cardview.widget.CardView
@@ -67,6 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:textColor="@color/black"
                         android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine."
                         android:textSize="18sp"
                         android:layout_marginTop="4dp"
@@ -94,6 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:visibility="gone"
+                        android:textColor="@color/black"
                         android:text="2. Epinephrine:\nUsed for severe allergic reactions (anaphylaxis).\nAlways carry an EpiPen if you have a known severe allergy."
                         android:textSize="18sp"
                         android:layout_marginTop="4dp"
@@ -122,6 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:visibility="gone"
+                        android:textColor="@color/black"
                         android:text="3. Corticosteroids:\nPrescribed for severe reactions or for managing inflammation.\nUsed under the guidance of a healthcare provider.\nExamples: Prednisone"
                         android:textSize="18sp"
                         android:layout_marginTop="4dp"
