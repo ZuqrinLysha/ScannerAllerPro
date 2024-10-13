@@ -63,29 +63,6 @@ public class ContactViewModel extends ViewModel {
             currentList.add(contact);
             contacts.setValue(currentList);
 
-            // Add contact to Firebase
-            String userEmail = getCurrentUserEmail();
-            databaseReference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        String userId = userSnapshot.getKey();
-                        String contactId = databaseReference.child(userId).child("ContactData").push().getKey();
-                        databaseReference.child(userId).child("ContactData").child(contactId).setValue(contact)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Contact added successfully
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Handle failure
-                                });
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle errors gracefully
-                }
-            });
         }
     }
 
