@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -310,10 +312,22 @@ public class ProfileFragment extends Fragment {
                 .setPositiveButton("Delete", (dialog, which) -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
+                        // Get reference to user's data in Firebase Realtime Database
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+
+                        // Delete the account in Firebase Authentication
                         user.delete().addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Account deleted successfully.", Toast.LENGTH_SHORT).show();
-                                // Optionally navigate to login screen
+                                // Delete user's data from Firebase Realtime Database
+                                userRef.removeValue().addOnCompleteListener(deleteTask -> {
+                                    if (deleteTask.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Account deleted successfully.", Toast.LENGTH_SHORT).show();
+                                        // Navigate to login screen
+                                        startActivity(new Intent(getContext(), LogIn.class));
+                                    } else {
+                                        Toast.makeText(getContext(), "Failed to delete account data.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
                                 Toast.makeText(getContext(), "Failed to delete account.", Toast.LENGTH_SHORT).show();
                             }
@@ -323,4 +337,5 @@ public class ProfileFragment extends Fragment {
                 .setNegativeButton("Cancel", null)
                 .show();
     }
+
 }

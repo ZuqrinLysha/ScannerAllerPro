@@ -15,12 +15,12 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="About Us"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:text="About Us"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -28,7 +28,7 @@
             android:layout_height="159dp"
             android:layout_below="@id/textView"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/allerpro_about" />
+            app:srcCompat="@drawable/allerpro_bg" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:inputType="textMultiLine"
-                    android:text="AllerPro is an innovative application that uses advanced scanning technology to enable users to quickly and easily identify allergenic ingredients in items. Users will always be aware and safe with customized alert notifications made just for their allergies. In order to keep track of their allergy history, identify foods that cause responses, and add emergency contacts for easy access in an emergency, users can create personalized accounts. A thorough knowledge center is another aspect of AllerPro that offers helpful tools and information to assist users in comprehending and managing their allergies."
+                    android:text="AllerPro is an innovative application that uses advanced scanning technology to enable users to quickly and easily identify allergenic ingredients in products. Users will always be aware and safe with customized alert notifications made just for their allergies. In order to keep track of their allergy history, identify foods that cause responses, and add emergency contacts for easy access in an emergency, users can create personalized accounts. A thorough knowledge center is another aspect of AllerPro that offers helpful tools and information to assist users in comprehending and managing their allergies."
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>

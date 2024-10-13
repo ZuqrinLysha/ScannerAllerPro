@@ -300,12 +300,12 @@
                         android:src="@drawable/baseline_brightness_4_24" />
 
                     <Switch
-                            android:id="@+id/switch_dark_mode"
-                            android:layout_width="186dp"
-                            android:layout_height="51dp"
-                            android:layout_marginStart="16dp"
-                            android:textSize="16sp"
-                            android:text="Dark Mode" />
+                        android:id="@+id/switch_dark_mode"
+                        android:layout_width="186dp"
+                        android:layout_height="51dp"
+                        android:layout_marginStart="16dp"
+                        android:textSize="16sp"
+                        android:text="Dark Mode" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
