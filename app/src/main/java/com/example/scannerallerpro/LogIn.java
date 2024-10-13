@@ -45,7 +45,7 @@ public class LogIn extends AppCompatActivity {
 
     // Counter for login attempts
     private int loginAttempts = 0;
-    private static final int MAX_ATTEMPTS = 2;
+    private static final int MAX_ATTEMPTS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

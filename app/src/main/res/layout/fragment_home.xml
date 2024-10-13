@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/aller_pro" />
+                    android:src="@drawable/aller_pro_bg" />
 
                 <GridLayout
                     android:id="@+id/gridLayoutFeatures"

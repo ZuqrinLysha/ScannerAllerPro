@@ -4,7 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,20 +21,29 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout drawerLayout;
-    BottomNavigationView bottomNavigationView;
-    FragmentManager fragmentManager;
+    private DrawerLayout drawerLayout;
+    private BottomNavigationView bottomNavigationView;
+    private FragmentManager fragmentManager;
+    private TextView tvFullName; // Declare the TextView for user's full name
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        // Initialize Firebase Auth and Database
+        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
         // Initialize DrawerLayout
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -45,6 +55,13 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         // Initialize NavigationView
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Set the TextView for full name
+        View headerView = navigationView.getHeaderView(0); // Get the header view of the NavigationView
+        tvFullName = headerView.findViewById(R.id.tvFullName); // Initialize TextView
+
+        // Fetch user full name
+        getUserFullName();
 
         // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -69,6 +86,30 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         // Initialize FragmentManager and open the default fragment
         fragmentManager = getSupportFragmentManager();
         openFragment(new HomeFragment());
+    }
+
+    private void getUserFullName() {
+        String userId = auth.getCurrentUser().getUid(); // Get the current user's ID
+        databaseReference.child(userId).child("fullName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String fullName = snapshot.getValue(String.class); // Get the full name from the database
+                    if (fullName != null) {
+                        tvFullName.setText(fullName.toUpperCase()); // Set the full name in capital letters
+                    } else {
+                        tvFullName.setText("FULL NAME"); // Fallback in case the name doesn't exist
+                    }
+                } else {
+                    tvFullName.setText("FULL NAME"); // Fallback in case the name doesn't exist
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HomePage.this, "Failed to retrieve name", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -131,5 +172,4 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
 }
