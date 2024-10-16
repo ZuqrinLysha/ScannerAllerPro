@@ -3,8 +3,11 @@ package com.example.scannerallerpro;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,16 +22,18 @@ import androidx.viewpager2.widget.ViewPager2;
 public class HomeFragment extends Fragment {
 
     private ViewPager2 viewPager;
-    private int[] images = {
-            R.drawable.poster1, R.drawable.poster2, R.drawable.poster3,
-            R.drawable.poster4, R.drawable.poster5, R.drawable.poster6, R.drawable.poster7
-    }; // Your image resources
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private Handler handler;
     private Runnable runnable;
     private int currentPage = 0;
-    private final int delay = 3000; // Delay in milliseconds for auto sliding (3 seconds)
+    private final int delay = 3000; // Delay in milliseconds for auto sliding
+    private ScaleGestureDetector scaleGestureDetector;
+
+    private int[] images = {
+            R.drawable.poster1, R.drawable.poster2, R.drawable.poster3,
+            R.drawable.poster4, R.drawable.poster5, R.drawable.poster6, R.drawable.poster7
+    }; // Your image resources
 
     @Nullable
     @Override
@@ -55,34 +60,19 @@ public class HomeFragment extends Fragment {
 
         // Initialize ViewPager2
         viewPager = view.findViewById(R.id.newsSlider);
-        ImageSliderAdapter adapter = new ImageSliderAdapter(images);
+        if (viewPager == null) {
+            throw new NullPointerException("ViewPager not found in the layout");
+        }
+        ImageSliderAdapter adapter = new ImageSliderAdapter(images, requireContext());
         viewPager.setAdapter(adapter);
-
-        // Set up click listeners for each CardView
-        setupCardViewListeners(view);
 
         // Set up auto sliding
         setupAutoSliding();
 
+        // Set up click listeners for CardViews
+        setupCardViewListeners(view);
+
         return view;
-    }
-
-    private void clearToolbarTitle() {
-        toolbar.setTitle(""); // Set the title to an empty string
-    }
-
-    private void setupCardViewListeners(View view) {
-        CardView cardAllergicHistory = view.findViewById(R.id.cardAllergicHistory);
-        cardAllergicHistory.setOnClickListener(v -> openFragment(new AllergicHistoryFragment()));
-
-        CardView cardEmergencyContact = view.findViewById(R.id.cardEmergencyContact);
-        cardEmergencyContact.setOnClickListener(v -> openFragment(new ViewContactFragment()));
-
-        CardView cardScanner = view.findViewById(R.id.cardScanner);
-        cardScanner.setOnClickListener(v -> openFragment(new ScannerFragment()));
-
-        CardView cardKnowledge = view.findViewById(R.id.cardKnowledge);
-        cardKnowledge.setOnClickListener(v -> openFragment(new KnowledgeFragment()));
     }
 
     private void setupAutoSliding() {
@@ -99,8 +89,22 @@ public class HomeFragment extends Fragment {
         };
     }
 
+    private void setupCardViewListeners(View view) {
+        CardView cardAllergicHistory = view.findViewById(R.id.cardAllergicHistory);
+        cardAllergicHistory.setOnClickListener(v -> openFragment(new AllergicHistoryFragment()));
+
+        CardView cardEmergencyContact = view.findViewById(R.id.cardEmergencyContact);
+        cardEmergencyContact.setOnClickListener(v -> openFragment(new ViewContactFragment()));
+
+        CardView cardScanner = view.findViewById(R.id.cardScanner);
+        cardScanner.setOnClickListener(v -> openFragment(new ScannerFragment()));
+
+        CardView cardKnowledge = view.findViewById(R.id.cardKnowledge);
+        cardKnowledge.setOnClickListener(v -> openFragment(new KnowledgeFragment()));
+    }
+
     private void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction(); // Use getParentFragmentManager() for fragments
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -116,5 +120,10 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(runnable); // Stop auto sliding
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+        return true; // Ensure that touch events are handled properly
     }
 }

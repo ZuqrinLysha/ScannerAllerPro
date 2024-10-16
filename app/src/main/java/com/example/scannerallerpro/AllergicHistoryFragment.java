@@ -183,84 +183,42 @@ public class AllergicHistoryFragment extends Fragment {
         }
     }
 
-    // Method to load the allergic history from Firebase and update checkboxes
     private void loadAllergicHistory() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Check and set checkboxes according to saved data
-                    chkPeanuts.setChecked(dataSnapshot.child("peanuts").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("peanuts").getValue(Boolean.class));
+                    // Check and set checkboxes according to saved data, with defaulting to false
+                    chkPeanuts.setChecked(getBooleanValue(dataSnapshot, "peanuts"));
+                    chkSoybeans.setChecked(getBooleanValue(dataSnapshot, "soybeans"));
+                    chkCashew.setChecked(getBooleanValue(dataSnapshot, "cashew"));
+                    chkAlmond.setChecked(getBooleanValue(dataSnapshot, "almond"));
+                    chkWalnuts.setChecked(getBooleanValue(dataSnapshot, "walnuts"));
+                    chkCowMilk.setChecked(getBooleanValue(dataSnapshot, "cowMilk"));
+                    chkSoyMilk.setChecked(getBooleanValue(dataSnapshot, "soyMilk"));
+                    chkButter.setChecked(getBooleanValue(dataSnapshot, "butter"));
+                    chkCheese.setChecked(getBooleanValue(dataSnapshot, "cheese"));
+                    chkYogurt.setChecked(getBooleanValue(dataSnapshot, "yogurt"));
+                    chkCereal.setChecked(getBooleanValue(dataSnapshot, "cereal"));
+                    chkGluten.setChecked(getBooleanValue(dataSnapshot, "gluten"));
+                    chkWheat.setChecked(getBooleanValue(dataSnapshot, "wheat"));
+                    chkBarley.setChecked(getBooleanValue(dataSnapshot, "barley"));
+                    chkCrab.setChecked(getBooleanValue(dataSnapshot, "crab"));
+                    chkPrawns.setChecked(getBooleanValue(dataSnapshot, "prawns"));
+                    chkLobster.setChecked(getBooleanValue(dataSnapshot, "lobster"));
+                    chkScallops.setChecked(getBooleanValue(dataSnapshot, "scallops"));
+                    chkSalmon.setChecked(getBooleanValue(dataSnapshot, "salmon"));
+                    chkOliveOil.setChecked(getBooleanValue(dataSnapshot, "oliveOil"));
+                    chkSunflowerOil.setChecked(getBooleanValue(dataSnapshot, "sunflowerOil"));
+                    chkCanolaOil.setChecked(getBooleanValue(dataSnapshot, "canolaOil"));
+                    chkVegetableOil.setChecked(getBooleanValue(dataSnapshot, "vegetableOil"));
+                    chkCoconutOil.setChecked(getBooleanValue(dataSnapshot, "coconutOil"));
 
-                    chkSoybeans.setChecked(dataSnapshot.child("soybeans").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("soybeans").getValue(Boolean.class));
-
-                    chkCashew.setChecked(dataSnapshot.child("cashew").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("cashew").getValue(Boolean.class));
-
-                    chkAlmond.setChecked(dataSnapshot.child("almond").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("almond").getValue(Boolean.class));
-
-                    chkWalnuts.setChecked(dataSnapshot.child("walnuts").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("walnuts").getValue(Boolean.class));
-
-                    chkCowMilk.setChecked(dataSnapshot.child("cowMilk").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("cowMilk").getValue(Boolean.class));
-
-                    chkSoyMilk.setChecked(dataSnapshot.child("soyMilk").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("soyMilk").getValue(Boolean.class));
-
-                    chkButter.setChecked(dataSnapshot.child("butter").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("butter").getValue(Boolean.class));
-
-                    chkCheese.setChecked(dataSnapshot.child("cheese").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("cheese").getValue(Boolean.class));
-
-                    chkYogurt.setChecked(dataSnapshot.child("yogurt").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("yogurt").getValue(Boolean.class));
-
-                    chkCereal.setChecked(dataSnapshot.child("cereal").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("cereal").getValue(Boolean.class));
-
-                    chkGluten.setChecked(dataSnapshot.child("gluten").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("gluten").getValue(Boolean.class));
-
-                    chkWheat.setChecked(dataSnapshot.child("wheat").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("wheat").getValue(Boolean.class));
-
-                    chkBarley.setChecked(dataSnapshot.child("barley").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("barley").getValue(Boolean.class));
-
-                    chkCrab.setChecked(dataSnapshot.child("crab").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("crab").getValue(Boolean.class));
-
-                    chkPrawns.setChecked(dataSnapshot.child("prawns").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("prawns").getValue(Boolean.class));
-
-                    chkLobster.setChecked(dataSnapshot.child("lobster").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("lobster").getValue(Boolean.class));
-
-                    chkScallops.setChecked(dataSnapshot.child("scallops").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("scallops").getValue(Boolean.class));
-
-                    chkSalmon.setChecked(dataSnapshot.child("salmon").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("salmon").getValue(Boolean.class));
-
-                    chkOliveOil.setChecked(dataSnapshot.child("oliveOil").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("oliveOil").getValue(Boolean.class));
-
-                    chkSunflowerOil.setChecked(dataSnapshot.child("sunflowerOil").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("sunflowerOil").getValue(Boolean.class));
-
-                    chkCanolaOil.setChecked(dataSnapshot.child("canolaOil").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("canolaOil").getValue(Boolean.class));
-
-                    chkVegetableOil.setChecked(dataSnapshot.child("vegetableOil").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("vegetableOil").getValue(Boolean.class));
-
-                    chkCoconutOil.setChecked(dataSnapshot.child("coconutOil").getValue(Boolean.class) != null &&
-                            dataSnapshot.child("coconutOil").getValue(Boolean.class));
+                    // Load other allergies if they exist
+                    String otherAllergic = dataSnapshot.child("other").getValue(String.class);
+                    if (otherAllergic != null) {
+                        txtOtherAllergic.setText(otherAllergic);
+                    }
                 }
             }
 
@@ -269,5 +227,9 @@ public class AllergicHistoryFragment extends Fragment {
                 Toast.makeText(getContext(), "Failed to load allergic history.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private boolean getBooleanValue(DataSnapshot dataSnapshot, String key) {
+        return dataSnapshot.child(key).getValue(Boolean.class) != null && dataSnapshot.child(key).getValue(Boolean.class);
     }
 }

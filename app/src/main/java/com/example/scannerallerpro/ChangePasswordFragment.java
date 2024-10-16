@@ -1,5 +1,6 @@
 package com.example.scannerallerpro;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -44,23 +46,49 @@ public class ChangePasswordFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
 
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changePassword();
-            }
-        });
+        btnChangePassword.setOnClickListener(v -> changePassword());
 
         return view;
     }
 
-    // Method to navigate back to ProfileFragment
+    // Method to navigate back with an alert dialog if there are unsaved changes
     private void navigateBack() {
-        Fragment profileFragment = new ProfileFragment(); // Create an instance of ProfileFragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, profileFragment); // Use the correct fragment instance
-        transaction.addToBackStack(null); // Optional: Add to back stack
-        transaction.commit();
+        String currentPassword = etCurrentPassword.getText().toString().trim();
+        String newPassword = etNewPassword.getText().toString().trim();
+        String confirmNewPassword = etConfirmNewPassword.getText().toString().trim();
+
+        // Check if there are unsaved changes
+        if (!currentPassword.isEmpty() || !newPassword.isEmpty() || !confirmNewPassword.isEmpty()) {
+            // Show a confirmation dialog if fields are filled but not saved
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Unsaved Changes")
+                    .setMessage("You have unsaved changes. Do you want to save before leaving?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            changePassword(); // Attempt to change password before navigating back
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Navigate back to ProfileFragment without saving
+                            Fragment profileFragment = new ProfileFragment();
+                            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, profileFragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+                    })
+                    .show(); // Show the dialog
+        } else {
+            // No unsaved changes, just navigate back to ProfileFragment
+            Fragment profileFragment = new ProfileFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, profileFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     private void changePassword() {

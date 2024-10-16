@@ -1,8 +1,10 @@
     package com.example.scannerallerpro;
 
     import android.content.Context;
+    import android.content.DialogInterface;
     import android.os.Bundle;
     import android.text.InputType;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -11,8 +13,13 @@
     import android.widget.TextView;
     import android.widget.Toast;
     import android.content.Intent;
+    import android.view.Menu;
+    import android.view.MenuInflater;
+    import android.view.MenuItem;
+
 
     import androidx.annotation.NonNull;
+    import androidx.annotation.Nullable;
     import androidx.appcompat.app.ActionBarDrawerToggle;
     import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +43,7 @@
         private FirebaseDatabase database;
         private DatabaseReference userRef;
         private FirebaseAuth auth;
-        private Switch switchDarkMode;
+        private Switch switchTheme;
 
         // TextViews for displaying user data
         private TextView displayWeight, displayHeight, displayBmi, displayBloodType;
@@ -51,8 +58,17 @@
             auth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = auth.getCurrentUser();
 
+            // Initialize the Toolbar
+            Toolbar toolbar = rootView.findViewById(R.id.ToolbarLogout); // Use rootView instead of view
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            setHasOptionsMenu(true); // Important to enable options menu in this fragment
+
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+
             // Set up UI elements
-            switchDarkMode = rootView.findViewById(R.id.switch_dark_mode);
+            switchTheme = rootView.findViewById(R.id.switchTheme);
             displayHeight = rootView.findViewById(R.id.display_height);
             displayWeight = rootView.findViewById(R.id.display_weight);
             displayBmi = rootView.findViewById(R.id.display_bmi);
@@ -64,9 +80,6 @@
             // Load saved dark mode preference
             loadDarkModePreference();
 
-            // Access activity toolbar and drawer layout
-            setupToolbarAndDrawer();
-
             // Load user data from Firebase if user is logged in
             if (currentUser != null) {
                 loadUserData(currentUser.getEmail());
@@ -74,6 +87,55 @@
 
             return rootView;
         }
+
+
+        @Override
+        public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.logout_menu, menu);
+            Log.d("ProfileFragment", "Menu created");
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.action_logout) {
+                // Show confirmation dialog before logging out
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Confirm Logout")
+                        .setMessage("Are you sure you want to exit the app?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Perform log out action here
+                                FirebaseAuth.getInstance().signOut(); // Log out the user from Firebase
+                                // Navigate back to the login activity or close the app
+                                Intent intent = new Intent(getActivity(), LogIn.class);
+                                startActivity(intent);
+                                getActivity().finish(); // Finish current activity
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Dismiss the dialog, do nothing
+                                dialog.dismiss();
+                            }
+                        })
+                        .show(); // Show the dialog
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true); // Enable options menu in the fragment
+        }
+
+
 
         private void setupCardViewListeners(View rootView) {
             CardView cvHeight = rootView.findViewById(R.id.cvHeight);
@@ -86,9 +148,9 @@
 
             cvHeight.setOnClickListener(v -> showInputDialog("Enter Your Height", "height"));
             cvWeight.setOnClickListener(v -> showInputDialog("Enter Your Weight", "weight"));
-            cvBloodType.setOnClickListener(v -> showBloodTypeDialog());  // Change here to call blood type dialog            cvChangePhone.setOnClickListener(v -> navigateToChangeNoPhoneFragment());
+            cvBloodType.setOnClickListener(v -> showBloodTypeDialog());
+            cvChangePhone.setOnClickListener(v -> navigateToChangeNoPhoneFragment());  // Only need to set this once
             cvChangePassword.setOnClickListener(v -> navigateToChangePasswordFragment());
-            cvChangePhone.setOnClickListener(v -> navigateToChangeNoPhoneFragment());
             cvDeleteAccount.setOnClickListener(v -> confirmDeleteAccount());
         }
 
@@ -109,10 +171,10 @@
         private void loadDarkModePreference() {
             boolean isDarkModeEnabled = getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
                     .getBoolean("dark_mode", false);
-            switchDarkMode.setChecked(isDarkModeEnabled);
+            switchTheme.setChecked(isDarkModeEnabled);
 
             // Set listener for the switch
-            switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 // Save preference
                 getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
                         .edit()
@@ -124,19 +186,6 @@
             });
         }
 
-        private void setupToolbarAndDrawer() {
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            if (activity != null) {
-                Toolbar toolbar = activity.findViewById(R.id.toolbarHomePage);
-                activity.setSupportActionBar(toolbar);
-
-                DrawerLayout drawerLayout = activity.findViewById(R.id.drawerLayout);
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                        activity, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
-                drawerLayout.addDrawerListener(toggle);
-                toggle.syncState();
-            }
-        }
 
         private void loadUserData(String userEmail) {
             DatabaseReference usersRef = database.getReference("Users");

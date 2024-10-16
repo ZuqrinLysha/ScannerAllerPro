@@ -5,14 +5,16 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +44,6 @@ import java.util.List;
 public class ScannerFragment extends Fragment {
 
     private Button btnScanner;
-    private TextView txtScanner;
     private ImageView imgCaptured;
     private List<String> userAllergies = new ArrayList<>();
     private DatabaseReference databaseReference;
@@ -68,7 +68,6 @@ public class ScannerFragment extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle(""); // Remove the title from the toolbar
 
-
         // Hide the main toolbar when entering the ScannerFragment
         if (getActivity() != null) {
             Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage); // Assuming this is the ID of the main toolbar
@@ -78,7 +77,6 @@ public class ScannerFragment extends Fragment {
         }
 
         btnScanner = view.findViewById(R.id.btnCapture);
-        txtScanner = view.findViewById(R.id.txtScanner);
         imgCaptured = view.findViewById(R.id.imgCaptured);
 
         // Initialize Firebase
@@ -121,14 +119,13 @@ public class ScannerFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         // Show the main toolbar again when leaving the ScannerFragment
         if (getActivity() != null) {
-            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarScanner);
+            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage);
             if (mainToolbar != null) {
                 mainToolbar.setVisibility(View.VISIBLE);
             }
@@ -142,9 +139,23 @@ public class ScannerFragment extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot allergySnapshot : snapshot.getChildren()) {
                         String allergyName = allergySnapshot.getKey();
-                        Boolean hasAllergy = allergySnapshot.getValue(Boolean.class);
-                        if (Boolean.TRUE.equals(hasAllergy)) {
-                            userAllergies.add(allergyName);
+                        Object hasAllergyValue = allergySnapshot.getValue();
+
+                        // Check if the value is a Boolean
+                        if (hasAllergyValue instanceof Boolean) {
+                            Boolean hasAllergy = (Boolean) hasAllergyValue;
+                            if (hasAllergy) {
+                                userAllergies.add(allergyName);
+                            }
+                        } else if (hasAllergyValue instanceof String) {
+                            // If it's a string, assume it's a user-input allergy
+                            String userInputAllergy = (String) hasAllergyValue;
+                            if (!userInputAllergy.isEmpty()) {
+                                userAllergies.add(userInputAllergy);
+                            }
+                        } else {
+                            // Log or handle the case where the value is not a boolean or string
+                            Log.e("ScannerFragment", "Invalid data type for allergy: " + allergyName);
                         }
                     }
                 }
@@ -156,6 +167,7 @@ public class ScannerFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -233,24 +245,41 @@ public class ScannerFragment extends Fragment {
         TextView warningDesc = customView.findViewById(R.id.WarningDesc);
         Button warningDoneButton = customView.findViewById(R.id.WarningDone);
 
-        // Set the title and description
+        // Set the title
         warningTitle.setText("Allergy Alert!");
-        StringBuilder descriptionBuilder = new StringBuilder("The following allergens were detected:\n");
+
+        // Create a SpannableStringBuilder for the description
+        SpannableStringBuilder spannableDescription = new SpannableStringBuilder();
+
+        // Add introductory text
+        String introText = "The following allergens were detected:\n";
+        spannableDescription.append(introText); // Append the introductory text
+
         for (String allergy : detectedAllergies) {
-            descriptionBuilder.append("- ").append(allergy).append("\n");
+            // Create a SpannableString for each allergy
+            String allergyText ="\n" +"• " + allergy + "\n";
+            SpannableString spannableAllergy = new SpannableString(allergyText);
+
+            // Set the color to red and make it bold
+            spannableAllergy.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 0, allergyText.length(), 0);
+            spannableAllergy.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, allergyText.length(), 0);
+
+            // Append the styled allergy to the description
+            spannableDescription.append(spannableAllergy);
         }
-        warningDesc.setText(descriptionBuilder.toString());
+
+        // Set the styled description to the TextView
+        warningDesc.setText(spannableDescription);
 
         // Create the AlertDialog
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-        dialogBuilder.setView(customView);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(customView);
+        AlertDialog alertDialog = builder.create();
 
-        // Handle the done button click
+        // Handle the button click
         warningDoneButton.setOnClickListener(v -> alertDialog.dismiss());
 
-// Show the dialog
+        // Show the dialog
         alertDialog.show();
     }
 }

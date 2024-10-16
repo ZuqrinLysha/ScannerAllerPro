@@ -206,7 +206,7 @@
                 android:id="@+id/chkPrawns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Prawns"
+                android:text="Prawns/shrimp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -290,7 +290,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Additional Allergies:"
+                android:text="Others:"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="16dp"
@@ -307,6 +307,20 @@
 
             <EditText
                 android:id="@+id/edtsaja"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edtsaja2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edtsaja3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"

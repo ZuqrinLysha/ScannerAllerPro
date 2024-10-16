@@ -2,8 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.scannerallerpro">
+
     <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Declare camera feature as optional -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Added INTERNET permission -->
+
+    <uses-feature android:name="android.hardware.telephony" android:required="false"/> <!-- Telephony feature -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -24,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScannerAllerPro"
         tools:targetApi="31">
+
         <activity
             android:name=".Profile"
             android:exported="false" />
@@ -38,7 +45,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,7 +52,4 @@
             android:name=".SignUp"
             android:exported="true" />
     </application>
-
-
-
 </manifest>

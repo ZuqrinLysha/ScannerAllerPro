@@ -26,11 +26,17 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude("META-INF/versions/9/OSGI-INF/MANIFEST.MF") // Exclude the conflicting file
+    }
 }
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -39,8 +45,13 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
     implementation(libs.play.services.mlkit.text.recognition)
+    implementation(libs.identity.doctypes.jvm)
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
+    implementation(libs.firebase.auth.v2101)
+    implementation(libs.firebase.database.v2030)
+    implementation(libs.firebase.bom)
+    implementation(libs.google.firebase.auth)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
