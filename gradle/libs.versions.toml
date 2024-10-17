@@ -16,6 +16,7 @@ firebaseAuth = "23.0.0"
 playServicesAuth = "21.2.0"
 playServicesMlkitTextRecognition = "19.0.1"
 identityDoctypesJvm = "202408.1"
+firebaseInappmessagingDisplay = "21.0.0"
 
 
 
@@ -38,6 +39,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 play-services-mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 identity-doctypes-jvm = { group = "com.android.identity", name = "identity-doctypes-jvm", version.ref = "identityDoctypesJvm" }
+firebase-inappmessaging-display = { group = "com.google.firebase", name = "firebase-inappmessaging-display", version.ref = "firebaseInappmessagingDisplay" }
 
 
 [plugins]

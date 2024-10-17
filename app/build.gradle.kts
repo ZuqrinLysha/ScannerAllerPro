@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.identity.doctypes.jvm)
+    implementation(libs.firebase.inappmessaging.display)
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.auth.v2101)
@@ -53,5 +54,6 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.google.firebase.auth)
     androidTestImplementation(libs.ext.junit)
+    implementation("com.google.firebase:firebase-auth:23.0.0")
     androidTestImplementation(libs.espresso.core)
 }

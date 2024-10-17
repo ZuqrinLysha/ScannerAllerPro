@@ -45,7 +45,7 @@ public class ChangeNoPhoneFragment extends Fragment {
 
         // Initialize fields
         currentPhoneField = view.findViewById(R.id.et_current_phone);
-        verificationCodeField = view.findViewById(R.id.et_verification_code);
+
 
         // Load user's phone number from Firebase and set it in the input field
         loadUserPhoneNumber();
@@ -55,12 +55,9 @@ public class ChangeNoPhoneFragment extends Fragment {
         btnBack.setOnClickListener(v -> navigateBack());
 
         // Initialize the "Send Code" button and set click listener
-        Button btnVerify = view.findViewById(R.id.btn_verify);
-        btnVerify.setOnClickListener(v -> sendVerificationCode());
+        Button btn_sendCode = view.findViewById(R.id.btn_sendCode);
+        btn_sendCode.setOnClickListener(v -> sendVerificationCode());
 
-        // Initialize the "Enter" button and set click listener
-        Button btnEnter = view.findViewById(R.id.Enter);
-        btnEnter.setOnClickListener(v -> verifyCodeAndProceed());
 
         return view;
     }

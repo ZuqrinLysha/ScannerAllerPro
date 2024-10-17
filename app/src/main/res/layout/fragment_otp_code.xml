@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gray"
-    tools:context="ChangeNoPhoneFragment">
+    tools:context="OtpCodeFragment">
 
     <!-- Toolbar for 'Change Mobile Number' -->
     <androidx.appcompat.widget.Toolbar
@@ -59,16 +59,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Input Mobile Number"
+                android:text="Input Verification Code"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/et_current_phone"
+                android:id="@+id/et_Otp_Code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="+60"
                 android:inputType="phone"
                 android:backgroundTint="#D3D3D3"
                 android:padding="12dp"
@@ -78,14 +77,14 @@
 
             <!-- Code Button -->
             <Button
-                android:id="@+id/btn_sendCode"
+                android:id="@+id/btn_verify_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/blue1"
                 android:padding="12dp"
-                android:text="Send Code"
+                android:text="Enter"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
