@@ -136,7 +136,6 @@
         }
 
 
-
         private void setupCardViewListeners(View rootView) {
             CardView cvHeight = rootView.findViewById(R.id.cvHeight);
             CardView cvWeight = rootView.findViewById(R.id.cvWeight);
@@ -364,27 +363,41 @@
 
         private void confirmDeleteAccount() {
             new AlertDialog.Builder(getContext())
-                    .setTitle("Delete Account")
-                    .setMessage("Are you sure you want to delete your account?")
-                    .setPositiveButton("Yes", (dialog, which) -> deleteAccount())
-                    .setNegativeButton("No", null)
-                    .show();
-        }
+                    .setTitle("Confirm Delete Account")
+                    .setMessage("Are you sure you want to delete your account? This action cannot be undone.")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        FirebaseUser user = auth.getCurrentUser();
+                        if (user != null) {
+                            // Delete user from Firebase Authentication
+                            user.delete().addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    // Remove user data from Firebase Realtime Database
+                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                    userRef.child("AllergicHistory").removeValue();
+                                    userRef.child("MedicalData").removeValue();
+                                    userRef.child("ContactData").removeValue();
 
-        private void deleteAccount() {
-            FirebaseUser user = auth.getCurrentUser();
-            if (user != null) {
-                user.delete().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        userRef.removeValue(); // Remove user data from database
-                        Toast.makeText(getContext(), "Account deleted successfully", Toast.LENGTH_SHORT).show();
-                        // Redirect to login screen or main activity
-                        startActivity(new Intent(getContext(), LogIn.class));
-                        getActivity().finish();
-                    } else {
-                        Toast.makeText(getContext(), "Failed to delete account", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                                    userRef.removeValue().addOnCompleteListener(removeTask -> {
+                                        if (removeTask.isSuccessful()) {
+                                            Toast.makeText(getContext(), "Account and data deleted successfully", Toast.LENGTH_SHORT).show();
+
+                                            // Navigate to LogIn activity after successful deletion
+                                            Intent intent = new Intent(getActivity(), LogIn.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                            getActivity().finish(); // Finish the current activity to prevent the user from going back
+                                        } else {
+                                            Toast.makeText(getContext(), "Failed to delete user data", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    });
+                                } else {
+                                    Toast.makeText(getContext(), "Failed to delete account", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
         }
     }

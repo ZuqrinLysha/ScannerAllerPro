@@ -29,6 +29,7 @@ public class VerificationFragment extends Fragment {
     private DatabaseReference reference;
     private EditText currentPhoneField, newPhoneField;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
