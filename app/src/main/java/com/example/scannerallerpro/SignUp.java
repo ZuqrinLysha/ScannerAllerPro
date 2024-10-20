@@ -18,12 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -87,45 +83,25 @@ public class SignUp extends AppCompatActivity {
                                     String userEmail = user.getEmail();
                                     DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
-                                    // Query the database for the user based on their email
-                                    Query query = usersRef.orderByChild("email").equalTo(userEmail);
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                                    // Retrieve the full name of the user
-                                                    String fullName = txtFullNameSignUp.getText().toString().trim(); // Use the input fullName directly
-                                                    if (fullName != null) {
-                                                        // Save user info in the Realtime Database using user UID as the key
-                                                        reference = usersRef.child(user.getUid());
+                                    // Save user info in the Realtime Database using user UID as the key
+                                    reference = usersRef.child(user.getUid());
 
-                                                        HashMap<String, Object> userData = new HashMap<>();
-                                                        userData.put("fullName", fullName);
-                                                        userData.put("email", userEmail);
-                                                        userData.put("phoneNumber", phoneNumber);
+                                    HashMap<String, Object> userData = new HashMap<>();
+                                    userData.put("fullName", fullName);
+                                    userData.put("email", userEmail);
+                                    userData.put("phoneNumber", phoneNumber);
 
-                                                        reference.setValue(userData)
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            Toast.makeText(SignUp.this, "User information saved!", Toast.LENGTH_SHORT).show();
-                                                                        } else {
-                                                                            Toast.makeText(SignUp.this, "Failed to save user information.", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                });
+                                    reference.setValue(userData)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(SignUp.this, "User information saved!", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(SignUp.this, "Failed to save user information.", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            Toast.makeText(SignUp.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                            });
 
                                     Toast.makeText(SignUp.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
 
@@ -168,6 +144,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    // Function to toggle password visibility
     private void togglePasswordVisibility(EditText editText, ImageView imageView) {
         if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
             // Show the password

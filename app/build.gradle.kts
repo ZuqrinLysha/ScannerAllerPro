@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.identity.doctypes.jvm)
     implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.functions)
     testImplementation(libs.junit)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.auth.v2101)

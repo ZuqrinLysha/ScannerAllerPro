@@ -361,38 +361,36 @@
             });
         }
 
+
         private void confirmDeleteAccount() {
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirm Delete Account")
                     .setMessage("Are you sure you want to delete your account? This action cannot be undone.")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        FirebaseUser user = auth.getCurrentUser();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
+                            String userId = user.getUid(); // Get the unique ID of the current user
+
                             // Delete user from Firebase Authentication
                             user.delete().addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    // Remove user data from Firebase Realtime Database
-                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
-                                    userRef.child("AllergicHistory").removeValue();
-                                    userRef.child("MedicalData").removeValue();
-                                    userRef.child("ContactData").removeValue();
+                                    // Delete user data from Firebase Realtime Database
+                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
-                                    userRef.removeValue().addOnCompleteListener(removeTask -> {
-                                        if (removeTask.isSuccessful()) {
-                                            Toast.makeText(getContext(), "Account and data deleted successfully", Toast.LENGTH_SHORT).show();
-
-                                            // Navigate to LogIn activity after successful deletion
+                                    // Delete sign-up data, medical data, and emergency contacts
+                                    userRef.removeValue().addOnCompleteListener(deleteTask -> {
+                                        if (deleteTask.isSuccessful()) {
+                                            Toast.makeText(getContext(), "Account deleted successfully.", Toast.LENGTH_SHORT).show();
+                                            // Navigate back to login or exit app
                                             Intent intent = new Intent(getActivity(), LogIn.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
-                                            getActivity().finish(); // Finish the current activity to prevent the user from going back
+                                            getActivity().finish(); // End the current activity
                                         } else {
-                                            Toast.makeText(getContext(), "Failed to delete user data", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Failed to delete user data.", Toast.LENGTH_SHORT).show();
                                         }
-
                                     });
                                 } else {
-                                    Toast.makeText(getContext(), "Failed to delete account", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Failed to delete account.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

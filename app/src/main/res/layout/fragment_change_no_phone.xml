@@ -59,38 +59,55 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Input Mobile Number"
+                android:text="Current Mobile Number"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/et_current_phone"
+                android:id="@+id/et_current_phone2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="+60"
+                android:hint="Enter Current Mobile Number"
                 android:inputType="phone"
                 android:backgroundTint="#D3D3D3"
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:layout_marginTop="8dp" />
 
+            <!-- New Mobile Number Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Mobile Number"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp" />
 
-            <!-- Code Button -->
+            <EditText
+                android:id="@+id/et_new_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter New Mobile Number"
+                android:inputType="phone"
+                android:backgroundTint="#D3D3D3"
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:layout_marginTop="8dp" />
+
+            <!-- Save Button -->
             <Button
-                android:id="@+id/btn_sendCode"
+                android:id="@+id/btn_save_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/blue1"
                 android:padding="12dp"
-                android:text="Send Code"
+                android:text="Save"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
-
-            <!-- Enter Button -->
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
