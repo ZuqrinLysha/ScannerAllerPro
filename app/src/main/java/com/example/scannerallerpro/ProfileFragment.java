@@ -142,13 +142,15 @@
             CardView cvBmi = rootView.findViewById(R.id.cvBmi);
             CardView cvBloodType = rootView.findViewById(R.id.cvBloodType);
             CardView cvChangePhone = rootView.findViewById(R.id.cvChangePhone);
+            CardView cvResetSecurityQuestion = rootView.findViewById(R.id.cvResetSecurityQuestion);
             CardView cvChangePassword = rootView.findViewById(R.id.cvChangePassword);
             CardView cvDeleteAccount = rootView.findViewById(R.id.cvDeleteAccount);
 
             cvHeight.setOnClickListener(v -> showInputDialog("Enter Your Height", "height"));
             cvWeight.setOnClickListener(v -> showInputDialog("Enter Your Weight", "weight"));
             cvBloodType.setOnClickListener(v -> showBloodTypeDialog());
-            cvChangePhone.setOnClickListener(v -> navigateToChangeNoPhoneFragment());  // Only need to set this once
+            cvResetSecurityQuestion.setOnClickListener(v -> navigateToResetSecurityQuestionFragment());
+            cvChangePhone.setOnClickListener(v -> navigateToSecurityQuestionFragment());  // Only need to set this once
             cvChangePassword.setOnClickListener(v -> navigateToChangePasswordFragment());
             cvDeleteAccount.setOnClickListener(v -> confirmDeleteAccount());
         }
@@ -160,9 +162,16 @@
             transaction.commit();
         }
 
-        private void navigateToChangeNoPhoneFragment() {
+        private void navigateToResetSecurityQuestionFragment() {
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, new ChangeNoPhoneFragment());
+            transaction.replace(R.id.fragment_container, new ResetSecurityQuestionFragment());
+            transaction.addToBackStack(null); // Optional: Add to back stack for navigation
+            transaction.commit();
+        }
+
+        private void navigateToSecurityQuestionFragment() {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new SecurityQuestionFragment());
             transaction.addToBackStack(null); // Optional: Add to back stack for navigation
             transaction.commit();
         }

@@ -9,168 +9,211 @@
     <!-- Background Image -->
 
     <!-- Foreground Layout containing the sign-up form -->
-    <LinearLayout
-        android:id="@+id/main_sign_up"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/test_3"
-        android:gravity="center"
-        android:padding="16dp">
+        android:fillViewport="true">
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
+            android:id="@+id/main_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="40dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="20dp">
+            android:orientation="vertical"
+            android:background="@drawable/test_3"
+            android:gravity="center"
+            android:padding="16dp">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="599dp"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="40dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
 
-                <TextView
-                    android:id="@+id/txtSignUp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
-                    android:textAlignment="center"
-                    android:textColor="@color/purple"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <EditText
-                    android:id="@+id/txtFullNameSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Full Name"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
-
-                <EditText
-                    android:id="@+id/txtEmailSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_email_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
-
-                <!-- Phone Number EditText -->
-
-                <EditText
-                    android:id="@+id/txtPhoneNumberSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom"
-                    android:drawableLeft="@drawable/baseline_local_phone_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Phone Number"
-                    android:inputType="phone"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
-
-                <!-- Password EditText with Eye Icon Toggle -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    <TextView
+                        android:id="@+id/txtSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sign Up"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/txtPasswordSignUp"
+                        android:id="@+id/txtFullNameSignUp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/custom"
-                        android:drawableLeft="@drawable/baseline_lock_24"
-                        android:hint="Password"
-                        android:inputType="textPassword"
+                        android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
+                        android:drawablePadding="8dp"
+                        android:hint="Full Name"
                         android:padding="8dp"
                         android:textColor="@color/black"
                         android:textColorHighlight="@color/cardview_dark_background" />
 
-                    <!-- Eye Icon for Toggle on the Right -->
-                    <ImageView
-                        android:id="@+id/imgTogglePassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:padding="8dp"
-                        android:src="@drawable/eyepassword"
-                        android:contentDescription="Toggle Password Visibility" />
-                </RelativeLayout>
-
-                <!-- Confirm Password EditText with Eye Icon Toggle -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-
                     <EditText
-                        android:id="@+id/txtConfirmPssSignUp"
+                        android:id="@+id/txtEmailSignUp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/custom"
-                        android:drawableLeft="@drawable/baseline_lock_24"
-                        android:hint="Confirm Password"
-                        android:inputType="textPassword"
+                        android:drawableLeft="@drawable/baseline_email_24"
+                        android:drawablePadding="8dp"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
                         android:padding="8dp"
                         android:textColor="@color/black"
                         android:textColorHighlight="@color/cardview_dark_background" />
 
-                    <!-- Eye Icon for Toggle on the Right -->
-                    <ImageView
-                        android:id="@+id/imgToggleConfirmPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
+                    <!-- Phone Number EditText -->
+                    <EditText
+                        android:id="@+id/txtPhoneNumberSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom"
+                        android:drawableLeft="@drawable/baseline_local_phone_24"
+                        android:drawablePadding="8dp"
+                        android:hint="Phone Number"
+                        android:inputType="phone"
                         android:padding="8dp"
-                        android:src="@drawable/eyepassword"
-                        android:contentDescription="Toggle Confirm Password Visibility" />
-                </RelativeLayout>
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/cardview_dark_background" />
 
-                <Button
-                    android:id="@+id/btnSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="30dp"
-                    android:backgroundTint="@color/purple"
-                    android:text="Submit"
-                    android:textSize="18sp"
-                    app:cornerRadius="30dp" />
+                    <!-- Security Question Spinner -->
+                    <Spinner
+                        android:id="@+id/spinnerSecurityQuestion1"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom"
+                        android:padding="8dp" />
 
-            </LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        </androidx.cardview.widget.CardView>
+                    <EditText
+                        android:id="@+id/txtSecurityAnswer"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom"
+                        android:inputType="textPassword"
+                        android:hint="Security Answer"
+                        android:padding="8dp"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/cardview_dark_background" />
+    <!-- Eye Icon for Toggle on the Right -->
+    <ImageView
+        android:id="@+id/imgToggleQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="Toggle Password Visibility"
+        android:padding="10dp"
+        android:src="@drawable/eyepassword" />
+</RelativeLayout>
 
-        <!-- ProgressBar to be displayed when loading -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:indeterminate="true" />
 
-    </LinearLayout>
 
+                    <!-- Password EditText with Eye Icon Toggle -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <EditText
+                            android:id="@+id/txtPasswordSignUp"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/custom"
+                            android:drawableLeft="@drawable/baseline_lock_24"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/cardview_dark_background" />
+
+                        <!-- Eye Icon for Toggle on the Right -->
+                        <ImageView
+                            android:id="@+id/imgTogglePassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="8dp"
+                            android:src="@drawable/eyepassword"
+                            android:contentDescription="Toggle Password Visibility" />
+                    </RelativeLayout>
+
+                    <!-- Confirm Password EditText with Eye Icon Toggle -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <EditText
+                            android:id="@+id/txtConfirmPssSignUp"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/custom"
+                            android:drawableLeft="@drawable/baseline_lock_24"
+                            android:hint="Confirm Password"
+                            android:inputType="textPassword"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/cardview_dark_background" />
+
+                        <!-- Eye Icon for Toggle on the Right -->
+                        <ImageView
+                            android:id="@+id/imgToggleConfirmPassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="8dp"
+                            android:src="@drawable/eyepassword"
+                            android:contentDescription="Toggle Confirm Password Visibility" />
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/btnSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="30dp"
+                        android:backgroundTint="@color/purple"
+                        android:text="Submit"
+                        android:textSize="18sp"
+                        app:cornerRadius="30dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ProgressBar to be displayed when loading -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminate="true" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

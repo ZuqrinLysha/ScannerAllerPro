@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +27,11 @@ import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity {
 
-    EditText txtFullNameSignUp, txtEmailSignUp, txtPasswordSignUp, txtConfirmPssSignUp, txtPhoneNumberSignUp;
+    EditText txtFullNameSignUp, txtEmailSignUp, txtPasswordSignUp, txtConfirmPssSignUp, txtPhoneNumberSignUp, txtSecurityAnswer;
     TextView txtSignUp;
     Button btnSignUp;
-    ImageView imgTogglePassword, imgToggleConfirmPassword;
+    ImageView imgTogglePassword, imgToggleConfirmPassword, imgToggleQuestion;
+    Spinner spinnerSecurityQuestion1; // Declare spinner here
     FirebaseAuth auth;
     DatabaseReference reference;
 
@@ -47,9 +50,18 @@ public class SignUp extends AppCompatActivity {
         txtSignUp = findViewById(R.id.txtSignUp);
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
         imgToggleConfirmPassword = findViewById(R.id.imgToggleConfirmPassword);
+        imgToggleQuestion = findViewById(R.id.imgToggleQuestion);
+        txtSecurityAnswer = findViewById(R.id.txtSecurityAnswer); // Initialize here
+        spinnerSecurityQuestion1 = findViewById(R.id.spinnerSecurityQuestion1); // Initialize here
 
         // Initialize Firebase Auth instance
         auth = FirebaseAuth.getInstance();
+
+        // Populate spinner with security questions (example)
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.security_questions, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSecurityQuestion1.setAdapter(adapter);
 
         // Setting the click listener for the Sign-Up button
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +72,13 @@ public class SignUp extends AppCompatActivity {
                 String password = txtPasswordSignUp.getText().toString().trim();
                 String confirmPassword = txtConfirmPssSignUp.getText().toString().trim();
                 String phoneNumber = txtPhoneNumberSignUp.getText().toString().trim();
+                String securityQuestion = spinnerSecurityQuestion1.getSelectedItem().toString();
+                String securityAnswer = txtSecurityAnswer.getText().toString().trim();
 
                 // Validate input fields
-                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
+                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() ||
+                        confirmPassword.isEmpty() || phoneNumber.isEmpty() ||
+                        securityAnswer.isEmpty()) {
                     Toast.makeText(SignUp.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -80,34 +96,38 @@ public class SignUp extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign-up successful
                                     FirebaseUser user = auth.getCurrentUser();
-                                    String userEmail = user.getEmail();
-                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+                                    if (user != null) { // Check for null user
+                                        String userEmail = user.getEmail();
+                                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
-                                    // Save user info in the Realtime Database using user UID as the key
-                                    reference = usersRef.child(user.getUid());
+                                        // Save user info in the Realtime Database using user UID as the key
+                                        reference = usersRef.child(user.getUid());
 
-                                    HashMap<String, Object> userData = new HashMap<>();
-                                    userData.put("fullName", fullName);
-                                    userData.put("email", userEmail);
-                                    userData.put("phoneNumber", phoneNumber);
+                                        HashMap<String, Object> userData = new HashMap<>();
+                                        userData.put("fullName", fullName);
+                                        userData.put("email", userEmail);
+                                        userData.put("phoneNumber", phoneNumber);
+                                        userData.put("securityQuestion", securityQuestion);
+                                        userData.put("securityAnswer", securityAnswer);
 
-                                    reference.setValue(userData)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(SignUp.this, "User information saved!", Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        Toast.makeText(SignUp.this, "Failed to save user information.", Toast.LENGTH_SHORT).show();
+                                        reference.setValue(userData)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(SignUp.this, "User information saved!", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            Toast.makeText(SignUp.this, "Failed to save user information.", Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
 
-                                    Toast.makeText(SignUp.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUp.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(SignUp.this, LogIn.class);
-                                    startActivity(intent);
-                                    finish(); // Optional: finish the SignUp activity so the user cannot navigate back to it
+                                        Intent intent = new Intent(SignUp.this, LogIn.class);
+                                        startActivity(intent);
+                                        finish(); // Optional: finish the SignUp activity so the user cannot navigate back to it
+                                    }
                                 } else {
                                     // Sign-up failed
                                     String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
@@ -124,6 +144,14 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignUp.this, LogIn.class);
                 startActivity(intent);
+            }
+        });
+
+        // Setting up the eye toggle for question visibility
+        imgTogglePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility(txtSecurityAnswer, imgToggleQuestion);
             }
         });
 

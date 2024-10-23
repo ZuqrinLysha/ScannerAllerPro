@@ -1,8 +1,8 @@
 [versions]
 agp = "8.5.2"
+
 firebaseBom = "33.4.0"
-googleFirebaseAuth = "21.0.1"
-googleFirebaseDatabase = "20.3.0"
+
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -11,23 +11,20 @@ material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
 googleGmsGoogleServices = "4.4.2"
-firebaseDatabase = "21.0.0"
-firebaseAuth = "23.0.0"
 playServicesAuth = "21.2.0"
 playServicesMlkitTextRecognition = "19.0.1"
 identityDoctypesJvm = "202408.1"
-firebaseInappmessagingDisplay = "21.0.0"
-firebaseFunctions = "21.0.0"
 
 
 
 
 
 [libraries]
-firebase-auth-v2101 = { module = "com.google.firebase:firebase-auth", version.ref = "googleFirebaseAuth" }
+com-google-firebase-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-database-v2030 = { module = "com.google.firebase:firebase-database", version.ref = "googleFirebaseDatabase" }
-google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+google-firebase-database = { module = "com.google.firebase:firebase-database" }
+google-firebase-functions = { module = "com.google.firebase:firebase-functions" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -35,13 +32,9 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 play-services-mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 identity-doctypes-jvm = { group = "com.android.identity", name = "identity-doctypes-jvm", version.ref = "identityDoctypesJvm" }
-firebase-inappmessaging-display = { group = "com.google.firebase", name = "firebase-inappmessaging-display", version.ref = "firebaseInappmessagingDisplay" }
-firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version.ref = "firebaseFunctions" }
 
 
 [plugins]

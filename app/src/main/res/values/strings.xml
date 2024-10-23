@@ -19,6 +19,16 @@
     </string-array>
 
 
+    <string-array name="security_questions">
+        <item>Choose Here</item>
+        <item>What is your pet\'s name?</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What city were you born in?</item>
+        <item>What is your favorite food?</item>
+        <!-- Add more questions as needed -->
+    </string-array>
+
+
 </resources>
 
 

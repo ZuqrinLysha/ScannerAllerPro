@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+
 }
 
 android {
@@ -36,26 +37,29 @@ android {
         exclude("META-INF/versions/9/OSGI-INF/MANIFEST.MF") // Exclude the conflicting file
     }
 }
-
 dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.auth)
-    implementation(libs.play.services.mlkit.text.recognition)
-    implementation(libs.identity.doctypes.jvm)
-    implementation(libs.firebase.inappmessaging.display)
-    implementation(libs.firebase.functions)
-    testImplementation(libs.junit)
-    implementation(libs.play.services.auth)
-    implementation(libs.firebase.auth.v2101)
-    implementation(libs.firebase.database.v2030)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.google.firebase.auth)
-    androidTestImplementation(libs.ext.junit)
-    implementation("com.google.firebase:firebase-auth:23.0.0")
+    // Android libraries
+    implementation(libs.appcompat)  // AndroidX AppCompat
+    implementation(libs.material)   // Material Design Components
+    implementation(libs.activity)   // AndroidX Activity
+    implementation(libs.constraintlayout)  // ConstraintLayout
 
-    androidTestImplementation(libs.espresso.core)
+    // Firebase BOM (manages all Firebase dependencies version)
+    implementation(platform(libs.firebase.bom))  // Firebase BOM
+
+    // Firebase dependencies
+    implementation(libs.com.google.firebase.firebase.auth)  // Firebase Auth
+    implementation(libs.google.firebase.database)           // Firebase Realtime Database
+    implementation(libs.google.firebase.functions)          // Firebase Cloud Functions
+    implementation(libs.google.firebase.analytics)          // Firebase Analytics
+
+    // ML Kit and Play Services
+    implementation(libs.play.services.mlkit.text.recognition)  // ML Kit Text Recognition
+    implementation(libs.identity.doctypes.jvm)                 // Identity Document Types
+    implementation(libs.play.services.auth)                    // Play Services Auth
+
+    // Testing libraries
+    testImplementation(libs.junit)  // JUnit for unit testing
+    androidTestImplementation(libs.ext.junit)  // AndroidX JUnit for instrumentation tests
+    androidTestImplementation(libs.espresso.core)  // Espresso for UI tests
 }
