@@ -7,19 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
 
 public class ViewContactFragment extends Fragment {
     private ContactViewModel contactViewModel;
@@ -53,6 +49,7 @@ public class ViewContactFragment extends Fragment {
 
         // Initialize ViewModel
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
+        contactViewModel.loadContacts();
 
         // Retrieve user's unique ID
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -64,9 +61,8 @@ public class ViewContactFragment extends Fragment {
         loadContactsFromFirebase(); // Call to load contacts initially
 
         // Observe the contact list data
-        contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<ContactViewModel.Contact>>() {
-            @Override
-            public void onChanged(List<ContactViewModel.Contact> contacts) {
+        contactViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
+            if (contacts != null) {
                 if (contactAdapter == null) { // Handle initial data load
                     contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
                         @Override
@@ -74,6 +70,7 @@ public class ViewContactFragment extends Fragment {
                             showDeleteConfirmationDialog(contact); // Remove contact using ViewModel
                         }
 
+                        @Override
                         public void onContactSelected(ContactViewModel.Contact contact) {
                             // Handle contact selection here
                         }

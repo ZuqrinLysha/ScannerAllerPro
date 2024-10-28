@@ -119,7 +119,6 @@ public class AddContactFragment extends Fragment {
                                             contactViewModel.addContact(new ContactViewModel.Contact(contactName, phone, relationship));
                                             Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
                                             clearInputFields();
-                                            navigateToViewContactFragment();
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(getContext(), "Failed to save contact: " + e.getMessage(), Toast.LENGTH_SHORT).show();

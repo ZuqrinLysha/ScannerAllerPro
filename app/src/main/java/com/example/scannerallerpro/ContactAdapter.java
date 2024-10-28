@@ -3,6 +3,7 @@ package com.example.scannerallerpro;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
+        Log.d("ContactAdapter", "Binding contact: " + contactList.get(position).getFullName());
         ContactViewModel.Contact contact = contactList.get(position);
         holder.textViewContactName.setText(contact.getFullName());
         holder.textViewPhoneNumber.setText(contact.getPhoneNumber());
@@ -62,12 +64,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public int getItemCount() {
-        return contactList.size();
+        return contactList != null ? contactList.size() : 0;
     }
 
     public void updateContacts(List<ContactViewModel.Contact> newContactList) {
-        this.contactList = newContactList;
-        notifyDataSetChanged(); // Notify the adapter about data change
+        if (newContactList != null) {
+            this.contactList.clear();
+            this.contactList.addAll(newContactList);
+            notifyDataSetChanged(); // Notify the RecyclerView that the data has changed
+        }
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
@@ -87,5 +92,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     // Callback interface for handling actions like deleting a contact
     public interface OnContactActionListener {
         void onDeleteContact(ContactViewModel.Contact contact);
+
+        void onContactSelected(ContactViewModel.Contact contact);
     }
 }
