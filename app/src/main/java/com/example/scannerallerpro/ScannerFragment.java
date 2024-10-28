@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,11 +52,12 @@ public class ScannerFragment extends Fragment {
 
     private static final int REQUEST_CAMERA_CODE = 100;
     private static final int CAMERA_INTENT_CODE = 101;
+    private static final String USERS_NODE = "Users";
+    private static final String ALLERGIC_HISTORY_NODE = "AllergicHistory";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_scanner, container, false);
     }
 
@@ -64,71 +66,62 @@ public class ScannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize the Toolbar
-        Toolbar toolbar = view.findViewById(R.id.toolbarScanner); // Use the correct ID from the layout
+        Toolbar toolbar = view.findViewById(R.id.toolbarScanner);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(""); // Remove the title from the toolbar
+        toolbar.setTitle("");
 
         // Hide the main toolbar when entering the ScannerFragment
-        if (getActivity() != null) {
-            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage); // Assuming this is the ID of the main toolbar
-            if (mainToolbar != null) {
-                mainToolbar.setVisibility(View.GONE);
-            }
-        }
+        hideMainToolbar();
 
         btnScanner = view.findViewById(R.id.btnCapture);
         imgCaptured = view.findViewById(R.id.imgCaptured);
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
-        String userEmail = auth.getCurrentUser() != null ? auth.getCurrentUser().getEmail() : null;
+        FirebaseUser currentUser = auth.getCurrentUser();
 
-        if (userEmail != null) {
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
-            usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            String fullName = userSnapshot.child("fullName").getValue(String.class);
-                            if (fullName != null) {
-                                databaseReference = FirebaseDatabase.getInstance()
-                                        .getReference("Users")
-                                        .child(fullName)
-                                        .child("AllergicHistory");
-                                fetchUserAllergies();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getContext(), "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                }
-            });
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance()
+                    .getReference(USERS_NODE)
+                    .child(userId)
+                    .child(ALLERGIC_HISTORY_NODE);
+            fetchUserAllergies();
         }
 
-        btnScanner.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_INTENT_CODE);
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_CODE);
-            }
-        });
+        btnScanner.setOnClickListener(v -> checkCameraPermission());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        showMainToolbar();
+    }
 
-        // Show the main toolbar again when leaving the ScannerFragment
+    private void hideMainToolbar() {
+        if (getActivity() != null) {
+            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage);
+            if (mainToolbar != null) {
+                mainToolbar.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void showMainToolbar() {
         if (getActivity() != null) {
             Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage);
             if (mainToolbar != null) {
                 mainToolbar.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_INTENT_CODE);
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_CODE);
         }
     }
 
@@ -141,20 +134,15 @@ public class ScannerFragment extends Fragment {
                         String allergyName = allergySnapshot.getKey();
                         Object hasAllergyValue = allergySnapshot.getValue();
 
-                        // Check if the value is a Boolean
-                        if (hasAllergyValue instanceof Boolean) {
-                            Boolean hasAllergy = (Boolean) hasAllergyValue;
-                            if (hasAllergy) {
-                                userAllergies.add(allergyName);
-                            }
+                        // Check if the value is a Boolean or a String
+                        if (hasAllergyValue instanceof Boolean && (Boolean) hasAllergyValue) {
+                            userAllergies.add(allergyName);
                         } else if (hasAllergyValue instanceof String) {
-                            // If it's a string, assume it's a user-input allergy
                             String userInputAllergy = (String) hasAllergyValue;
                             if (!userInputAllergy.isEmpty()) {
                                 userAllergies.add(userInputAllergy);
                             }
                         } else {
-                            // Log or handle the case where the value is not a boolean or string
                             Log.e("ScannerFragment", "Invalid data type for allergy: " + allergyName);
                         }
                     }
@@ -168,11 +156,10 @@ public class ScannerFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_INTENT_CODE && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == CAMERA_INTENT_CODE && resultCode == getActivity().RESULT_OK && data != null) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
             if (imageBitmap != null) {
                 imgCaptured.setImageBitmap(imageBitmap);
@@ -184,13 +171,12 @@ public class ScannerFragment extends Fragment {
 
     private void processImage(Bitmap imageBitmap) {
         InputImage image = InputImage.fromBitmap(imageBitmap, 0);
-        TextRecognizerOptions options = new TextRecognizerOptions.Builder().build();
-        TextRecognizer recognizer = TextRecognition.getClient(options);
+        TextRecognizer recognizer = TextRecognition.getClient(new TextRecognizerOptions.Builder().build());
 
         recognizer.process(image)
                 .addOnSuccessListener(text -> {
-                    Log.d("ScannerFragment", "Extracted Text: " + text.getText()); // Log the extracted text
-                    checkAllergiesInText(text.getText()); // Proceed to check for allergies
+                    Log.d("ScannerFragment", "Extracted Text: " + text.getText());
+                    checkAllergiesInText(text.getText());
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "Text recognition failed.", Toast.LENGTH_SHORT).show();
@@ -200,34 +186,15 @@ public class ScannerFragment extends Fragment {
 
     private void checkAllergiesInText(String text) {
         List<String> detectedAllergies = new ArrayList<>();
-
-        // Normalize the text to lower case for comparison
         String normalizedText = text.toLowerCase();
 
-        // Check for direct allergens from the user's allergy list
         for (String allergy : userAllergies) {
             String normalizedAllergy = allergy.toLowerCase();
-
-            // Check if the normalized text contains the normalized allergy
-            if (normalizedText.contains(normalizedAllergy)) {
+            if (normalizedText.contains(normalizedAllergy) || checkPlurality(normalizedText, normalizedAllergy)) {
                 detectedAllergies.add(allergy);
-            }
-
-            // Additional check for singular/plural variations
-            if (normalizedAllergy.endsWith("s")) { // Check if allergy ends with 's'
-                String singularForm = normalizedAllergy.substring(0, normalizedAllergy.length() - 1); // Remove the 's'
-                if (normalizedText.contains(singularForm)) {
-                    detectedAllergies.add(allergy);
-                }
-            } else {
-                String pluralForm = normalizedAllergy + "s"; // Add 's' to form plural
-                if (normalizedText.contains(pluralForm)) {
-                    detectedAllergies.add(allergy);
-                }
             }
         }
 
-        // If allergens are detected, show the allergy alert dialog
         if (!detectedAllergies.isEmpty()) {
             showAllergyAlertDialog(detectedAllergies);
         } else {
@@ -235,51 +202,43 @@ public class ScannerFragment extends Fragment {
         }
     }
 
-    private void showAllergyAlertDialog(List<String> detectedAllergies) {
-        // Inflate your custom dialog layout
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View customView = inflater.inflate(R.layout.warning_dialog, null); // Reference your dialog layout here
+    private boolean checkPlurality(String text, String allergy) {
+        String singularForm = allergy.endsWith("s") ? allergy.substring(0, allergy.length() - 1) : allergy + "s";
+        return text.contains(singularForm) || text.contains(singularForm.endsWith("s") ? singularForm.substring(0, singularForm.length() - 1) : singularForm + "s");
+    }
 
-        // Find views in the custom layout
+    private void showAllergyAlertDialog(List<String> detectedAllergies) {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View customView = inflater.inflate(R.layout.warning_dialog, null);
+
         TextView warningTitle = customView.findViewById(R.id.WarningTitle);
         TextView warningDesc = customView.findViewById(R.id.WarningDesc);
         Button warningDoneButton = customView.findViewById(R.id.WarningDone);
 
-        // Set the title
         warningTitle.setText("Allergy Alert!");
-
-        // Create a SpannableStringBuilder for the description
-        SpannableStringBuilder spannableDescription = new SpannableStringBuilder();
-
-        // Add introductory text
-        String introText = "The following allergens were detected:\n";
-        spannableDescription.append(introText); // Append the introductory text
-
-        for (String allergy : detectedAllergies) {
-            // Create a SpannableString for each allergy
-            String allergyText ="\n" +"• " + allergy + "\n";
-            SpannableString spannableAllergy = new SpannableString(allergyText);
-
-            // Set the color to red and make it bold
-            spannableAllergy.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 0, allergyText.length(), 0);
-            spannableAllergy.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, allergyText.length(), 0);
-
-            // Append the styled allergy to the description
-            spannableDescription.append(spannableAllergy);
-        }
-
-        // Set the styled description to the TextView
+        SpannableStringBuilder spannableDescription = createSpannableDescription(detectedAllergies);
         warningDesc.setText(spannableDescription);
 
-        // Create the AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(customView);
         AlertDialog alertDialog = builder.create();
 
-        // Handle the button click
         warningDoneButton.setOnClickListener(v -> alertDialog.dismiss());
-
-        // Show the dialog
         alertDialog.show();
+    }
+
+    private SpannableStringBuilder createSpannableDescription(List<String> detectedAllergies) {
+        SpannableStringBuilder spannableDescription = new SpannableStringBuilder();
+        String introText = "The following allergens were detected:\n";
+        spannableDescription.append(introText);
+
+        for (String allergy : detectedAllergies) {
+            String allergyText = "• " + allergy + "\n";
+            SpannableString spannableString = new SpannableString(allergyText);
+            spannableString.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 2, 2 + allergy.length(), 0);
+            spannableDescription.append(spannableString);
+        }
+
+        return spannableDescription;
     }
 }

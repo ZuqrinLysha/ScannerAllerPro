@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +35,6 @@ public class AllergicHistoryFragment extends Fragment {
     private EditText txtOtherAllergic;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private DatabaseReference usersRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,46 +46,25 @@ public class AllergicHistoryFragment extends Fragment {
         // Initialize EditText
         txtOtherAllergic = view.findViewById(R.id.txtOtherAllergic);
 
+        // Initialize save and back buttons
         ImageButton btnSave = view.findViewById(R.id.button_save);
-        btnSave.setOnClickListener(v -> saveAllergicHistory());
-
         ImageButton btnBack = view.findViewById(R.id.backArrow);
+
+        // Set button listeners
+        btnSave.setOnClickListener(v -> saveAllergicHistory());
         btnBack.setOnClickListener(v -> navigateBack());
 
-        // Initialize Firebase
+        // Initialize Firebase authentication and reference
         auth = FirebaseAuth.getInstance();
-        String userEmail = auth.getCurrentUser() != null ? auth.getCurrentUser().getEmail() : null;
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance()
+                    .getReference("Users")
+                    .child(userId)
+                    .child("AllergicHistory");
 
-        if (userEmail != null) {
-            usersRef = FirebaseDatabase.getInstance().getReference("Users");
-
-            // Query the database for the user based on their email
-            usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            // Retrieve the full name of the user
-                            String fullName = userSnapshot.child("fullName").getValue(String.class);
-                            if (fullName != null) {
-                                // Set the Firebase reference using the fullName
-                                databaseReference = FirebaseDatabase.getInstance()
-                                        .getReference("Users")
-                                        .child(fullName)
-                                        .child("AllergicHistory");
-
-                                // Fetch and apply allergic history to checkboxes
-                                loadAllergicHistory();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getContext(), "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                }
-            });
+            loadAllergicHistory();
         }
 
         return view;
@@ -93,10 +72,10 @@ public class AllergicHistoryFragment extends Fragment {
 
     // Method to navigate back to HomeFragment
     private void navigateBack() {
-        Fragment homeFragment = new HomeFragment(); // Create an instance of HomeFragment
+        Fragment homeFragment = new HomeFragment();
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, homeFragment); // Assuming you have a container with this ID
-        transaction.addToBackStack(null); // Optional: Add to back stack
+        transaction.replace(R.id.fragment_container, homeFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -163,24 +142,18 @@ public class AllergicHistoryFragment extends Fragment {
         allergies.put("vegetableOil", chkVegetableOil.isChecked());
         allergies.put("coconutOil", chkCoconutOil.isChecked());
 
-        // Add the user's additional input if it's not empty
         String otherAllergic = txtOtherAllergic.getText().toString().trim();
         if (!otherAllergic.isEmpty()) {
             allergies.put("other", otherAllergic);
         }
 
-        if (!allergies.isEmpty()) {
-            // Store data in Firebase
-            databaseReference.setValue(allergies).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Allergic history saved successfully!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Failed to save allergic history.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "No allergies selected!", Toast.LENGTH_SHORT).show();
-        }
+        databaseReference.setValue(allergies).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Allergic history saved successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Failed to save allergic history.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadAllergicHistory() {
@@ -188,7 +161,6 @@ public class AllergicHistoryFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Check and set checkboxes according to saved data, with defaulting to false
                     chkPeanuts.setChecked(getBooleanValue(dataSnapshot, "peanuts"));
                     chkSoybeans.setChecked(getBooleanValue(dataSnapshot, "soybeans"));
                     chkCashew.setChecked(getBooleanValue(dataSnapshot, "cashew"));
@@ -214,10 +186,9 @@ public class AllergicHistoryFragment extends Fragment {
                     chkVegetableOil.setChecked(getBooleanValue(dataSnapshot, "vegetableOil"));
                     chkCoconutOil.setChecked(getBooleanValue(dataSnapshot, "coconutOil"));
 
-                    // Load other allergies if they exist
-                    String otherAllergic = dataSnapshot.child("other").getValue(String.class);
-                    if (otherAllergic != null) {
-                        txtOtherAllergic.setText(otherAllergic);
+                    String otherAllergy = dataSnapshot.child("other").getValue(String.class);
+                    if (otherAllergy != null) {
+                        txtOtherAllergic.setText(otherAllergy);
                     }
                 }
             }
@@ -230,6 +201,7 @@ public class AllergicHistoryFragment extends Fragment {
     }
 
     private boolean getBooleanValue(DataSnapshot dataSnapshot, String key) {
-        return dataSnapshot.child(key).getValue(Boolean.class) != null && dataSnapshot.child(key).getValue(Boolean.class);
+        Boolean value = dataSnapshot.child(key).getValue(Boolean.class);
+        return value != null && value;
     }
 }

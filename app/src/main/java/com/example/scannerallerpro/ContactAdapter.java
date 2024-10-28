@@ -39,12 +39,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Log.d("ContactAdapter", "Binding contact: " + contactList.get(position).getFullName());
         ContactViewModel.Contact contact = contactList.get(position);
         holder.textViewContactName.setText(contact.getFullName());
-        holder.textViewPhoneNumber.setText(contact.getPhoneNumber());
+        holder.textViewPhoneNumber.setText(contact.getPhone());
         holder.textRelationship.setText(contact.getRelationship());
 
         // Call button action
         holder.buttonCall.setOnClickListener(v -> {
-            String phoneNumber = contact.getPhoneNumber();
+            String phoneNumber = contact.getPhone();
             if (!phoneNumber.isEmpty()) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + phoneNumber));

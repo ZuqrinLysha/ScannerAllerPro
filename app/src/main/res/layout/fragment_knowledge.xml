@@ -29,7 +29,7 @@
         <!-- CardView Section for Articles -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
-            android:backgroundTint="@color/softblue"
+            android:backgroundTint="@color/blue3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -142,7 +142,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view2"
-            android:backgroundTint="@color/softblue"
+            android:backgroundTint="@color/blue3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="20dp"
-                android:background="@color/softblue">
+                android:background="@color/blue3">
 
                 <TextView
                     android:id="@+id/symptoms_lvl"
@@ -193,7 +193,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/softblue"
+                android:background="@color/blue3"
                 android:orientation="vertical"
                 android:padding="20dp">
 

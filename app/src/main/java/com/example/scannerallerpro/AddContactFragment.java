@@ -105,18 +105,25 @@ public class AddContactFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            String userId = userSnapshot.getKey(); // Get the unique ID for the user
                             String fullName = userSnapshot.child("fullName").getValue(String.class);
-                            if (fullName != null) {
-                                DatabaseReference contactRef = databaseReference.child(fullName).child("ContactData").push();
 
+                            if (fullName != null) {
+                                // Reference to the user's contact data
+                                DatabaseReference contactRef = databaseReference.child(userId).child("ContactData").push();
+
+                                // Prepare the contact data to be saved
                                 Map<String, Object> contactData = new HashMap<>();
                                 contactData.put("contact_name", contactName);
                                 contactData.put("no_phone", phone);
                                 contactData.put("relationship", relationship);
 
+                                // Save the contact data
                                 contactRef.setValue(contactData)
                                         .addOnSuccessListener(aVoid -> {
-                                            contactViewModel.addContact(new ContactViewModel.Contact(contactName, phone, relationship));
+                                            // Update the ViewModel with the new contact
+                                            ContactViewModel.Contact newContact = new ContactViewModel.Contact(contactRef.getKey(), contactName, phone, relationship);
+                                            contactViewModel.addContact(newContact);
                                             Toast.makeText(getContext(), "Contact saved successfully!", Toast.LENGTH_SHORT).show();
                                             clearInputFields();
                                         })
@@ -130,7 +137,8 @@ public class AddContactFragment extends Fragment {
                     }
                 }
 
-                @Override
+
+        @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(getContext(), "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
                 }

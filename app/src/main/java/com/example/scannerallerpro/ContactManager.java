@@ -1,94 +1,56 @@
 package com.example.scannerallerpro;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ContactManager {
     // Define the Contact class
     public static class Contact {
-        private String HealthCareContactName; // Updated field name
-        private String HealthCareContactPhone; // Updated field name
-        private String MedicalCenterContactName; // Updated field name
-        private String MedicalCenterContactPhone; // Updated field name
-        private String FamilyContactName; // Updated field name
-        private String FamilyContactPhone; // Updated field name
-        private String spinnerRelationship; // Updated field name
+        private String contactName; // Updated field name
+        private String phone; // Updated field name
+        private String relationship; // Updated field name
 
         // Default constructor required for Firebase
         public Contact() {
         }
 
         // Constructor with parameters
-        public Contact(String HealthCareContactName, String HealthCareContactPhone,
-                       String MedicalCenterContactName, String MedicalCenterContactPhone,
-                       String FamilyContactName, String FamilyContactPhone,
-                       String spinnerRelationship) {
-            this.HealthCareContactName = HealthCareContactName;
-            this.HealthCareContactPhone = HealthCareContactPhone;
-            this.MedicalCenterContactName = MedicalCenterContactName;
-            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
-            this.FamilyContactName = FamilyContactName;
-            this.FamilyContactPhone = FamilyContactPhone;
-            this.spinnerRelationship = spinnerRelationship;
+        public Contact(String contactName, String phone, String relationship) {
+            this.contactName = contactName;
+            this.phone = phone;
+            this.relationship = relationship;
         }
 
-        // Getters and setters
-        public String getHealthCareContactName() {
-            return HealthCareContactName;
+        // Getters and Setters
+        public String getcontactName() {
+            return contactName;
         }
 
-        public void setHealthCareContactName(String HealthCareContactName) {
-            this.HealthCareContactName = HealthCareContactName;
+        public void setcontactName(String contactName) {
+            this.contactName = contactName;
         }
 
-        public String getHealthCareContactPhone() {
-            return HealthCareContactPhone;
+        public String getphone() {
+            return phone;
         }
 
-        public void setHealthCareContactPhone(String HealthCareContactPhone) {
-            this.HealthCareContactPhone = HealthCareContactPhone;
+        public void setgetphone(String phone) {
+            this.phone = phone;
         }
 
-        public String getMedicalCenterContactName() {
-            return MedicalCenterContactName;
+        public String getrelationship() {
+            return relationship;
         }
 
-        public void setMedicalCenterContactName(String MedicalCenterContactName) {
-            this.MedicalCenterContactName = MedicalCenterContactName;
-        }
-
-        public String getMedicalCenterContactPhone() {
-            return MedicalCenterContactPhone;
-        }
-
-        public void setMedicalCenterContactPhone(String MedicalCenterContactPhone) {
-            this.MedicalCenterContactPhone = MedicalCenterContactPhone;
-        }
-
-        public String getFamilyContactName() {
-            return FamilyContactName;
-        }
-
-        public void setFamilyContactName(String FamilyContactName) {
-            this.FamilyContactName = FamilyContactName;
-        }
-
-        public String getFamilyContactPhone() {
-            return FamilyContactPhone;
-        }
-
-        public void setFamilyContactPhone(String FamilyContactPhone) {
-            this.FamilyContactPhone = FamilyContactPhone;
-        }
-
-        public String getSpinnerRelationship() {
-            return spinnerRelationship;
-        }
-
-        public void setSpinnerRelationship(String spinnerRelationship) {
-            this.spinnerRelationship = spinnerRelationship;
+        public void getrelationship(String relationship) {
+            this.relationship = relationship;
         }
     }
 
@@ -106,14 +68,61 @@ public class ContactManager {
             if (contactId != null) {
                 contactsRef.child(userId).child(contactId).setValue(contact)
                         .addOnSuccessListener(aVoid -> {
-                            // Optionally, add success logic here
+                            Log.d("ContactManager", "Contact added successfully");
                         })
                         .addOnFailureListener(e -> {
-                            // Optionally, add failure logic here
+                            Log.e("ContactManager", "Failed to add contact", e);
                         });
             }
         } else {
-            // Handle case when user is not logged in
+            Log.e("ContactManager", "User not logged in");
         }
     }
+
+    // Method to delete a contact
+    public static void deleteContact(String contactId) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            contactsRef.child(userId).child(contactId).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("ContactManager", "Contact deleted successfully");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ContactManager", "Failed to delete contact", e);
+                    });
+        }
+    }
+
+    // Method to update a contact
+    public static void updateContact(String contactId, Contact contact) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            Map<String, Object> contactValues = new HashMap<>();
+            contactValues.put("contactName", contact.getcontactName());
+            contactValues.put("phone", contact.getphone());
+            contactValues.put("relationship", contact.getrelationship());
+
+            contactsRef.child(userId).child(contactId).updateChildren(contactValues)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("ContactManager", "Contact updated successfully");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ContactManager", "Failed to update contact", e);
+                    });
+        }
+    }
+
+    // Method to retrieve contacts (to be implemented)
+    // You can add a method to retrieve contacts here if needed.
+    /*
+    public static void getContacts(ValueEventListener listener) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            contactsRef.child(userId).addListenerForSingleValueEvent(listener);
+        }
+    }
+    */
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ViewContactFragment extends Fragment {
     private ContactViewModel contactViewModel;
@@ -25,7 +27,7 @@ public class ViewContactFragment extends Fragment {
     private String userId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_contact_, container, false);
@@ -36,104 +38,95 @@ public class ViewContactFragment extends Fragment {
 
         // Initialize back arrow button
         ImageButton backArrow = view.findViewById(R.id.backArrow);
-
-        // Set click listeners for the buttons
         backArrow.setOnClickListener(v -> navigateToHomeFragment());
 
         // Initialize RecyclerView
         recyclerViewContacts = view.findViewById(R.id.recyclerViewContacts);
         recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize Firebase
+        // Initialize Firebase and ViewModel
         auth = FirebaseAuth.getInstance();
-
-        // Initialize ViewModel
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
-        contactViewModel.loadContacts();
 
         // Retrieve user's unique ID
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             userId = currentUser.getUid();
+        } else {
+            // Handle case where the user is not logged in
+            // Optionally navigate to login or show an error
         }
 
-        // Load contacts from Firebase
-        loadContactsFromFirebase(); // Call to load contacts initially
+        // Load contacts and set up observer
+        loadContactsFromFirebase();
 
-        // Observe the contact list data
         contactViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
-            if (contacts != null) {
-                if (contactAdapter == null) { // Handle initial data load
-                    contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
-                        @Override
-                        public void onDeleteContact(ContactViewModel.Contact contact) {
-                            showDeleteConfirmationDialog(contact); // Remove contact using ViewModel
-                        }
+            if (contactAdapter == null) {
+                // Initialize adapter on first data load
+                contactAdapter = new ContactAdapter(contacts, new ContactAdapter.OnContactActionListener() {
+                    @Override
+                    public void onDeleteContact(ContactViewModel.Contact contact) {
+                        showDeleteConfirmationDialog(contact);
+                    }
 
-                        @Override
-                        public void onContactSelected(ContactViewModel.Contact contact) {
-                            // Handle contact selection here
-                        }
-                    }, getContext());
-                    recyclerViewContacts.setAdapter(contactAdapter);
-                } else {
-                    // Update existing adapter with new data
-                    contactAdapter.updateContacts(contacts);
-                }
+                    @Override
+                    public void onContactSelected(ContactViewModel.Contact contact) {
+                        // Implement contact selection action if needed
+                    }
+                }, getContext());
+                recyclerViewContacts.setAdapter(contactAdapter);
+            } else {
+                // Update adapter with new data
+                contactAdapter.updateContacts(contacts);
             }
         });
 
-        // Floating Action Button for Adding Contacts
-        com.google.android.material.floatingactionbutton.FloatingActionButton fabAddContact = view.findViewById(R.id.fabAddContact);
+        // Set up FloatingActionButton for Adding Contacts
+        FloatingActionButton fabAddContact = view.findViewById(R.id.fabAddContact);
         fabAddContact.setOnClickListener(v -> {
-            // Navigate to AddContactFragment when FAB is clicked
-            Fragment addContactFragment = new AddContactFragment(); // Ensure you have this fragment
-
-            // Use FragmentTransaction to navigate
+            Fragment addContactFragment = new AddContactFragment();
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, addContactFragment) // R.id.fragment_container should be the ID of the container where the fragment is displayed
-                    .addToBackStack(null) // This adds the transaction to the back stack
+                    .replace(R.id.fragment_container, addContactFragment)
+                    .addToBackStack(null)
                     .commit();
         });
 
-        return view; // Ensure this is at the end of onCreateView
+        return view;
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the default title
-        activity.getSupportActionBar().show(); // Show the fragment's toolbar
-    }
-
-    // Method to load contacts from Firebase
-    private void loadContactsFromFirebase() {
-        if (userId != null) {
-            contactViewModel.loadContacts(); // Use ViewModel to load contacts
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide default title
+            activity.getSupportActionBar().show(); // Show the fragment's toolbar
         }
     }
 
-    // Method to navigate back to the home fragment
+    // Method to load contacts from Firebase via ViewModel
+    private void loadContactsFromFirebase() {
+        if (userId != null) {
+            contactViewModel.loadContacts(); // Load contacts for the current user
+        }
+    }
+
+    // Navigate back to HomeFragment
     private void navigateToHomeFragment() {
-        Fragment homepageFragment = new HomeFragment(); // Replace with your actual homepage fragment class
+        Fragment homepageFragment = new HomeFragment();
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, homepageFragment) // Ensure this matches your container ID
-                .addToBackStack(null) // Add to back stack to allow back navigation
+                .replace(R.id.fragment_container, homepageFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
-    // Method to show confirmation dialog for contact deletion
+    // Show confirmation dialog for contact deletion
     private void showDeleteConfirmationDialog(ContactViewModel.Contact contact) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Delete Contact")
                 .setMessage("Are you sure you want to delete this contact?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    contactViewModel.removeContact(contact); // Remove contact from ViewModel and Firebase
-                })
+                .setPositiveButton("Yes", (dialog, which) -> contactViewModel.removeContact(contact))
                 .setNegativeButton("No", null)
                 .show();
     }
-
 }

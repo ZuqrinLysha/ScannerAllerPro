@@ -15,6 +15,7 @@
     <color name="colorAlert">#FFDE21</color>
     <color name="colorTextPrimary">#212121</color>
     <color name="colorNuetral">#434343</color>
+    <color name="blue3">#c1cff7</color>
 
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

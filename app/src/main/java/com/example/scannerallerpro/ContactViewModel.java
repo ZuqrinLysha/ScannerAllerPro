@@ -24,28 +24,31 @@ public class ContactViewModel extends ViewModel {
         loadContacts(); // Load contacts initially
     }
 
+    public LiveData<List<Contact>> getContacts() {
+        return contacts;
+    }
 
     // Load contacts from Firebase based on current user
     public void loadContacts() {
-        String userEmail = getCurrentUserEmail();
-        if (userEmail.isEmpty()) {
+        String userId = getCurrentUserId(); // Get the current user's unique ID
+        if (userId.isEmpty()) {
             Log.e("ContactViewModel", "User not logged in.");
             return; // Early return if user is not logged in
         }
 
-        databaseReference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        // Query for contacts based on the user's unique ID
+        databaseReference.child(userId).child("ContactData").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Contact> contactList = new ArrayList<>();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot contactSnapshot : userSnapshot.child("ContactData").getChildren()) {
-                        Contact contact = contactSnapshot.getValue(Contact.class);
-                        if (contact != null) {
-                            contactList.add(contact);
-                        }
+                for (DataSnapshot contactDataSnapshot : dataSnapshot.getChildren()) {
+                    Contact contact = contactDataSnapshot.getValue(Contact.class);
+                    if (contact != null) {
+                        contactList.add(contact);
                     }
                 }
                 contacts.setValue(contactList); // Update LiveData
+                Log.d("ContactViewModel", "Contacts loaded: " + contactList.size());
             }
 
             @Override
@@ -69,6 +72,14 @@ public class ContactViewModel extends ViewModel {
         if (currentList != null && !currentList.contains(contact)) {
             currentList.add(contact);
             contacts.setValue(currentList);
+
+            // Implement Firebase addition logic
+            String userId = getCurrentUserId(); // Get the current user's ID
+            if (!userId.isEmpty()) {
+                databaseReference.child(userId).child("ContactData").child(contact.getId()).setValue(contact)
+                        .addOnSuccessListener(aVoid -> Log.d("ContactViewModel", "Contact added successfully"))
+                        .addOnFailureListener(e -> Log.e("ContactViewModel", "Error adding contact: " + e.getMessage()));
+            }
         }
     }
 
@@ -79,55 +90,70 @@ public class ContactViewModel extends ViewModel {
             contacts.setValue(currentList);
 
             // Implement Firebase removal logic
-            String userId = getCurrentUserEmail(); // Get the current user's email or ID
+            String userId = getCurrentUserId(); // Get the current user's ID
             if (!userId.isEmpty()) {
-                databaseReference.child("Users").orderByChild("email").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot userSnapshot) {
-                        for (DataSnapshot snapshot : userSnapshot.getChildren()) {
-                            // Assuming 'contact.getId()' returns a unique identifier for the contact
-                            databaseReference.child("Users").child(snapshot.getKey()).child("ContactData").child(contact.getId()).removeValue()
-                                    .addOnSuccessListener(aVoid -> Log.d("ContactViewModel", "Contact removed successfully"))
-                                    .addOnFailureListener(e -> Log.e("ContactViewModel", "Error removing contact: " + e.getMessage()));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e("ContactViewModel", "Firebase operation cancelled: " + databaseError.getMessage());
-                    }
-                });
+                databaseReference.child(userId).child("ContactData").child(contact.getId()).removeValue()
+                        .addOnSuccessListener(aVoid -> Log.d("ContactViewModel", "Contact removed successfully"))
+                        .addOnFailureListener(e -> Log.e("ContactViewModel", "Error removing contact: " + e.getMessage()));
             }
         }
     }
 
-    private String getCurrentUserEmail() {
+    private String getCurrentUserId() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        return auth.getCurrentUser() != null ? auth.getCurrentUser().getEmail() : "";
+        return auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "";
     }
 
     // Contact class definition
     public static class Contact {
         private String id; // Ensure you have an ID field for contacts
         private String fullName;
-        private String phoneNumber;
+        private String phone;
         private String relationship;
 
-        public Contact() { /* Default constructor */ }
+        // Default constructor required for calls to DataSnapshot.getValue(Contact.class)
+        public Contact() {
+        }
 
-        public Contact(String id, String fullName, String phoneNumber) {
-            this.id = id; // Assign ID
+        // Full constructor
+        public Contact(String id, String fullName, String phone, String relationship) {
+            this.id = id;
             this.fullName = fullName;
-            this.phoneNumber = phoneNumber;
+            this.phone = phone;
             this.relationship = relationship;
         }
 
-        public String getId() { return id; }
-        public String getFullName() { return fullName; }
-        public void setFullName(String fullName) { this.fullName = fullName; }
-        public String getPhoneNumber() { return phoneNumber; }
-        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-        public String getRelationship() { return relationship; }
-        public void setRelationship(String relationship) { this.relationship = relationship; }
+        // Getters and Setters
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getRelationship() {
+            return relationship;
+        }
+
+        public void setRelationship(String relationship) {
+            this.relationship = relationship;
+        }
     }
 }
