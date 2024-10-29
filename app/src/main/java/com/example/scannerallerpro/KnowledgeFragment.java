@@ -17,7 +17,9 @@ public class KnowledgeFragment extends Fragment {
     private TextView medSecondDetails;
     private TextView medThirdDetails;
     private TextView symptomsLvlDetails;
-    private TextView recipeDetails;
+    private TextView quinoa_details;
+    private TextView coconut_details;
+    private TextView rice_details;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,19 +32,23 @@ public class KnowledgeFragment extends Fragment {
         medSecondDetails = view.findViewById(R.id.med_second);
         medThirdDetails = view.findViewById(R.id.med_third);
         symptomsLvlDetails = view.findViewById(R.id.symptoms_lvl_details);
-        recipeDetails = view.findViewById(R.id.recipe_details);
+        quinoa_details = view.findViewById(R.id.quinoa_details);
 
         // Set initial visibility to GONE for all detailed sections
         medFirstDetails.setVisibility(View.GONE);
         medSecondDetails.setVisibility(View.GONE);
         medThirdDetails.setVisibility(View.GONE);
         symptomsLvlDetails.setVisibility(View.GONE);
-        recipeDetails.setVisibility(View.GONE);
+        quinoa_details.setVisibility(View.GONE);
+        coconut_details.setVisibility(View.GONE);
+        rice_details.setVisibility(View.GONE);
 
         // Find the CardViews
         CardView cardView = view.findViewById(R.id.card_view);
         CardView cardView2 = view.findViewById(R.id.card_view2);
         CardView cardView3 = view.findViewById(R.id.card_view3);
+        CardView cardView4 = view.findViewById(R.id.card_view4);
+        CardView cardView5 = view.findViewById(R.id.card_view5);
 
         // Set OnClickListener for the first CardView to expand/collapse details
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +75,25 @@ public class KnowledgeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 bounceAnimation(v); // Add bounce animation on click
-                toggleVisibilityWithAnimation(recipeDetails);
+                toggleVisibilityWithAnimation(quinoa_details);
+            }
+        });
+
+        // Set an OnClickListener for the third card view
+        cardView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bounceAnimation(v); // Add bounce animation on click
+                toggleVisibilityWithAnimation(coconut_details);
+            }
+        });
+
+        // Set an OnClickListener for the third card view
+        cardView5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bounceAnimation(v); // Add bounce animation on click
+                toggleVisibilityWithAnimation(rice_details);
             }
         });
 

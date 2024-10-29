@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/knowledge_background" />
 
         <!-- CardView Section for Articles -->
@@ -42,14 +42,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-
                 android:padding="15dp">
 
                 <TextView
                     android:id="@+id/med_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Food Allergy Medicine"
+                    android:text="Allergy Medicine"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/bckground"/>
@@ -64,21 +63,13 @@
                         android:id="@+id/med_first"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:visibility="gone"
                         android:textColor="@color/black"
                         android:text="1. Antihistamines:\nUsed for mild allergic reactions (e.g., sneezing, runny nose, itching).\nExamples: loratadine and cetirizine."
                         android:textSize="18sp"
                         android:layout_marginTop="4dp"
                         android:inputType="textMultiLine"/>
-
-                    <ImageView
-                        android:id="@+id/image_view1"
-                        android:layout_width="90dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginLeft="25dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/antihistamine" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,15 +90,6 @@
                         android:layout_marginTop="4dp"
                         android:inputType="textMultiLine"/>
 
-                    <ImageView
-                        android:id="@+id/image_view2"
-                        android:layout_width="90dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginLeft="25dp"
-                        android:src="@drawable/epinephrine"
-                        android:scaleType="centerCrop"/>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -127,23 +109,12 @@
                         android:textSize="18sp"
                         android:layout_marginTop="4dp"
                         android:inputType="textMultiLine"/>
-
-                    <ImageView
-                        android:id="@+id/image_view3"
-                        android:layout_width="90dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginLeft="25dp"
-                        android:src="@drawable/prednisone"
-                        android:scaleType="centerCrop"/>
-
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view2"
-            android:backgroundTint="@color/blue3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -184,13 +155,33 @@
 
         <!-- Recipe Suggestions Section -->
         <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20sp"
+                android:paddingBottom="20sp"
+                android:text="Allergic Friendly Recipes"
+                android:textAlignment="center"
+                android:textColor="#425BE4"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_view3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:elevation="8dp"
             app:cardElevation="8dp"
-            app:cardCornerRadius="30dp">
+            app:cardCornerRadius="30dp"
+            app:contentPadding="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -200,27 +191,103 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/recipe"
+                    android:id="@+id/recipesQuinoa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Allergy-Friendly Recipes"
-                    android:textColor="@color/bckground"
+                    android:text="Quinoa Salad (Gluten-free, Dairy-free)"
                     android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/bckground"/>
 
                 <TextView
-                    android:id="@+id/recipe_details"
+                    android:id="@+id/quinoa_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="\nIngredients:\n\n•1 cup quinoa\n•2 cups water\n•1 cucumber (chopped)\n•1 bell pepper (chopped)\n•1 cup cherry tomatoes (halved)\n•1/4 cup red onion (chopped)\n•1/4 cup fresh parsley@cilantro (chopped)\n•2 tbsp olive oil\n•1 tbsp lemon juice\n•Salt and pepper\n\nInstructions:\n\n1. Cook quinoa: Rinse the quinoa under cold water. Add quinoa and water to a pot, bring to a boil, reduce heat to low, cover, and simmer for 15 minutes until the water is absorbed. Fluff with a fork and set aside to cool.\n\n2. Prep vegetables: While the quinoa cools, chop the cucumber, bell pepper, cherry tomatoes, and red onion.\n\n3. Mix dressing: In a small bowl, whisk together the olive oil, lemon juice, salt, and pepper.\n\n4. Combine: In a large bowl, combine the cooled quinoa, vegetables, and parsley. Drizzle the dressing over the salad and toss to combine.\n\n5. Serve: Taste and adjust seasonings if needed. Serve chilled or at room temperature."
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    android:inputType="textMultiLine"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:elevation="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="30dp"
+            app:contentPadding="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/recipesCoconut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textMultiLine"
-                    android:text="1. Quinoa Salad: A refreshing salad made with quinoa, cherry tomatoes, cucumber, and a lemon vinaigrette.\n\n2. Coconut Macaroons: Sweet treats made with shredded coconut, egg whites, and sugar.\n\n3. Rice Stir-Fry: Stir-fried vegetables with rice, soy sauce, and sesame oil."
+                    android:text="Coconut Macaroons (Gluten-free, Dairy-free, Nut-free)"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/bckground"/>
+
+                <TextView
+                    android:id="@+id/coconut_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="Ingredients:\n\n•2 1/2 cups shredded unsweetened coconut\n•2 large egg whites\n•1/2 cup sugar\n•1 tsp vanilla extract\n•A pinch of salt\n\nInstructions:\n\n1. Preheat your oven to 325°F (160°C). Line a baking sheet with parchment paper.\n\n2. In a large bowl, whisk the egg whites until they are frothy. Add sugar, vanilla extract, and a pinch of salt. Stir in the shredded coconut until the mixture is well combined.\n\n3. Using a spoon or your hands, scoop the mixture and form small mounds (about 1 tablespoon each) onto the lined baking sheet.\n\n4. Bake for 15-20 minutes, or until the tops are lightly golden. Keep an eye on them to prevent burning.\n\n5. Let the macaroons cool on the baking sheet for a few minutes, then transfer them to a wire rack to cool completely.\n\nNote: Store in an airtight container and enjoy!"
+                    android:textSize="18sp"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-
+                    android:layout_marginTop="4dp"
+                    android:inputType="textMultiLine"/>
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:elevation="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="30dp"
+            app:contentPadding="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/recipesRice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rice Stir Fry (Gluten-free, Dairy-free, Nut-free)"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/bckground"/>
+
+                <TextView
+                    android:id="@+id/rice_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="Ingredients:\n\n•2 cups cooked rice (white or brown)\n•1 tbsp vegetable oil\n•2 cloves garlic (minced)\n•1 inch ginger (minced)\n•1 carrot (sliced thinly)\n•1 bell pepper (sliced thinly)\n•1 small bok choy (chopped)\n•2 tbsp tamari (gluten-free soy sauce alternative)\n•1 tbsp sesame oil (optional)\n•Salt and pepper to taste\n\nInstructions:\n\n1. Make sure your rice is cooked and cooled. You can use leftover rice for this recipe.\n\n2. Heat the vegetable oil in a large pan or wok over medium heat.\n\n3. Add minced garlic and ginger to the pan and sauté for about 30 seconds until fragrant.\n\n5. Add the sliced carrots, bell pepper, and bok choy to the pan. Stir-fry for about 5 minutes until the vegetables are tender but still crisp.\n\n6. Add the cooked rice to the pan, breaking up any clumps with your spatula.\n\n7. Season: Add tamari and sesame oil, if using. Stir everything together and cook for another 2-3 minutes until heated through. Season with salt and pepper, then serve warm."
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    android:inputType="textMultiLine"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <TextView
