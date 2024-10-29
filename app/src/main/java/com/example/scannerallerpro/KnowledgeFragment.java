@@ -1,17 +1,15 @@
 package com.example.scannerallerpro;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class KnowledgeFragment extends Fragment {
 
@@ -26,16 +24,6 @@ public class KnowledgeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_knowledge, container, false);
-
-
-
-        // Hide the main toolbar when entering the ScannerFragment
-        if (getActivity() != null) {
-            Toolbar mainToolbar = getActivity().findViewById(R.id.toolbarHomePage); // Assuming this is the ID of the main toolbar
-            if (mainToolbar != null) {
-                mainToolbar.setVisibility(View.GONE);
-            }
-        }
 
         // Initialize TextView references for details
         medFirstDetails = view.findViewById(R.id.med_first);
@@ -56,15 +44,14 @@ public class KnowledgeFragment extends Fragment {
         CardView cardView2 = view.findViewById(R.id.card_view2);
         CardView cardView3 = view.findViewById(R.id.card_view3);
 
-
         // Set OnClickListener for the first CardView to expand/collapse details
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toggle visibility of the first medicine details
-                medFirstDetails.setVisibility(medFirstDetails.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                medSecondDetails.setVisibility(medSecondDetails.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                medThirdDetails.setVisibility(medThirdDetails.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                bounceAnimation(v); // Add bounce animation on click
+                toggleVisibilityWithAnimation(medFirstDetails);
+                toggleVisibilityWithAnimation(medSecondDetails);
+                toggleVisibilityWithAnimation(medThirdDetails);
             }
         });
 
@@ -72,12 +59,8 @@ public class KnowledgeFragment extends Fragment {
         cardView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toggle visibility of symptomsLvlDetails
-                if (symptomsLvlDetails.getVisibility() == View.GONE) {
-                    symptomsLvlDetails.setVisibility(View.VISIBLE);
-                } else {
-                    symptomsLvlDetails.setVisibility(View.GONE);
-                }
+                bounceAnimation(v); // Add bounce animation on click
+                toggleVisibilityWithAnimation(symptomsLvlDetails);
             }
         });
 
@@ -85,17 +68,44 @@ public class KnowledgeFragment extends Fragment {
         cardView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toggle visibility of recipe_details
-                if (recipeDetails.getVisibility() == View.GONE) {
-                    recipeDetails.setVisibility(View.VISIBLE);
-                } else {
-                    recipeDetails.setVisibility(View.GONE);
-                }
+                bounceAnimation(v); // Add bounce animation on click
+                toggleVisibilityWithAnimation(recipeDetails);
             }
         });
-
 
         return view;
     }
 
+    private void toggleVisibilityWithAnimation(TextView textView) {
+        if (textView.getVisibility() == View.GONE) {
+            textView.setVisibility(View.VISIBLE);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f);
+            animator.setDuration(300); // Animation duration in milliseconds
+            animator.start();
+        } else {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "alpha", 1f, 0f);
+            animator.setDuration(300); // Animation duration in milliseconds
+            animator.addListener(new android.animation.AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(android.animation.Animator animation) {
+                    textView.setVisibility(View.GONE);
+                }
+            });
+            animator.start();
+        }
+    }
+
+    private void bounceAnimation(View view) {
+        // Create a bounce animation
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1.1f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1.1f, 1f);
+
+        scaleX.setDuration(300); // Animation duration in milliseconds
+        scaleY.setDuration(300); // Animation duration in milliseconds
+
+        // Create an AnimatorSet to play both scale animations together
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(scaleX).with(scaleY);
+        animatorSet.start();
+    }
 }

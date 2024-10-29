@@ -29,19 +29,20 @@
         <!-- CardView Section for Articles -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
-            android:backgroundTint="@color/blue3"
+            android:backgroundTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:elevation="4dp"
-            app:cardElevation="10dp"
-            app:cardCornerRadius="20dp"
-            app:contentPadding="2dp">
+            android:layout_margin="15dp"
+            android:elevation="8dp"
+             app:cardElevation="8dp"
+            app:cardCornerRadius="30dp"
+            app:contentPadding="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+
                 android:padding="15dp">
 
                 <TextView
@@ -51,7 +52,7 @@
                     android:text="Food Allergy Medicine"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/bckground"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,18 +146,18 @@
             android:backgroundTint="@color/blue3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:elevation="4dp"
-            app:cardElevation="10dp"
-            app:cardCornerRadius="20dp"
-            app:contentPadding="2dp">
+            android:layout_margin="15dp"
+            android:elevation="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="30dp"
+            app:contentPadding="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="20dp"
-                android:background="@color/blue3">
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/symptoms_lvl"
@@ -165,7 +166,7 @@
                     android:text="Symptoms by Severity"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/bckground"/>
 
                 <TextView
                     android:id="@+id/symptoms_lvl_details"
@@ -186,14 +187,15 @@
             android:id="@+id/card_view3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="20dp">
+            android:layout_margin="15dp"
+            android:elevation="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="30dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/blue3"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -202,7 +204,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Allergy-Friendly Recipes"
-                    android:textColor="@color/black"
+                    android:textColor="@color/bckground"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
