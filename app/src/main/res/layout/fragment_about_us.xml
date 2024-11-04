@@ -4,29 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".AboutUsFragment"> <!-- Updated the context to refer to the fragment -->
+
 
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:text="About Us"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+        <include layout="@layout/toolbar_about_us">
+
+        </include>
+
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="163dp"
             android:layout_height="159dp"
-            android:layout_below="@id/textView"
+            android:layout_marginTop="100dp"
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/allerpro_bg" />
 

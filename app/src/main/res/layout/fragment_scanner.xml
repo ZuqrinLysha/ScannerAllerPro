@@ -4,63 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/white"
     tools:context=".ScannerFragment">
 
-    <!-- Include the scanner toolbar -->
+        <!-- Include the scanner toolbar -->
     <include
-        layout="@layout/toolbar_scanner"
-        android:id="@+id/toolbarScanner" /> <!-- Assign an ID to the toolbar for reference -->
+    layout="@layout/toolbar_scanner"
+    android:id="@+id/toolbarScanner" /> <!-- Assign an ID to the toolbar for reference -->
 
-    <!-- ImageView for the captured image -->
+    <!-- ImageView for the captured image with rounded corners -->
     <ImageView
-        android:id="@+id/imgCaptured"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:layout_below="@id/toolbarScanner" /> <!-- Position below the toolbar -->
+    android:id="@+id/imgCaptured"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:scaleType="centerCrop"
+    android:visibility="gone"
+    android:layout_below="@id/toolbarScanner"
+    android:background="@drawable/rounded_image_view"
+    android:clipToOutline="true" /> <!-- Position below the toolbar -->
 
-    <!-- Scroll View -->
-
+        <!-- Scroll View for instructions -->
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_above="@id/Linear_Hold"
-        android:layout_below="@id/imgCaptured"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="77dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="-13dp"
-        android:layout_weight="1"> <!-- Adjust height to fill available space -->
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_above="@id/Linear_Hold"
+    android:layout_below="@id/imgCaptured"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="100dp">
 
-        <TextView
-            android:id="@+id/txtScanner"
+    <!-- CardView for instruction text -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="8dp"> <!-- Card with rounded corners -->
+
+        <LinearLayout
             android:layout_width="match_parent"
+            android:background="@drawable/gradient_background"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Please capture the list of ingredients"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/baseline_photo_camera_back_24" /> <!-- Icon above text -->
+
+            <TextView
+                android:id="@+id/txtScanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Please capture the list of ingredients"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     </ScrollView>
 
+        <!-- Bottom capture button container -->
     <LinearLayout
         android:id="@+id/Linear_Hold"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <Button
-        android:id="@+id/btnCapture"
-        android:layout_width="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/rounded_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Capture" />
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+    android:gravity="center">
 
-    </RelativeLayout>
+
+    <!-- Capture Button with icon -->
+        <Button
+            android:id="@+id/btnCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_button"
+            android:drawableLeft="@drawable/baseline_camera_24"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Capture"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

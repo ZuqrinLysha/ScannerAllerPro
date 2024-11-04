@@ -33,6 +33,8 @@ public class KnowledgeFragment extends Fragment {
         medThirdDetails = view.findViewById(R.id.med_third);
         symptomsLvlDetails = view.findViewById(R.id.symptoms_lvl_details);
         quinoa_details = view.findViewById(R.id.quinoa_details);
+        coconut_details = view.findViewById(R.id.coconut_details); // Missing initialization
+        rice_details = view.findViewById(R.id.rice_details); // Missing initialization
 
         // Set initial visibility to GONE for all detailed sections
         medFirstDetails.setVisibility(View.GONE);

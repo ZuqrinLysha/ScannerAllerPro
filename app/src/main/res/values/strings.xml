@@ -20,7 +20,7 @@
 
 
     <string-array name="security_questions">
-        <item>Choose Here</item>
+        <item>Choose Here the Security Question!</item>
         <item>What is your pet\'s name?</item>
         <item>What is your mother\'s maiden name?</item>
         <item>What city were you born in?</item>

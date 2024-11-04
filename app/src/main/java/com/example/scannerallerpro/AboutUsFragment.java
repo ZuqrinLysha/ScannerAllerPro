@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class AboutUsFragment extends Fragment {
@@ -24,6 +27,13 @@ public class AboutUsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_about_us, container, false);
 
         contactDetails = view.findViewById(R.id.contact_details);
+        // Initialize the Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbarAboutUs);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+
+        // Initialize back arrow button
+        ImageButton backArrow = view.findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(v -> navigateToHomeFragment());
 
         // Set click listener to the contact details TextView
         contactDetails.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +44,15 @@ public class AboutUsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    // Navigate back to HomeFragment
+    private void navigateToHomeFragment() {
+        Fragment homepageFragment = new HomeFragment();
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, homepageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void sendEmail() {

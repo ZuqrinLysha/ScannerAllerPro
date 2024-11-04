@@ -109,9 +109,11 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/custom"
+                        android:drawableLeft="@drawable/baseline_question_answer_24"
                         android:inputType="textPassword"
+                        android:drawablePadding="8dp"
                         android:hint="Security Answer"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHighlight="@color/cardview_dark_background" />
     <!-- Eye Icon for Toggle on the Right -->

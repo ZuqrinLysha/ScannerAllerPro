@@ -1,8 +1,9 @@
 <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -10,188 +11,177 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Toolbar -->
         <include layout="@layout/toolbar_homepage" />
 
-        <LinearLayout
+        <!-- Banner Image -->
+        <ImageView
+            android:id="@+id/bannerImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/aller_pro_bg" />
+
+        <!-- Feature Grid Layout -->
+        <GridLayout
+            android:id="@+id/gridLayoutFeatures"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:background="@drawable/gradient_background"
+            android:columnCount="2"
+            android:padding="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/bannerImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/aller_pro_bg" />
-
-                <GridLayout
-                    android:id="@+id/gridLayoutFeatures"
-                    android:layout_width="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/bannerImage"
-                    android:background="@color/light_gray"
-                    android:columnCount="2"
-                    android:layout_marginTop="16dp">
-
-                    <!-- Allergic History -->
-                    <androidx.cardview.widget.CardView
-                        android:background="@drawable/custom"
-                        android:id="@+id/cardAllergicHistory"
-                        app:cardElevation="4dp"
-                        android:layout_width="174dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp">
-
-                        <LinearLayout
-                            android:layout_width="173dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@color/blue3"
-                            android:padding="16dp"
-                            android:gravity="center"> <!-- Center content -->
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:src="@drawable/baseline_health_and_safety" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textStyle="bold"
-                                android:text="Allergic History"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Emergency Contact -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardEmergencyContact"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="173dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/blue3"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp"> <!-- Center content -->
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:src="@drawable/baseline_contact_phone_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Emergency Contact"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Scanner -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardScanner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="173dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/blue3"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp"> <!-- Center content -->
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:src="@drawable/baseline_qr_code_scanner_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Scanner"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Knowledge -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardKnowledge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="173dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/blue3"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp"> <!-- Center content -->
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:src="@drawable/baseline_menu_book_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Knowledge"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </GridLayout>
+            <!-- Allergic History Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardAllergicHistory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/gridLayoutFeatures"
-                    android:padding="16dp"
-                    android:orientation="vertical">
+                    android:background="@color/blue3"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/baseline_health_and_safety" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Highlight"
-                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:text="Allergic History"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/newsSlider"
-                        android:scaleType="centerInside"
-                        android:layout_width="match_parent"
-                        android:layout_height="452dp" />
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            </RelativeLayout>
+            <!-- Allergic History Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardEmergencyContact"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/blue3"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/baseline_contact_phone_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Emergency Contact"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Scanner Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardScanner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue3"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/baseline_qr_code_scanner_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Scanner"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Allergic History Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardKnowledge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue3"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/baseline_menu_book_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Knowledge"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
+
+        <!-- Highlight Section with ViewPager2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Highlight"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/newsSlider"
+                android:layout_width="match_parent"
+                android:layout_height="452dp"
+                android:scaleType="centerInside" />
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

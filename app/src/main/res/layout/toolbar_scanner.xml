@@ -3,7 +3,7 @@
     android:id="@+id/toolbarScanner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/light_gray">
+    android:background="@color/white">
 
 
 </androidx.appcompat.widget.Toolbar>
