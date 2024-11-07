@@ -1,6 +1,8 @@
 package com.example.scannerallerpro;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,6 +39,8 @@ public class AllergicHistoryFragment extends Fragment {
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
 
+    private boolean hasUnsavedChanges = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_allergic_history, container, false);
@@ -52,7 +57,7 @@ public class AllergicHistoryFragment extends Fragment {
 
         // Set button listeners
         btnSave.setOnClickListener(v -> saveAllergicHistory());
-        btnBack.setOnClickListener(v -> navigateBack());
+        btnBack.setOnClickListener(v -> handleBackNavigation());
 
         // Initialize Firebase authentication and reference
         auth = FirebaseAuth.getInstance();
@@ -70,6 +75,20 @@ public class AllergicHistoryFragment extends Fragment {
         return view;
     }
 
+    // Handles back button navigation with unsaved changes confirmation
+    private void handleBackNavigation() {
+        if (hasUnsavedChanges) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Unsaved Changes")
+                    .setMessage("You have unsaved changes. Do you want to save them before leaving?")
+                    .setPositiveButton("Yes", (dialog, which) -> saveAllergicHistoryAndNavigate())
+                    .setNegativeButton("No", (dialog, which) -> navigateBack())
+                    .show();
+        } else {
+            navigateBack();
+        }
+    }
+
     // Method to navigate back to HomeFragment
     private void navigateBack() {
         Fragment homeFragment = new HomeFragment();
@@ -77,6 +96,12 @@ public class AllergicHistoryFragment extends Fragment {
         transaction.replace(R.id.fragment_container, homeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    // Method to navigate back after saving
+    private void saveAllergicHistoryAndNavigate() {
+        saveAllergicHistory();
+        navigateBack();
     }
 
     private void initializeCheckBoxes(View view) {
@@ -108,7 +133,29 @@ public class AllergicHistoryFragment extends Fragment {
         chkCanolaOil = view.findViewById(R.id.chkCanolaOil);
         chkVegetableOil = view.findViewById(R.id.chkVegetableOil);
         chkCoconutOil = view.findViewById(R.id.chkCoconutOil);
+
+        // Ensure txtOtherAllergic is not null
+        txtOtherAllergic = view.findViewById(R.id.txtOtherAllergic);
+        if (txtOtherAllergic != null) {
+            txtOtherAllergic.addTextChangedListener(new android.text.TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                    hasUnsavedChanges = true;
+                }
+
+                @Override
+                public void afterTextChanged(android.text.Editable editable) {}
+            });
+        } else {
+            // Log or handle the case where the EditText is null
+            Log.e("AllergicHistoryFragment", "txtOtherAllergic EditText is null");
+        }
     }
+
+
 
     private void saveAllergicHistory() {
         if (databaseReference == null) {
@@ -150,6 +197,7 @@ public class AllergicHistoryFragment extends Fragment {
         databaseReference.setValue(allergies).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Allergic history saved successfully!", Toast.LENGTH_SHORT).show();
+                hasUnsavedChanges = false;  // Reset unsaved changes flag
             } else {
                 Toast.makeText(getContext(), "Failed to save allergic history.", Toast.LENGTH_SHORT).show();
             }

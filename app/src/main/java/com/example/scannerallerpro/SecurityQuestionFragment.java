@@ -2,6 +2,7 @@ package com.example.scannerallerpro;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -63,6 +64,27 @@ public class SecurityQuestionFragment extends Fragment {
                 R.array.security_questions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         securityQuestionSpinner.setAdapter(adapter);
+
+        // Check if the user is blocked
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserPreferences", getContext().MODE_PRIVATE);
+        boolean isBlocked = sharedPreferences.getBoolean("isBlocked", false);
+        long blockEndTime = sharedPreferences.getLong("blockEndTime", 0);
+        long currentTime = System.currentTimeMillis();
+
+        if (isBlocked && currentTime < blockEndTime) {
+            // Button is blocked
+            btnEnterSecurity.setEnabled(false);
+            long timeLeft = blockEndTime - currentTime;
+            new Handler().postDelayed(() -> {
+                btnEnterSecurity.setEnabled(true); // Re-enable after the blocking period
+                Toast.makeText(getContext(), "You can try again now.", Toast.LENGTH_SHORT).show();
+            }, timeLeft);
+        } else {
+            // Reset block status if block time has passed
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isBlocked", false);
+            editor.apply();
+        }
 
         btnEnterSecurity.setOnClickListener(v -> {
             String selectedQuestion = securityQuestionSpinner.getSelectedItem().toString();
@@ -127,25 +149,43 @@ public class SecurityQuestionFragment extends Fragment {
         return view;
     }
 
+    private void blockUserForPeriod() {
+        btnEnterSecurity.setEnabled(false); // Block the button
+        // Save block time
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserPreferences", getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        long blockEndTime = System.currentTimeMillis() + 86400000; // 24 hours in milliseconds
+        editor.putLong("blockEndTime", blockEndTime);
+        editor.putBoolean("isBlocked", true);
+        editor.apply();
+
+        // Re-enable after 24 hours
+        new Handler().postDelayed(() -> {
+            btnEnterSecurity.setEnabled(true); // Re-enable the button after 24 hours
+            failedAttempts = 0; // Reset failed attempts
+            Toast.makeText(getContext(), "You can try again now.", Toast.LENGTH_SHORT).show();
+        }, 86400000); // 24 hours in milliseconds
+    }
+
+
+    private void showAlertDialog(String title, String message) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
+
     // Method to show the block dialog after exceeding the maximum attempts
     private void showBlockDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle("Account Blocked")
-                .setMessage("Too many failed attempts. Please wait 10 seconds before trying again.")
+                .setMessage("Too many failed attempts! You have been blocked for 24 hours from changing mobile phone!.")
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     blockUserForPeriod();
                 })
                 .show();
-    }
-
-    // Method to block the user from retrying for 10 seconds
-    private void blockUserForPeriod() {
-        btnEnterSecurity.setEnabled(false); // Block the button
-        new Handler().postDelayed(() -> {
-            btnEnterSecurity.setEnabled(true); // Re-enable after 24 jam
-            failedAttempts = 0; // Reset failed attempts
-            Toast.makeText(getContext(), "You can try again now.", Toast.LENGTH_SHORT).show();
-        }, 86400000); // 24 jam seconds delay
     }
 
     // Method to navigate to the fragment for changing the phone number
@@ -157,19 +197,27 @@ public class SecurityQuestionFragment extends Fragment {
         transaction.commit();
     }
 
-    // Method to navigate back to the previous fragment
+    // Method to navigate back with an alert dialog if there are unsaved changes in the answer field or spinner not selected
     private void navigateBack() {
-        getParentFragmentManager().popBackStack();
+        String userAnswer = etSecurityAnswer.getText().toString().trim();
+        String selectedQuestion = securityQuestionSpinner.getSelectedItem().toString();
+
+        // Check if the answer field is not empty or if the spinner hasn't been selected
+        if (!userAnswer.isEmpty() || selectedQuestion.equals("Select a question")) {
+            // Show a confirmation dialog if there is input in the answer field or the spinner is not selected
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Unsaved Answer or Unselected Question")
+                    .setMessage("You have entered an answer but haven't submitted it yet, or you haven't selected a security question. Are you sure you want to leave this page?")
+                    .setPositiveButton("Yes", (dialog, which) -> getParentFragmentManager().popBackStack()) // Navigate back if "Yes"
+                    .setNegativeButton("No", null) // Do nothing if "No"
+                    .show();
+        } else {
+            // No input in the answer field and a security question is selected, just navigate back
+            getParentFragmentManager().popBackStack();
+        }
     }
 
-    // Method to show an alert dialog for wrong answers
-    private void showAlertDialog(String title, String message) {
-        new AlertDialog.Builder(getContext())
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
+
 
     // Method to toggle password visibility
     private void togglePasswordVisibility(EditText editText, ImageView toggleIcon) {

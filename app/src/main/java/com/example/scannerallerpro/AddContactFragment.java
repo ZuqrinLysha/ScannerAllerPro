@@ -1,5 +1,6 @@
 package com.example.scannerallerpro;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -62,6 +63,22 @@ public class AddContactFragment extends Fragment {
 
         // Set click listeners for the buttons
         backArrow.setOnClickListener(v -> navigateToViewContactFragment());
+        backArrow.setOnClickListener(v -> {
+            // Check if there are unsaved changes in the input fields
+            if (!TextUtils.isEmpty(edtContactName.getText()) || !TextUtils.isEmpty(edtPhone.getText())) {
+                // Show an alert dialog to confirm if the user wants to save
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Unsaved Changes")
+                        .setMessage("You have unsaved changes. Do you want to save them?")
+                        .setPositiveButton("Yes", (dialog, which) -> saveContactAndNavigate()) // Save and navigate if user says Yes
+                        .setNegativeButton("No", (dialog, which) -> navigateToViewContactFragment()) // Just navigate if user says No
+                        .show();
+            } else {
+                // If no changes, navigate back directly
+                navigateToViewContactFragment();
+            }
+        });
+
         buttonSave.setOnClickListener(v -> saveContact());
 
         // Initialize Firebase
@@ -80,6 +97,13 @@ public class AddContactFragment extends Fragment {
         return view;
     }
 
+
+
+    private void saveContactAndNavigate() {
+        saveContact(); // Save the contact
+        navigateToViewContactFragment(); // Navigate after saving
+    }
+
     private void setupSpinners() {
         ArrayAdapter<CharSequence> relationshipAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.relationship_options, android.R.layout.simple_spinner_item);
@@ -95,6 +119,16 @@ public class AddContactFragment extends Fragment {
         // Validation
         if (TextUtils.isEmpty(contactName) || TextUtils.isEmpty(phone)) {
             Toast.makeText(getContext(), "Please fill in all family contact fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check phone number format
+        if (!phone.startsWith("+60") || (phone.length() != 12 && phone.length() != 13)) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Invalid Phone Number")
+                    .setMessage("Please enter a valid phone number starting with +60 and with 10 or 11 digits after the country code.")
+                    .setPositiveButton("OK", null)
+                    .show();
             return;
         }
 
@@ -137,8 +171,7 @@ public class AddContactFragment extends Fragment {
                     }
                 }
 
-
-        @Override
+    @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(getContext(), "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
                 }
@@ -166,3 +199,5 @@ public class AddContactFragment extends Fragment {
         transaction.commit();
     }
 }
+
+

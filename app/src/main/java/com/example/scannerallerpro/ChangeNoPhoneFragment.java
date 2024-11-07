@@ -172,11 +172,21 @@ public class ChangeNoPhoneFragment extends Fragment {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Unsaved Changes")
                     .setMessage("You have unsaved changes. Do you really want to leave?")
-                    .setPositiveButton("Yes", (dialog, which) -> getActivity().onBackPressed())
-                    .setNegativeButton("No", null)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If the user clicks "Yes", check if changes should be saved
+                        if (!newPhoneNumber.isEmpty()) {
+                            // Save the phone number if newPhoneNumber is not empty
+                            verifyCurrentPhoneAndSave();
+                        } else {
+                            // No new phone number to save, just navigate back
+                            getActivity().onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No", null) // If the user clicks "No", do nothing
                     .show();
         } else {
-            getActivity().onBackPressed(); // No changes, just go back
+            // No unsaved changes, just navigate back
+            getActivity().onBackPressed();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.scannerallerpro;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,14 +47,26 @@ public class AboutUsFragment extends Fragment {
         return view;
     }
 
-    // Navigate back to HomeFragment
     private void navigateToHomeFragment() {
-        Fragment homepageFragment = new HomeFragment();
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, homepageFragment)
-                .addToBackStack(null)
-                .commit();
+        // Show a confirmation dialog
+        new AlertDialog.Builder(getContext())
+                .setTitle("Confirm Navigation")
+                .setMessage("Are you sure you want to leave this page?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Navigate to HomeFragment if the user confirms
+                    Fragment homepageFragment = new HomeFragment();
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, homepageFragment)
+                            .addToBackStack(null)
+                            .commit();
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    // Do nothing, just dismiss the dialog
+                    dialog.dismiss();
+                })
+                .show();
     }
+
 
     private void sendEmail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
