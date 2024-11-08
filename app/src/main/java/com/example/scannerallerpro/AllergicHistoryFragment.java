@@ -138,6 +138,8 @@ public class AllergicHistoryFragment extends Fragment {
         navigateBack();
     }
 
+    // Inside the AllergicHistoryFragment class
+
     private void saveAllergicHistory() {
         if (databaseReference == null) {
             Toast.makeText(getContext(), "Unable to save. Please try again later.", Toast.LENGTH_SHORT).show();
@@ -145,6 +147,17 @@ public class AllergicHistoryFragment extends Fragment {
         }
 
         Map<String, Object> allergies = getAllergiesMap();
+
+        // Add check for milk products including whey
+        String otherAllergic = txtOtherAllergic.getText().toString().trim();
+        if (!otherAllergic.isEmpty() && containsMilkOrWhey(otherAllergic)) {
+            // If "other" text contains milk-related words, categorize it under "milk products"
+            allergies.put("milkProduct", otherAllergic);
+        } else if (!otherAllergic.isEmpty()) {
+            // Otherwise, store the exact text entered by the user
+            allergies.put("other", otherAllergic);
+        }
+
         databaseReference.setValue(allergies).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Allergic history saved successfully!", Toast.LENGTH_SHORT).show();
@@ -154,6 +167,20 @@ public class AllergicHistoryFragment extends Fragment {
             }
         });
     }
+
+    private boolean containsMilkOrWhey(String input) {
+        // Define a list of keywords that categorize as milk products, including whey
+        String[] milkKeywords = {"milk", "cheese", "butter", "yogurt", "cream", "dairy", "whey"};
+
+        // Check if any keyword exists in the input text (ignoring case)
+        for (String keyword : milkKeywords) {
+            if (input.toLowerCase().contains(keyword.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private Map<String, Object> getAllergiesMap() {
         Map<String, Object> allergies = new HashMap<>();
