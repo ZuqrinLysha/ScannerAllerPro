@@ -35,14 +35,6 @@
             android:textStyle="bold" />
 
 
-        <ImageButton
-            android:id="@+id/button_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/baseline_save_24"
-            android:background="@drawable/button_background"
-            android:contentDescription="Save" />
 
     </LinearLayout>
 

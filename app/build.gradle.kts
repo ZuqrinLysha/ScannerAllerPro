@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.google.firebase.database)           // Firebase Realtime Database
     implementation(libs.google.firebase.functions)          // Firebase Cloud Functions
     implementation(libs.google.firebase.analytics)          // Firebase Analytics
+    implementation ("org.apache.commons:commons-text:1.9")
+
 
     // ML Kit and Play Services
     implementation(libs.play.services.mlkit.text.recognition)  // ML Kit Text Recognition

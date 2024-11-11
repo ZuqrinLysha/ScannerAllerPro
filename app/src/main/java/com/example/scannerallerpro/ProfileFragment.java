@@ -66,6 +66,8 @@ public class ProfileFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        // Initialize the Switch for dark mode
+        switchTheme = rootView.findViewById(R.id.switchTheme);
 
         displayHeight = rootView.findViewById(R.id.display_height);
         displayWeight = rootView.findViewById(R.id.display_weight);

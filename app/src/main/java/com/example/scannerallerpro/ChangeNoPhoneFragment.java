@@ -161,19 +161,29 @@ public class ChangeNoPhoneFragment extends Fragment {
                 .show();
     }
 
-    // Method to navigate back with an alert dialog if there are unsaved changes
     private void navigateBack() {
         String currentPhoneNumber = currentPhoneField.getText().toString().trim();
         String newPhoneNumber = newPhoneField.getText().toString().trim();
 
-        // Check if there are unsaved changes
-        if (!currentPhoneNumber.isEmpty() || !newPhoneNumber.isEmpty()) {
-            // Show a confirmation dialog if fields are filled but not saved
+        // Check if the fields are empty (i.e., no changes made)
+        if (!currentPhoneNumber.isEmpty() && !newPhoneNumber.isEmpty()) {
+            // If no changes are made, show confirmation dialog asking if they want to leave
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to leave this page without making any changes?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If user clicks "Yes", navigate back
+                        getActivity().onBackPressed();
+                    })
+                    .setNegativeButton("No", null) // If user clicks "No", do nothing
+                    .show();
+        } else {
+            // If there are unsaved changes, show confirmation dialog to save
             new AlertDialog.Builder(getActivity())
                     .setTitle("Unsaved Changes")
                     .setMessage("You have unsaved changes. Do you really want to leave?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        // If the user clicks "Yes", check if changes should be saved
+                        // If user clicks "Yes", check if changes should be saved
                         if (!newPhoneNumber.isEmpty()) {
                             // Save the phone number if newPhoneNumber is not empty
                             verifyCurrentPhoneAndSave();
@@ -182,11 +192,9 @@ public class ChangeNoPhoneFragment extends Fragment {
                             getActivity().onBackPressed();
                         }
                     })
-                    .setNegativeButton("No", null) // If the user clicks "No", do nothing
+                    .setNegativeButton("No", null) // If user clicks "No", do nothing
                     .show();
-        } else {
-            // No unsaved changes, just navigate back
-            getActivity().onBackPressed();
         }
     }
 }
+

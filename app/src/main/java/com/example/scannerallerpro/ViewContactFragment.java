@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,7 +39,7 @@ public class ViewContactFragment extends Fragment {
 
         // Initialize back arrow button
         ImageButton backArrow = view.findViewById(R.id.backArrow);
-        backArrow.setOnClickListener(v -> navigateToHomeFragment());
+        backArrow.setOnClickListener(v -> showExitConfirmationDialog());
 
         // Initialize RecyclerView
         recyclerViewContacts = view.findViewById(R.id.recyclerViewContacts);
@@ -84,6 +85,7 @@ public class ViewContactFragment extends Fragment {
         // Set up FloatingActionButton for Adding Contacts
         FloatingActionButton fabAddContact = view.findViewById(R.id.fabAddContact);
         fabAddContact.setOnClickListener(v -> {
+
             Fragment addContactFragment = new AddContactFragment();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, addContactFragment)
@@ -91,7 +93,25 @@ public class ViewContactFragment extends Fragment {
                     .commit();
         });
 
+        // Handle back press to show alert dialog
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                showExitConfirmationDialog();
+            }
+        });
+
         return view;
+    }
+
+    // Method to show the confirmation dialog when the user tries to exit the fragment
+    private void showExitConfirmationDialog() {
+        new AlertDialog.Builder(getContext())
+                .setMessage("Are you sure you want to leave this page?")
+                .setCancelable(false) // Make it non-cancelable so the user has to choose
+                .setPositiveButton("Yes", (dialog, id) -> navigateBack())
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override
@@ -101,6 +121,8 @@ public class ViewContactFragment extends Fragment {
         if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide default title
             activity.getSupportActionBar().show(); // Show the fragment's toolbar
+
+
         }
     }
 
@@ -112,7 +134,7 @@ public class ViewContactFragment extends Fragment {
     }
 
     // Navigate back to HomeFragment
-    private void navigateToHomeFragment() {
+    private void navigateBack() {
         Fragment homepageFragment = new HomeFragment();
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, homepageFragment)

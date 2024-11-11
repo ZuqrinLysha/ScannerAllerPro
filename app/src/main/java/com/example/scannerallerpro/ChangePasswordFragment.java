@@ -51,7 +51,6 @@ public class ChangePasswordFragment extends Fragment {
         return view;
     }
 
-    // Method to navigate back with an alert dialog if there are unsaved changes
     private void navigateBack() {
         String currentPassword = etCurrentPassword.getText().toString().trim();
         String newPassword = etNewPassword.getText().toString().trim();
@@ -59,7 +58,7 @@ public class ChangePasswordFragment extends Fragment {
 
         // Check if there are unsaved changes
         if (!currentPassword.isEmpty() || !newPassword.isEmpty() || !confirmNewPassword.isEmpty()) {
-            // Show a confirmation dialog if fields are filled but not saved
+            // If fields are filled, show confirmation dialog to save
             new AlertDialog.Builder(getActivity())
                     .setTitle("Unsaved Changes")
                     .setMessage("You have unsaved changes. Do you want to save before leaving?")
@@ -81,8 +80,26 @@ public class ChangePasswordFragment extends Fragment {
                         }
                     })
                     .show(); // Show the dialog
+        } else if (currentPassword.isEmpty() && newPassword.isEmpty() && confirmNewPassword.isEmpty()) {
+            // If no changes are made, show a confirmation dialog to confirm leaving the page
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to leave this page without making any changes?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Navigate back to ProfileFragment
+                            Fragment profileFragment = new ProfileFragment();
+                            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, profileFragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+                    })
+                    .setNegativeButton("No", null) // Do nothing if "No" is clicked
+                    .show(); // Show the dialog
         } else {
-            // No unsaved changes, just navigate back to ProfileFragment
+            // If there's no unsaved data or the user hasn't modified anything, just navigate back
             Fragment profileFragment = new ProfileFragment();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, profileFragment);
@@ -90,6 +107,7 @@ public class ChangePasswordFragment extends Fragment {
             transaction.commit();
         }
     }
+
 
     private void changePassword() {
         String currentPassword = etCurrentPassword.getText().toString().trim();

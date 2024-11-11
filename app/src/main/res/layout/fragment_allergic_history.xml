@@ -319,6 +319,20 @@
                 android:background="@color/white"
                 android:textColor="@color/black" />
 
+
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/blue1"
+                android:padding="12dp"
+                android:text="Save"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
             <EditText
                 android:id="@+id/edtsaja3"
                 android:layout_width="match_parent"
@@ -326,7 +340,23 @@
                 android:background="@color/white"
                 android:textColor="@color/black" />
 
+            <EditText
+                android:id="@+id/edtsaja4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edtsaja5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textColor="@color/black" />
+
         </LinearLayout>
+
+
     </ScrollView>
 
 

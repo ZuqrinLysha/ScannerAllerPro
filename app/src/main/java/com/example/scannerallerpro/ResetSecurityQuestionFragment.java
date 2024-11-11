@@ -86,9 +86,20 @@ public class ResetSecurityQuestionFragment extends Fragment {
     private void navigateBack() {
         String userAnswer = etResetSecurityQuestion.getText().toString().trim();
 
-        // Check if there are unsaved changes
-        if (!userAnswer.isEmpty() || resetSecurityQuestionSpinner.getSelectedItemPosition() != 0) {
-            // Show a confirmation dialog if fields are filled but not saved
+        // Check if there are unsaved changes or if the user has made no changes
+        if (userAnswer.isEmpty() && resetSecurityQuestionSpinner.getSelectedItemPosition() == 0) {
+            // If no changes are made, show a confirmation dialog asking if they want to leave
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to leave this page without making any changes?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If the user clicks "Yes", navigate back
+                        getActivity().onBackPressed();
+                    })
+                    .setNegativeButton("No", null) // If user clicks "No", do nothing
+                    .show();
+        } else {
+            // If there are unsaved changes or the user has selected a security question, show a confirmation to discard changes
             new AlertDialog.Builder(getActivity())
                     .setTitle("Unsaved Changes")
                     .setMessage("You have unsaved changes. Do you want to discard them?")
@@ -102,15 +113,9 @@ public class ResetSecurityQuestionFragment extends Fragment {
                     })
                     .setNegativeButton("No", null)
                     .show(); // Show the dialog
-        } else {
-            // No unsaved changes, just navigate back to ProfileFragment
-            Fragment profileFragment = new ProfileFragment();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, profileFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
     }
+
 
     private void updateSecurityQuestion() {
         String selectedQuestion = resetSecurityQuestionSpinner.getSelectedItem().toString();

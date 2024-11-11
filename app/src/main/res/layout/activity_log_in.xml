@@ -55,7 +55,7 @@
                     android:background="@drawable/custom"
                     android:drawableLeft="@drawable/baseline_email_24"
                     android:drawablePadding="8dp"
-                    android:hint="Email"
+                    android:hint="yourname@example.com"
                     android:inputType="textEmailAddress"
                     android:padding="8dp"
                     android:textColor="@color/black"

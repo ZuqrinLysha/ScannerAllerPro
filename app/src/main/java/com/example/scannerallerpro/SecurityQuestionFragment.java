@@ -197,26 +197,32 @@ public class SecurityQuestionFragment extends Fragment {
         transaction.commit();
     }
 
-    // Method to navigate back with an alert dialog if there are unsaved changes in the answer field or spinner not selected
     private void navigateBack() {
         String userAnswer = etSecurityAnswer.getText().toString().trim();
         String selectedQuestion = securityQuestionSpinner.getSelectedItem().toString();
 
-        // Check if the answer field is not empty or if the spinner hasn't been selected
-        if (!userAnswer.isEmpty() || selectedQuestion.equals("Select a question")) {
-            // Show a confirmation dialog if there is input in the answer field or the spinner is not selected
-            new AlertDialog.Builder(getContext())
+        // Check if the answer field is empty or if the spinner hasn't been selected
+        if (!userAnswer.isEmpty() && !selectedQuestion.equals("Select a question")) {
+            // If no changes are made, show a confirmation dialog asking if they want to leave
+            new androidx.appcompat.app.AlertDialog.Builder(getActivity())
                     .setTitle("Unsaved Answer or Unselected Question")
                     .setMessage("You have entered an answer but haven't submitted it yet, or you haven't selected a security question. Are you sure you want to leave this page?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If the user clicks "Yes", navigate back
+                        getActivity().onBackPressed();
+                    })
+                    .setNegativeButton("No", null) // If user clicks "No", do nothing
+                    .show();
+        } else {
+            // If there are unsaved changes or the spinner is not in its default state, show confirmation for unsaved changes
+            new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to leave this page without making any changes?")
                     .setPositiveButton("Yes", (dialog, which) -> getParentFragmentManager().popBackStack()) // Navigate back if "Yes"
                     .setNegativeButton("No", null) // Do nothing if "No"
                     .show();
-        } else {
-            // No input in the answer field and a security question is selected, just navigate back
-            getParentFragmentManager().popBackStack();
         }
     }
-
 
 
     // Method to toggle password visibility

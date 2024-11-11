@@ -2,12 +2,16 @@ package com.example.scannerallerpro;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -35,6 +39,14 @@ public class KnowledgeFragment extends Fragment {
         quinoa_details = view.findViewById(R.id.quinoa_details);
         coconut_details = view.findViewById(R.id.coconut_details); // Missing initialization
         rice_details = view.findViewById(R.id.rice_details); // Missing initialization
+
+        // Initialize the Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbar_knowledge);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+
+        // Initialize back arrow button
+        ImageButton backArrow = view.findViewById(R.id.back_button);
+        backArrow.setOnClickListener(v -> navigateToHomeFragment());
 
         // Set initial visibility to GONE for all detailed sections
         medFirstDetails.setVisibility(View.GONE);
@@ -102,6 +114,18 @@ public class KnowledgeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide default title
+            activity.getSupportActionBar().show(); // Show the fragment's toolbar
+
+
+        }
+    }
+
     private void toggleVisibilityWithAnimation(TextView textView) {
         if (textView.getVisibility() == View.GONE) {
             textView.setVisibility(View.VISIBLE);
@@ -133,5 +157,25 @@ public class KnowledgeFragment extends Fragment {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(scaleX).with(scaleY);
         animatorSet.start();
+    }
+
+    private void navigateToHomeFragment() {
+        // Show a confirmation dialog
+        new AlertDialog.Builder(getContext())
+                .setTitle("Confirm Navigation")
+                .setMessage("Are you sure you want to leave this page?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Navigate to HomeFragment if the user confirms
+                    Fragment homepageFragment = new HomeFragment();
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, homepageFragment)
+                            .addToBackStack(null)
+                            .commit();
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    // Do nothing, just dismiss the dialog
+                    dialog.dismiss();
+                })
+                .show();
     }
 }

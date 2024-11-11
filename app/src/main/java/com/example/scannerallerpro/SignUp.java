@@ -88,6 +88,17 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                // Validate phone number and email
+                if (!isValidPhoneNumber(phoneNumber)) {
+                    txtPhoneNumberSignUp.setError("Please enter a valid phone number with +60.");
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    txtEmailSignUp.setError("Please enter a valid email address.");
+                    return;
+                }
+
                 // Create a new user with Firebase Authentication
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -148,7 +159,7 @@ public class SignUp extends AppCompatActivity {
         });
 
         // Setting up the eye toggle for question visibility
-        imgTogglePassword.setOnClickListener(new View.OnClickListener() {
+        imgToggleQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 togglePasswordVisibility(txtSecurityAnswer, imgToggleQuestion);
@@ -170,6 +181,18 @@ public class SignUp extends AppCompatActivity {
                 togglePasswordVisibility(txtConfirmPssSignUp, imgToggleConfirmPassword);
             }
         });
+    }
+
+    // Method to validate phone number
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Check if phone number starts with +60 and has between 9 to 10 digits after it
+        return phoneNumber.matches("\\+60\\d{10,11}");
+    }
+
+    // Method to validate email address
+    private boolean isValidEmail(String email) {
+        // Basic regex for email validation
+        return email.matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
 
     // Function to toggle password visibility

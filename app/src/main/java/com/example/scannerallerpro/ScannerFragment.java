@@ -39,8 +39,15 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScannerFragment extends Fragment {
 
@@ -55,6 +62,33 @@ public class ScannerFragment extends Fragment {
     private static final String USERS_NODE = "Users";
     private static final String ALLERGIC_HISTORY_NODE = "AllergicHistory";
 
+    private List<String> commonMisspellings = Arrays.asList(
+            "peanu", "punut", "penut", "peanit",  // Peanut
+            "lobstar", "lobsterr", "lobsterrr", "lobtser",  // Lobster
+            "paprica", "papricaa", "paprikka", "paprikca",  // Paprika
+            "mlik", "mik", "mliks", "milkk",  // Milk
+            "eg", "egs", "egss",  // Egg
+            "soya", "soyas", "soyy", "soyybeans",  // Soy
+            "wheet", "wht", "wheattt",  // Wheat
+            "glutten", "gluteen", "glueten", "gluttenous",  // Gluten
+            "fishe", "fis", "fsh", "fshh",  // Fish
+            "shelfish", "shellfich", "shelpfish",  // Shellfish
+            "sesami", "seasame", "sesmse", "sesamae",  // Sesame
+            "mastard", "mustrd", "musatd", "mustarrd",  // Mustard
+            "citris", "citrouss", "citruos", "citrs",  // Citrus
+            "treenuts", "truenuts", "trnut", "tnree nuts",  // Tree nuts
+            "garlick", "garlik", "gralic", "grllc",  // Garlic
+            "hony", "huny", "honeys", "honney",  // Honey
+            "corns", "crn", "corm", "cornn",  // Corn
+            "choclolate", "chocoalte", "choclate", "chcolate",  // Chocolate
+            "almont", "almand", "almnd", "almoond",  // Almond
+            "casheww", "cashew nut", "chashew", "cashewz",  // Cashew
+            "strawberyy", "strwberry", "stawberry", "strawberrry",  // Strawberry
+            "strawberyy", "tomatoe", "tommato", "tomoto", "tommatoe",  // Tomato
+            "avacodo", "avacoda", "avocaddo", "avoacdo",  // Avocado
+            "chese", "cheeze", "chz", "cese"  // Cheese
+    );
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,18 +99,15 @@ public class ScannerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize the Toolbar
         Toolbar toolbar = view.findViewById(R.id.toolbarScanner);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("");
 
-        // Hide the main toolbar when entering the ScannerFragment
         hideMainToolbar();
 
         btnScanner = view.findViewById(R.id.btnCapture);
         imgCaptured = view.findViewById(R.id.imgCaptured);
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
@@ -134,7 +165,6 @@ public class ScannerFragment extends Fragment {
                         String allergyName = allergySnapshot.getKey();
                         Object hasAllergyValue = allergySnapshot.getValue();
 
-                        // Check if the value is a Boolean or a String
                         if (hasAllergyValue instanceof Boolean && (Boolean) hasAllergyValue) {
                             userAllergies.add(allergyName);
                         } else if (hasAllergyValue instanceof String) {
@@ -142,8 +172,6 @@ public class ScannerFragment extends Fragment {
                             if (!userInputAllergy.isEmpty()) {
                                 userAllergies.add(userInputAllergy);
                             }
-                        } else {
-                            Log.e("ScannerFragment", "Invalid data type for allergy: " + allergyName);
                         }
                     }
                 }
@@ -186,11 +214,12 @@ public class ScannerFragment extends Fragment {
 
     private void checkAllergiesInText(String text) {
         List<String> detectedAllergies = new ArrayList<>();
-        String normalizedText = text.toLowerCase();
+        String normalizedText = normalizeText(text);
 
         for (String allergy : userAllergies) {
-            String normalizedAllergy = allergy.toLowerCase();
-            if (normalizedText.contains(normalizedAllergy) || checkPlurality(normalizedText, normalizedAllergy)) {
+            String normalizedAllergy = normalizeText(allergy);
+
+            if (matchesAllergy(normalizedText, normalizedAllergy) || isMisspelled(normalizedText, allergy)) {
                 detectedAllergies.add(allergy);
             }
         }
@@ -202,10 +231,40 @@ public class ScannerFragment extends Fragment {
         }
     }
 
-    private boolean checkPlurality(String text, String allergy) {
-        String singularForm = allergy.endsWith("s") ? allergy.substring(0, allergy.length() - 1) : allergy + "s";
-        return text.contains(singularForm) || text.contains(singularForm.endsWith("s") ? singularForm.substring(0, singularForm.length() - 1) : singularForm + "s");
+    private boolean isMisspelled(String input, String allergy) {
+        LevenshteinDistance levenshtein = new LevenshteinDistance();
+        int distance = levenshtein.apply(input, allergy);
+        return distance <= 2;  // Allow a small Levenshtein distance
     }
+
+    private boolean isPluralOrPossessive(String input) {
+        // Memastikan input adalah dalam huruf kecil dan memeriksa jika input berakhir dengan 's' atau "'s"
+        input = input.toLowerCase().trim(); // Normalisasi huruf
+        return input.endsWith("s") || input.endsWith("'s");
+    }
+
+    private boolean matchesAllergy(String text, String allergy) {
+        text = text.toLowerCase().trim();
+        allergy = allergy.toLowerCase().trim();
+
+        // Regex pattern to allow plural and possessive forms
+        String pattern = "\\b" + allergy + "(s|'s)?\\b";  // Match plural or possessive forms
+        pattern = pattern.replace("'s", "'s\\b"); // Handling possessive forms more precisely
+
+        Log.d("ScannerFragment", "Checking allergy: " + allergy + " with pattern: " + pattern);
+
+        Pattern regexPattern = Pattern.compile(pattern);
+        Matcher matcher = regexPattern.matcher(text);
+
+        return matcher.find();
+    }
+
+    private String normalizeText(String text) {
+        text = text.toLowerCase().trim();
+        text = text.replaceAll("[^a-zA-Z0-9 ]", "");  // Keep only alphanumeric characters and spaces
+        return text;
+    }
+
 
     private void showAllergyAlertDialog(List<String> detectedAllergies) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -235,7 +294,7 @@ public class ScannerFragment extends Fragment {
         for (String allergy : detectedAllergies) {
             String allergyText = "• " + allergy + "\n";
             SpannableString spannableString = new SpannableString(allergyText);
-            spannableString.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 2, 2 + allergy.length(), 0);
+            spannableString.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 0, spannableString.length(), 0);
             spannableDescription.append(spannableString);
         }
 
