@@ -127,9 +127,8 @@
         android:contentDescription="Toggle Password Visibility"
         android:padding="10dp"
         android:src="@drawable/eyepassword" />
-</RelativeLayout>
 
-
+    </RelativeLayout>
 
                     <!-- Password EditText with Eye Icon Toggle -->
                     <RelativeLayout
