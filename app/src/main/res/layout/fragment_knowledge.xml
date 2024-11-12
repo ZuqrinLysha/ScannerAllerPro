@@ -312,6 +312,24 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/saja3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/saja4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
