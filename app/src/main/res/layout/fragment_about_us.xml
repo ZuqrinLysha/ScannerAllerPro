@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:inputType="textMultiLine"
-                    android:text="If you have any feedback or questions, feel free to reach out to us via email at : "
+                    android:text="If you have any feedback or questions, feel free to reach out by clicking the email address below to email us directly :"
                     android:textColor="@color/black"
                     android:padding="16dp"
                     android:textSize="18sp" />

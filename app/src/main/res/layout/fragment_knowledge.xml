@@ -21,6 +21,7 @@
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="12dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/baseline_arrow_back_24"
             android:contentDescription="Back" />
@@ -176,26 +177,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Recipe Suggestions Section -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="4dp"
-            app:cardCornerRadius="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20sp"
-                android:paddingBottom="20sp"
-                android:text="Allergic Friendly Recipes"
-                android:textAlignment="center"
-                android:textColor="#425BE4"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view3"
             android:layout_width="match_parent"
@@ -217,7 +198,7 @@
                     android:id="@+id/recipesQuinoa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Quinoa Salad (Gluten-free, Dairy-free)"
+                    android:text="Allergy-Safe Recipe Quinoa Salad (Gluten-free, Dairy-free)"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/bckground"/>
@@ -256,7 +237,7 @@
                     android:id="@+id/recipesCoconut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Coconut Macaroons (Gluten-free, Dairy-free, Nut-free)"
+                    android:text="Allergy-Safe Recipe Coconut Macaroons (Gluten-free, Dairy-free, Nut-free)"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/bckground"/>
@@ -295,7 +276,7 @@
                     android:id="@+id/recipesRice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rice Stir Fry (Gluten-free, Dairy-free, Nut-free)"
+                    android:text="Allergy-Safe Recipe Rice Stir Fry (Gluten-free, Dairy-free, Nut-free)"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/bckground"/>
