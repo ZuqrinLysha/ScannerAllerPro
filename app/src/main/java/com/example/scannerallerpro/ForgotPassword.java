@@ -64,7 +64,8 @@ public class ForgotPassword extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(ForgotPassword.this, "Check Your Email. Password reset link has been sent.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPassword.this, "Check Your Email. Password reset link has been sent.",
+                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ForgotPassword.this, LogIn.class);
                         startActivity(intent);
                         finish();
@@ -73,7 +74,8 @@ public class ForgotPassword extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ForgotPassword.this, "Error! Reset Password Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPassword.this, "Error! Reset Password Failed: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                         progressBarForgotPassword.setVisibility(View.INVISIBLE);
                         btnReset.setVisibility(View.VISIBLE);
                     }

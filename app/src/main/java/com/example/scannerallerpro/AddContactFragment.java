@@ -127,7 +127,8 @@ public class AddContactFragment extends Fragment {
         if (!phone.startsWith("+60") || (phone.length() != 12 && phone.length() != 13)) {
             new AlertDialog.Builder(getContext())
                     .setTitle("Invalid Phone Number")
-                    .setMessage("Please enter a valid phone number starting with +60 and with 10 or 11 digits after the country code.")
+                    .setMessage("Please enter a valid phone number starting with +60 and with 10 or " +
+                            "11 digits after the country code.")
                     .setPositiveButton("OK", null)
                     .show();
             return;
