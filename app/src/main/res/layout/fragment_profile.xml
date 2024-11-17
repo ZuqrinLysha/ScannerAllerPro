@@ -344,37 +344,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="39dp"
-                        android:contentDescription="Theme Toggle Icon"
-                        android:src="@drawable/baseline_brightness_4_24" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Toggle Theme"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <!-- Add the Switch here -->
-                    <Switch
-                        android:id="@+id/switchTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                app:cardElevation="8dp"/>
 
 
             <!-- Delete Account -->

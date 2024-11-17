@@ -150,11 +150,14 @@ public class ScannerFragment extends Fragment {
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 0); // Use rear camera
+            cameraIntent.putExtra("android.intent.extra.focusMode", "continuous-picture");
             startActivityForResult(cameraIntent, CAMERA_INTENT_CODE);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_CODE);
         }
     }
+
 
     private void fetchUserAllergies() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -198,7 +201,13 @@ public class ScannerFragment extends Fragment {
     }
 
     private void processImage(Bitmap imageBitmap) {
-        InputImage image = InputImage.fromBitmap(imageBitmap, 0);
+        // Scale the bitmap for better clarity in ImageView
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, 800, 800, true);
+        imgCaptured.setImageBitmap(scaledBitmap);
+        imgCaptured.setVisibility(View.VISIBLE);
+
+        // Process the scaled bitmap with ML Kit
+        InputImage image = InputImage.fromBitmap(scaledBitmap, 0);
         TextRecognizer recognizer = TextRecognition.getClient(new TextRecognizerOptions.Builder().build());
 
         recognizer.process(image)
@@ -211,6 +220,7 @@ public class ScannerFragment extends Fragment {
                     Log.e("ScannerFragment", "Error: " + e.getMessage());
                 });
     }
+
 
     private void checkAllergiesInText(String text) {
         List<String> detectedAllergies = new ArrayList<>();

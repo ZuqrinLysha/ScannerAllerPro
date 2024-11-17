@@ -66,9 +66,6 @@ public class ProfileFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        // Initialize the Switch for dark mode
-        switchTheme = rootView.findViewById(R.id.switchTheme);
-
         displayHeight = rootView.findViewById(R.id.display_height);
         displayWeight = rootView.findViewById(R.id.display_weight);
         displayBmi = rootView.findViewById(R.id.display_bmi);
@@ -77,8 +74,6 @@ public class ProfileFragment extends Fragment {
         // Initialize CardViews and set click listeners
         setupCardViewListeners(rootView);
 
-        // Load saved dark mode preference
-        loadDarkModePreference();
 
         // Load user data from Firebase if user is logged in
         if (currentUser != null) {
@@ -160,31 +155,6 @@ public class ProfileFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
-    private void loadDarkModePreference() {
-        boolean isDarkModeEnabled = getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-                .getBoolean("dark_mode", false);
-        switchTheme.setChecked(isDarkModeEnabled);
-
-        // Apply the dark mode on initial load
-        AppCompatDelegate.setDefaultNightMode(isDarkModeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
-        // Set a single listener for theme changes
-        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Log.d("ProfileFragment", "Dark mode toggled to: " + isChecked);
-
-            // Save dark mode preference without recreating the fragment or activity
-            getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("dark_mode", isChecked)
-                    .apply();
-
-            // Apply the new dark mode setting without navigating away
-            AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        });
-    }
-
-
 
     private void loadUserData(String userEmail) {
         FirebaseUser currentUser = auth.getCurrentUser();

@@ -24,8 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import org.apache.commons.text.similarity.LevenshteinDistance;
 
+import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +60,6 @@ public class AllergicHistoryFragment extends Fragment {
     }
 
     private void initializeUI(View view) {
-        // Initialize CheckBoxes
         initializeCheckBoxes(view);
 
         txtOtherAllergic = view.findViewById(R.id.txtOtherAllergic);
@@ -149,31 +148,21 @@ public class AllergicHistoryFragment extends Fragment {
 
         Map<String, Object> allergies = getAllergiesMap();
         String otherAllergic = txtOtherAllergic.getText().toString().trim();
-        Log.d("AllergicHistory", "Other Allergies Text: " + otherAllergic);
 
         if (!otherAllergic.isEmpty()) {
-            // Check for cow milk and soy keywords
-            if (containsMilkOrWhey(otherAllergic) && allergyCheckBoxes[5].isChecked()) {
-                Log.d("AllergicHistory", "Detected cow milk keyword and checkbox is checked.");
-                allergies.put("Milk", true);
-            } else {
-                Log.d("AllergicHistory", "Cow milk keyword not detected or checkbox not checked.");
+            // Periksa "Milk"
+            if (containsMilkOrWhey(otherAllergic) && !allergyCheckBoxes[5].isChecked()) {
+                allergies.put("Milk", true); // Tambahkan hanya jika checkbox tidak dipilih
             }
 
-            if (containsSoy(otherAllergic) && allergyCheckBoxes[1].isChecked()) {
-                Log.d("AllergicHistory", "Detected soy keyword and checkbox is checked.");
-                allergies.put("soy", true);
-                allergies.put("soybeans", true);
-            } else {
-                Log.d("AllergicHistory", "Soy keyword not detected or checkbox not checked.");
+            // Periksa "Soy"
+            if (containsSoy(otherAllergic) && !allergyCheckBoxes[1].isChecked()) {
+                allergies.put("Soy", true); // Tambahkan hanya jika checkbox tidak dipilih
             }
 
-            // Store the exact text entered by the user
+            // Tambahkan input lainnya
             allergies.put("other", otherAllergic);
         }
-
-        // Debug the complete allergies map before saving
-        Log.d("AllergicHistory", "Allergies Map to Save: " + allergies);
 
         databaseReference.setValue(allergies).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -185,55 +174,38 @@ public class AllergicHistoryFragment extends Fragment {
         });
     }
 
+    private String normalizeText(String input) {
+        return input.trim().toLowerCase().replace("'", "").replaceAll("\\s+", "");
+    }
+
+    private boolean detectAllergen(String scannedText, String allergen) {
+        String normalizedText = normalizeText(scannedText);
+        String normalizedAllergen = normalizeText(allergen);
+        return normalizedText.contains(normalizedAllergen);
+    }
 
     private boolean containsMilkOrWhey(String input) {
-        // Normalize input: removing spaces and apostrophes
-        input = input.toLowerCase().replace("'", "").replace(" ", "");
-
-        Log.d("AllergicHistory", "Normalized Input (Milk/Whey): " + input);
-
-        // List of milk-related keywords, normalized
-        String[] milkKeywords = {"milk", "Cow's ", "cheese", "butter", "yogurt", "cream", "dairy", "whey"};
+        String[] milkKeywords = {"milk", "cow's milk", "cheese", "butter", "yogurt", "cream", "dairy", "whey"};
+        String normalizedInput = normalizeText(input);
 
         for (String keyword : milkKeywords) {
-            // Check if input contains any milk-related keyword
-            if (input.contains(keyword)) {
-                Log.d("AllergicHistory", "Detected milk-related keyword: " + keyword);
+            if (detectAllergen(normalizedInput, keyword)) {
                 return true;
             }
         }
-
         return false;
     }
 
 
     private boolean containsSoy(String input) {
-        // Normalize the input by removing apostrophes, converting to lowercase, and removing spaces between words
-        input = input.trim().toLowerCase().replace("'", "").replace(" ", "");
-
-        Log.d("AllergicHistory", "Normalized Input (Soy): " + input);  // Log the normalized input
-
-        // Define keywords for soy-related products (normalize the keywords as well)
-        String[] soyKeywords = {"soy", "soybean", "soybeans", "soymilk", "soy's", "soy milk"};
-
+        input = input.toLowerCase().replace("'", "").replace(" ", "");
+        String[] soyKeywords = {"soy", "soybean", "soybeans","Soybeans", "soymilk", "soy milk"};
         for (String keyword : soyKeywords) {
-            // Normalize the keyword (remove apostrophes and spaces)
-            String normalizedKeyword = keyword.toLowerCase().replace("'", "").replace(" ", "");
-
-            if (input.contains(normalizedKeyword)) {
-                Log.d("AllergicHistory", "Detected soy-related keyword: " + keyword);  // Log detected keyword
+            if (input.contains(keyword)) {
                 return true;
             }
         }
-
         return false;
-    }
-
-    // Method to detect misspellings using Levenshtein Distance
-    private boolean isMisspelled(String input, String keyword) {
-        LevenshteinDistance levenshtein = new LevenshteinDistance();
-        int distance = levenshtein.apply(input, keyword);
-        return distance <= 2;  // You can adjust the threshold for detecting misspellings
     }
 
     private Map<String, Object> getAllergiesMap() {
@@ -243,14 +215,8 @@ public class AllergicHistoryFragment extends Fragment {
                 "cereal", "gluten", "wheat", "barley", "crab",
                 "prawns", "lobster", "scallops", "salmon", "oliveOil",
                 "sunflowerOil", "canolaOil", "vegetableOil", "coconutOil"};
-
         for (int i = 0; i < allergyCheckBoxes.length; i++) {
             allergies.put(allergyKeys[i], allergyCheckBoxes[i].isChecked());
-        }
-
-        String otherAllergic = txtOtherAllergic.getText().toString().trim();
-        if (!otherAllergic.isEmpty()) {
-            allergies.put("other", otherAllergic);
         }
         return allergies;
     }
@@ -265,12 +231,10 @@ public class AllergicHistoryFragment extends Fragment {
                             "cereal", "gluten", "wheat", "barley", "crab",
                             "prawns", "lobster", "scallops", "salmon", "oliveOil",
                             "sunflowerOil", "canolaOil", "vegetableOil", "coconutOil"};
-
                     for (int i = 0; i < allergyCheckBoxes.length; i++) {
                         allergyCheckBoxes[i].setChecked(dataSnapshot.child(allergyKeys[i]).getValue(Boolean.class) != null
                                 && dataSnapshot.child(allergyKeys[i]).getValue(Boolean.class));
                     }
-
                     String otherAllergy = dataSnapshot.child("other").getValue(String.class);
                     if (otherAllergy != null) {
                         txtOtherAllergic.setText(otherAllergy);
